@@ -1,0 +1,63 @@
+<div class="w-100">
+	<mat-card>
+		<mat-card-header>
+		<mat-card-title> Select Date for FFT And DFFT</mat-card-title>
+		</mat-card-header>
+
+		<ng-container *ngIf="config; else noData" >
+			<mat-card-content>
+				<form [formGroup]="formGroup">
+					<div class="row">
+						<div class="col-md-4 col-lg-4 col-sm-8 col-xs-8 p-24">						
+				
+								<!-- Normal -->				
+							
+									<mat-form-field>
+										<input (dateTimeInput)="syncTimestamp($event, 'normal')" [max]="maxDateTime"
+											[owlDateTime]="normalTSEx" formControlName="normalTSEx" placeholder="Select Normal Time"
+											matInput>
+										<mat-icon class="cur-p" [owlDateTimeTrigger]="normalTSEx" matSuffix inline>calendar_today
+										</mat-icon>
+										<owl-date-time #normalTSEx></owl-date-time>
+									</mat-form-field>								
+								
+							
+						</div>
+						<div class="col-md-4 col-lg-4 col-sm-8 col-xs-8 p-24">	
+							
+								<!-- Abnormal -->	
+									<mat-form-field>
+										<input (dateTimeInput)="syncTimestamp($event, 'abnormal')" [max]="maxDateTime"
+											[owlDateTime]="abnormalTSEx" formControlName="abnormalTSEx" placeholder="Select Abnormal Time"
+											matInput>
+										<mat-icon class="cur-p" [owlDateTimeTrigger]="abnormalTSEx" matSuffix inline>
+											calendar_today
+										</mat-icon>
+										<owl-date-time #abnormalTSEx></owl-date-time>
+									</mat-form-field>					
+						
+						</div>
+						<div class="col-md-3 col-lg-3 col-sm-6 col-xs-6 p-24">	
+							
+							<mat-card-actions align="end">
+								<button mat-button (click)="resetForm()">Reset</button>
+								<button (click)="loadData()" [disabled]="formGroup.invalid" cdkTrapFocus color="primary" mat-button>Load
+									Data
+								</button>
+							</mat-card-actions>			
+					
+					    </div>
+				    </div>				
+				</form>
+			</mat-card-content>
+
+		
+		
+		</ng-container>	
+		<ng-template #noData>
+			<div class="no-data">
+				<span class="mat-body c54">No data available. Please select machine and starting time.</span>
+			</div>
+		</ng-template>	
+	</mat-card>
+</div>

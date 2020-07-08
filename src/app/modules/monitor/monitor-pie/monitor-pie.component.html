@@ -1,0 +1,27 @@
+<div class="monitor-pie">
+	<mat-card fxFlexAlign="stretch" >
+
+		<mat-card-content>
+			<ng-container *ngIf="(pieData); else noData">
+					<ng-container *ngIf="(loadDate); else spinner">
+				</ng-container>
+		</ng-container>
+			<ng-template #spinner>
+				<div class="h-100 w-100" fxLayoutAlign="center center">
+					<mat-spinner diameter="50" strokeWidth="5"></mat-spinner>
+				</div>
+			</ng-template>
+			<ng-template #noData1>
+				<div class="no-data">
+					<span class="mat-body c54">No data available. </span>
+				</div>
+			</ng-template>
+			<ng-template #noData>
+				<div class="chart" >
+					<app-pie-chart title="Parth" height="160" width="320"></app-pie-chart>
+				</div>
+			</ng-template>
+
+		</mat-card-content>
+	</mat-card>
+</div>

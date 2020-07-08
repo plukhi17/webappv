@@ -1,0 +1,124 @@
+<div class="dfft-cntr">
+	<mat-card>
+		<mat-card-header>
+			<mat-card-title>DFFT</mat-card-title>
+			<ng-container *ngIf="configEx">
+				<div class="spacer"></div>
+
+				<!-- Instance or aggregate selection area-->
+				<div class="col-12 col-sm-4 col-md-2 mt-16">
+					<mat-radio-group aria-label="Select an option" (change)="setGraphMode($event)"
+						[(ngModel)]="graphMode">
+						<mat-radio-button value="instance" [checked]="true">Instance</mat-radio-button>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<mat-radio-button value="aggregate">Aggregate</mat-radio-button>
+					</mat-radio-group>
+					<!-- <mat-slide-toggle [(ngModel)]="boolShowAggregate">Show aggregate {{boolShowAggregate}}</mat-slide-toggle> -->
+				</div>
+
+				<div class="col-12 col-sm-8 col-md-4">
+					<form [formGroup]="formGroupDfft" [hidden]="!isAggregateMode">
+						<div class="row">
+							<div class="col-12 col-sm-10 col-md-5">
+								<mat-form-field>
+									<input (dateTimeInput)="setDfftAggregateDate($event,'normal')"
+										formControlName="dfftAggregateTSNormal" [max]="maxDateTime"
+										[owlDateTime]="dfftAggregateTSNormal" placeholder="Select date for normal"
+										matInput>
+									<mat-icon class="cur-p" [owlDateTimeTrigger]="dfftAggregateTSNormal" matSuffix
+										inline>
+										calendar_today </mat-icon>
+									<owl-date-time [pickerType]="'calendar'" #dfftAggregateTSNormal></owl-date-time>
+								</mat-form-field>
+							</div>
+							<div class="col-12 col-sm-10 col-md-5">
+
+								<mat-form-field>
+									<input (dateTimeInput)="setDfftAggregateDate($event,'abnormal')"
+										formControlName="dfftAggregateTSAbnormal" [max]="maxDateTime"
+										[owlDateTime]="dfftAggregateTSAbnormal" placeholder="Select date for abnormal"
+										matInput>
+									<mat-icon class="cur-p" [owlDateTimeTrigger]="dfftAggregateTSAbnormal" matSuffix
+										inline>
+										calendar_today </mat-icon>
+									<owl-date-time [pickerType]="'calendar'" #dfftAggregateTSAbnormal></owl-date-time>
+								</mat-form-field>
+							</div>
+							<div class="col-12 col-sm-4 col-md-2 mt-16 p-0">
+								<button mat-button (click)="loadData($event)" color="primary">Load Data </button>
+							</div>
+						</div>
+					</form>
+				</div>
+
+				<!-- End of Instance or Aggregate selection area-->
+				<div class="col-12 col-sm-4 col-md-2">
+					<mat-form-field *ngIf="!custFreqEnabled && !custMultiFreqEnabled;">
+						<mat-select (valueChange)="setFaultFrequency($event)" placeholder="Select moving part"
+							[disabled]="!normalFreq && !abnormalFreq">
+							<mat-option *ngFor="let pair of machineFaultPair" [value]="pair">
+								{{pair.fault.fault_name}}&nbsp;|&nbsp;{{pair.machine.name}}</mat-option>
+							<mat-option (click)="custFreqEnabled = true;">Custom Frequency</mat-option>
+							<mat-option (click)="custMultiFreqEnabled = true;"> Custom frequency with multiples
+							</mat-option>
+						</mat-select>
+					</mat-form-field>
+					<!-- <ng-template *ngIf="custFreqEnabled"> -->
+					<div *ngIf="custFreqEnabled" fxLayoutAlign="start baseline">
+						<mat-form-field>
+							<input matInput type="text" autofocus placeholder="Custom frequency"
+								[(ngModel)]="customFreq">
+							<mat-icon matSuffix inline (click)="custFreqEnabled  = false;">close</mat-icon>
+							<mat-hint>Comma (,) separated frequencies</mat-hint>
+						</mat-form-field>
+						<button mat-button color="primary" (click)="setCustomFreq()">Load</button>
+					</div>
+					<!-- </ng-template> -->
+					<!-- <ng-template > -->
+					<div *ngIf="custMultiFreqEnabled" fxLayoutAlign="start baseline">
+						<mat-form-field>
+							<input matInput type="number" min="1" autofocus
+								placeholder=" Custom frequency with multiples" [(ngModel)]="customMultiFreq">
+							<mat-icon matSuffix inline (click)="custMultiFreqEnabled  = false;">close</mat-icon>
+							<!-- <mat-hint>Comma (,) separated frequencies</mat-hint> -->
+						</mat-form-field>
+						<button mat-button color="primary" (click)="setCustomMultiFreq()">Load</button>
+					</div>
+					<!-- </ng-template> -->
+					<a *ngIf="selectedFault" class="mat-caption col-pr cur-p ml-16"
+						(click)="selectedFault = null">Clear</a>
+				</div>
+			</ng-container>
+		</mat-card-header>
+		<mat-card-content>
+			<ng-container *ngIf="configEx; else noData">
+				<ng-container *ngIf="(!loadingState.normal || !loadingState.abNormal); else spinner">
+					<ng-container *ngIf="(normalFreq?.length > 0 || abnormalFreq?.length > 0); else noFreqData">
+						<div class="chart">
+							<app-dfft-chart [normalFreq]="normalFreq" [abnormalFreq]="abnormalFreq" [config]="config"
+								[fault]="selectedFault" [normalFreqAggregate]="normalFreqAggregate"
+								[abnormalFreqAggregate]="abnormalFreqAggregate"></app-dfft-chart>
+						</div>
+					</ng-container>
+				</ng-container>
+			</ng-container>
+			<ng-template #spinner>
+				<div class="h-100 w-100" fxLayoutAlign="center center">
+					<mat-spinner diameter="50" strokeWidth="5"></mat-spinner>
+				</div>
+			</ng-template>
+			<ng-template #noFreqData>
+				<div class="no-data">
+					<span class="mat-body c54">No frequency data available for selected machine and starting time.Please
+						select
+						different machine and starting time.</span>
+				</div>
+			</ng-template>
+			<ng-template #noData>
+				<div class="no-data">
+					<span class="mat-body c54">No data available. Please select machine and starting time.</span>
+				</div>
+			</ng-template>
+		</mat-card-content>
+	</mat-card>
+</div>
