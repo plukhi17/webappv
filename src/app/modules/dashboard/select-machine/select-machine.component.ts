@@ -77,17 +77,29 @@ export class SelectMachineComponent implements OnInit, OnChanges, OnDestroy {
         const normalMachineSelected = this.f.normalMachine.value;
         const normalTSSelected = this.f.normalTS.value;
         const abNormalMachineSelected = this.f.abnormalMachine.value;
-        const abNormalTSSelected = this.f.abnormalTS.value;
+        let abNormalTSSelected = this.f.abnormalTS.value;
 
         // Check pair of normal machine and time or abnormal machine and time are selected or not
         if ((!abNormalMachineSelected && !abNormalTSSelected) && (!normalMachineSelected && !normalTSSelected)) {
             this.openSnackBar('Please select atleast one pair of machine and time.', 'Close');
             return;
         } else {
+    
+
             // Check abNormal machine and abNormal time is selected or not
             if (abNormalMachineSelected && !abNormalTSSelected) {
                 this.openSnackBar('AbNormal time is required.', 'Close');
                 return;
+            } else if (abNormalMachineSelected && abNormalTSSelected) {
+                if (!Array.isArray(abNormalTSSelected) || abNormalTSSelected.length !== 2) {
+                    this.openSnackBar('AbNormal time is required.', 'Close');
+                    return;
+                }else if(abNormalTSSelected[0] == null || abNormalTSSelected[1] === null ){
+
+                    this.openSnackBar('AbNormal time is required.', 'Close');
+                    return;
+                }
+                
             } else if (!abNormalMachineSelected && abNormalTSSelected) {
                 this.openSnackBar('AbNormal machine is required.', 'Close');
                 return;
@@ -97,7 +109,17 @@ export class SelectMachineComponent implements OnInit, OnChanges, OnDestroy {
             if (normalMachineSelected && !normalTSSelected) {
                 this.openSnackBar('Normal time is required.', 'Close');
                 return;
-            } else if (!normalMachineSelected && normalTSSelected) {
+            } else if (normalMachineSelected && normalTSSelected) {
+                if (!Array.isArray(normalTSSelected) || normalTSSelected.length !== 2) {
+                    this.openSnackBar('Normal time is required.', 'Close');
+                    return;
+                }else if(normalTSSelected[0] == null || normalTSSelected[1] === null ){
+
+                    this.openSnackBar('Normal time is required.', 'Close');
+                    return;
+                }
+                
+            }else if (!normalMachineSelected && normalTSSelected) {
                 this.openSnackBar('Normal machine is required.', 'Close');
                 return;
             }
@@ -118,23 +140,28 @@ export class SelectMachineComponent implements OnInit, OnChanges, OnDestroy {
                     this.openSnackBar('Normal machine is required.', 'Close');
                     return;
                 }
+            } 
+            
+            if(abNormalTSSelected === null){
+                abNormalTSSelected = [];
             }
         }
 
         this.config.emit({
+      
             normal: this.f.normalMachine.value && this.f.normalMachine.value,
-            normalTS: this.f.normalTS.value && this.f.normalTS.value._d.getTime(),
-            normalDate: this.f.normalTS.value && this.f.normalTS.value._d,
+            normalTS: this.f.normalTS.value[0] && this.f.normalTS.value[0]._d.getTime(),
+            normalDate: this.f.normalTS.value[0] && this.f.normalTS.value[0]._d,
             // Noraml To Data
-            normalTS_To: this.f.normalTS_To.value && this.f.normalTS_To.value._d.getTime(),
-            normalDate_To: this.f.normalTS_To.value && this.f.normalTS_To.value._d,
+            normalTS_To: this.f.normalTS.value[1] && this.f.normalTS.value[1]._d.getTime(),
+            normalDate_To: this.f.normalTS.value[1] && this.f.normalTS.value[1]._d,
 
             abnormal: this.f.abnormalMachine.value && this.f.abnormalMachine.value,
-            abnormalTS: this.f.abnormalTS.value && this.f.abnormalTS.value._d.getTime(),
-            abnormalDate: this.f.abnormalTS.value && this.f.abnormalTS.value._d,
+            abnormalTS: abNormalTSSelected[0] && abNormalTSSelected[0]._d.getTime(),
+            abnormalDate: abNormalTSSelected[0] && abNormalTSSelected[0]._d,
 
-            abnormalTS_To: this.f.abnormalTS_To.value && this.f.abnormalTS_To.value._d.getTime(),
-            abnormalDate_To: this.f.abnormalTS_To.value && this.f.abnormalTS_To.value._d
+            abnormalTS_To: abNormalTSSelected[1] && abNormalTSSelected[1]._d.getTime(),
+            abnormalDate_To: abNormalTSSelected[1] && abNormalTSSelected[1]._d
         });
     }
 

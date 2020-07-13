@@ -1,0 +1,60 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title class='card-title'>Plant Status</mat-panel-title>
+  </mat-expansion-panel-header>
+  <div claass="monitor-pie h-100">
+    <mat-card class='h-100 mat-elevation-z0'>
+      <mat-card-header>
+        <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="16px">
+          <!-- <mat-card-title>Machine Status</mat-card-title> -->
+          <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="16px" fxFlexFill>
+            <!-- {{filters | json}} -->
+            <mat-form-field>
+              <input [owlDateTime]="fromDateTime" placeholder="Select From Date" matInput [(ngModel)]="filters.from">
+              <mat-icon class="cur-p" [owlDateTimeTrigger]="fromDateTime" matSuffix inline>calendar_today
+              </mat-icon>
+              <owl-date-time #fromDateTime></owl-date-time>
+            </mat-form-field>
+
+            <mat-form-field>
+              <input [owlDateTime]="toDateTime" placeholder="Select To Date" matInput [(ngModel)]="filters.to">
+              <mat-icon class="cur-p" [owlDateTimeTrigger]="toDateTime" matSuffix inline>calendar_today
+              </mat-icon>
+              <owl-date-time #toDateTime></owl-date-time>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Select Type</mat-label>
+              <mat-select matInput name='viewMode' [(ngModel)]="viewMode">
+                <mat-option value='availablity'>Availability</mat-option>
+                <mat-option value='riskscore'>Risk Score</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Select Filter Type</mat-label>
+              <mat-select matInput name='filterType' [(ngModel)]="filterType">
+                <mat-option value='daywise'>Day Wise</mat-option>
+                <mat-option value='hourly'>Hourly</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button mat-flat-button color='primary' style='margin-top: 24px;' (click)="filterData()">Search</button>
+          </div>
+
+        </div>
+      </mat-card-header>
+      <mat-card-content style='margin-top: 16px'>
+        <ng-template #noData1>
+          <div class="no-data">
+            <span class="mat-body c54">No data available. </span>
+          </div>
+        </ng-template>
+        <div class='overflow-auto' style='width: 100%; max-height: 2000px;'>
+          <div class="chart" [style.height.px]='chartBlockHeight'>
+            <app-heat-map-chart *ngIf='this.data.length' #heatMapChart></app-heat-map-chart>
+          </div>
+        </div>
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+</mat-expansion-panel>

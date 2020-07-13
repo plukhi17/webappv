@@ -18,6 +18,7 @@ export default class GraphUtil {
 
     static commonGraphOptions = {
         animationEnabled: true,
+        exportEnabled: true,
         axisY: {
             crosshair: {
                 enabled: true

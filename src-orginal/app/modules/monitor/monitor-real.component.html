@@ -1,0 +1,23 @@
+<div class="row ">
+	<div class="col-4 mb-24" fxFlexAlign="start stretch">
+		<app-monitor-pie [data]='data'></app-monitor-pie>
+	</div>
+	<div class="col-8 mb-24">
+		<!-- <app-monitor-semipie></app-monitor-semipie> -->
+		<!-- <div fxLayout="row" fxLayoutAlign="start stretch" fxLayoutGap="16px" fxFlexFill> -->
+		<app-monitor-semipie [data]='data'></app-monitor-semipie>
+		<!-- </div> -->
+	</div>
+
+	<!-- <div class="col-4 mb-24">
+		<app-monitor-bar [data]='data'></app-monitor-bar>
+	</div> -->
+
+	<div class="col-12 mb-24">
+		<app-monitor-table [data]='data'></app-monitor-table>
+	</div>
+
+	<div class="col-12 mb-24">
+		<app-montior-heat></app-montior-heat>
+	</div>
+</div>

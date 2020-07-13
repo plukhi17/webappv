@@ -24,6 +24,15 @@ export interface DataConfigEx{
  
     abnormalTS: number;    
     abnormalDate: string;
+    
+    normalAggregateTS: number;
+    normalAggregateDate: string;
+ 
+    abnormalAggregateTS: number;    
+    abnormalAggregateDate: string;
+
+    isAggregateMode:boolean;
+
 };
 
 export interface DataConfigAggregate {

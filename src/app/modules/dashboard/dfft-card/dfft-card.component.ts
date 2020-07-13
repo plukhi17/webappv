@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { DataConfig, DataConfigEx, Frequency, Machine, MachineFault } from '../../../interfaces';
+import { DataConfig, DataConfigEx, Frequency, Machine, MachineFault ,DataConfigAggregate} from '../../../interfaces';
 import { take, tap } from 'rxjs/operators';
 import { DataService } from '../../../services/data.service';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
@@ -61,11 +61,17 @@ export class DfftCardComponent implements OnChanges, OnInit {
     ngOnChanges(changes: SimpleChanges): void {
         console.log('dfft-card-component::ngOnChanges() ' + 'received event');
         console.log(changes);
-        if (this.config && this.config.normal && changes.configEx && changes.configEx.currentValue) {
+        if (this.config && (this.config.normal || this.config.abnormal) 
+                        && changes.configEx && changes.configEx.currentValue) {
             this._processMovingParts(this.config);
             this._fetchFrequencies(this.config, this.configEx);
+        }  
+        if (this.config && this.config.normal 
+            && changes.configEx && changes.configEx.currentValue 
+            && this.configEx.isAggregateMode) {
+          
+            this._fetchFrequenciesAggregate(this.config, this.configEx);
         }
-
     }
     private _initialiseFormGroup(): void {
         this.formGroupDfft = new FormGroup({
@@ -165,25 +171,25 @@ export class DfftCardComponent implements OnChanges, OnInit {
         this.normalFreq = [];
         console.log('in dfft-card-component::_fetchFrequencies()...', config,configEx);
         /* Fetch frequencies for normal machine. */
-        if (config.normal) {
+        if (config.normal && configEx.normalTS) {
             this.loadingState.normal = true;
             this.dataService.fetchFrequencies(config.normal, configEx.normalTS).pipe(
                 tap((freq: Frequency[]) => {
                     this.loadingState.normal = false;
-                    // console.log('normalFreq', freq);
+                    console.log('normalFreq', freq);
                     this.normalFreq = freq
                 }),
                 take(1)
             ).subscribe();
         }
 
-        if (config.abnormal) {
+        if (config.abnormal && configEx.abnormalTS) {
             this.loadingState.abNormal = true;
             /* Fetch frequencies for abnormal machine. */
             this.dataService.fetchFrequencies(config.abnormal, configEx.abnormalTS).pipe(
                 tap((freq: Frequency[]) => {
                     this.loadingState.abNormal = false;
-                    // console.log('abnormalFreq', freq);
+                    console.log('abnormalFreq', freq);
                     this.abnormalFreq = freq
                 }),
                 take(1)
@@ -199,7 +205,7 @@ export class DfftCardComponent implements OnChanges, OnInit {
     * @param config
     * @private
     */
-    private _fetchFrequenciesAggregate(config: DataConfig, aggregateTS: number): void {
+   private _fetchFrequenciesAggregate(config: DataConfig, configEx: DataConfigEx): void {
 
         this.abnormalFreqAggregate = [];
         this.normalFreqAggregate = [];
@@ -207,7 +213,7 @@ export class DfftCardComponent implements OnChanges, OnInit {
         /* Fetch frequencies for normal machine. */
         if (config.normal) {
             this.loadingState.normal = true;
-            this.dataService.fetchFrequenciesAggregate(config.normal, aggregateTS).pipe(
+            this.dataService.fetchFrequenciesAggregate(config.normal, configEx.normalAggregateTS).pipe(
                 tap((freq: Frequency[]) => {
                     this.loadingState.normal = false;
                     // console.log('normalFreq', freq);
@@ -221,7 +227,7 @@ export class DfftCardComponent implements OnChanges, OnInit {
         if (config.abnormal) {
             this.loadingState.abNormal = true;
             /* Fetch frequencies for abnormal machine. */
-            this.dataService.fetchFrequenciesAggregate(config.abnormal, aggregateTS).pipe(
+            this.dataService.fetchFrequenciesAggregate(config.abnormal, configEx.abnormalAggregateTS).pipe(
                 tap((freq: Frequency[]) => {
                     this.loadingState.abNormal = false;
                     // console.log('abnormalFreq', freq);

@@ -6,56 +6,7 @@
 				<div class="spacer"></div>
 
 				<!-- Instance or aggregate selection-->
-
-				<div class="col-12 col-sm-4 col-md-2 mt-16">
-
-					<mat-radio-group aria-label="Select an option" (change)="setGraphMode($event)"
-						[(ngModel)]="graphMode">
-						<mat-radio-button value="instance" [checked]="true">Instance</mat-radio-button>
-						&nbsp;&nbsp;&nbsp;&nbsp;
-						<mat-radio-button value="aggregate">Aggregate</mat-radio-button>
-					</mat-radio-group>
-					<!-- <mat-slide-toggle [(ngModel)]="boolShowAggregate">Show aggregate {{boolShowAggregate}}</mat-slide-toggle> -->
-				</div>
-
-				<div class="col-12 col-sm-8 col-md-4">
-					<form [formGroup]="formGroupFft" [hidden]="!isAggregateMode">
-						<div class="row">
-							<div class="col-12 col-sm-10 col-md-5">
-								<mat-form-field>
-									<input (dateTimeInput)="setfftAggregateDate($event,'normal')"
-										formControlName="fftAggregateTSNormal" [max]="maxDateTime"
-										[owlDateTime]="fftAggregateTSNormal" placeholder="Select date for normal"
-										matInput>
-									<mat-icon class="cur-p" [owlDateTimeTrigger]="fftAggregateTSNormal" matSuffix
-										inline>
-										calendar_today </mat-icon>
-									<owl-date-time [pickerType]="'calendar'" #fftAggregateTSNormal></owl-date-time>
-								</mat-form-field>
-							</div>
-
-							<div class="col-12 col-sm-10 col-md-5">
-
-								<mat-form-field>
-									<input (dateTimeInput)="setfftAggregateDate($event,'abnormal')"
-										formControlName="fftAggregateTSAbnormal" [max]="maxDateTime"
-										[owlDateTime]="fftAggregateTSAbnormal" placeholder="Select date for abnormal"
-										matInput>
-									<mat-icon class="cur-p" [owlDateTimeTrigger]="fftAggregateTSAbnormal" matSuffix
-										inline>
-										calendar_today </mat-icon>
-									<owl-date-time [pickerType]="'calendar'" #fftAggregateTSAbnormal></owl-date-time>
-								</mat-form-field>
-
-							</div>
-							<div class="col-12 col-sm-4 col-md-2 mt-16 p-0">
-								<button mat-button (click)="loadData($event)" color="primary">Load Data </button>
-							</div>
-						</div>
-					</form>
-				</div>
-				<!-- End of Instance or Aggregate selection area-->
-
+ 
 				<div class="col-12 col-sm-4 col-md-2">
 					<mat-form-field *ngIf="!custFreqEnabled && !custFreqMultiEnabled;">
 						<mat-select (valueChange)="setFaultFrequency($event)" placeholder="Select moving part"
@@ -96,8 +47,9 @@
 		</mat-card-header>
 		<mat-card-content>
 			<ng-container *ngIf="configEx; else noData">
-				<ng-container *ngIf="(!loadingState.normal || !loadingState.abNormal); else spinner">
-					<ng-container *ngIf="(normalFreq?.length > 0 || abnormalFreq?.length > 0); else noFreqData">
+				<ng-container *ngIf="(!loadingState.normal || !loadingState.abNormal 
+				|| (configEx.isAggregateMode && !loadingState.normalAggregate)); else spinner">
+					<ng-container *ngIf="(normalFreq?.length > 0 || abnormalFreq?.length > 0 	); else noFreqData">  <!-- || (configEx.isAggregateMode && normalFreqAggregate?.length > 0-->
 						<div class="chart">
 							<app-fft-chart [normalFreq]="normalFreq" [abnormalFreq]="abnormalFreq"
 								[normalFreqAggregate]="normalFreqAggregate"

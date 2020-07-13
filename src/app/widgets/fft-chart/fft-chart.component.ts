@@ -26,279 +26,197 @@ export class FftChartComponent implements OnChanges, OnInit {
   @Input() normalFreqAggregate: Frequency[];
   @Input() abnormalFreqAggregate: Frequency[];
 
+  public data:any[] = new Array(4); 
+  public chart: any;
+
   constructor() {
   }
 
   ngOnInit() { }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (
-      (changes.normalFreq && changes.normalFreq.currentValue) ||
-      (changes.abnormalFreq && changes.abnormalFreq.currentValue)
-    ) {
-      this._renderChart();
-    } else if (
-      changes.fault &&
-      (changes.fault.currentValue || changes.fault.currentValue === null)
-    ) {
-      this._renderChart();
-    } else if( changes.normalFreqAggregate ){
-      console.log('dfft-chart.component.ngOnchange.normalFreqAggregate. calling render function()');
-      this._renderChart();
-    } else if( changes.AbnormalFreqAggregate ){
-      console.log('dfft-chart.component.ngOnchange.abNormalFreqAggregate. calling render function()');
-      this._renderChart();
-    }
-  }
 
   private getNormalFreqLabel() {
     return `${NORMAL_FREQ_TITLE} : ${this.config.normal.name}`;
   }
 
   private getAbnormalFreqLabel() {
-    return `${ABNORMAL_FREQ_TITLE} : ${this.config.abnormal.name}`;
+    if(this.config && this.config.abnormal)
+      return `${ABNORMAL_FREQ_TITLE} : ${this.config.abnormal.name}`;
   }
 
-  // private _renderChart(): void {
-  //   const data = [];
-  //   if (this.config.abnormal && this.abnormalFreq) {
-  //     data.push({
-  //       type: 'line',
-  //       showInLegend: true,
-  //       name: this.getAbnormalFreqLabel(),
-  //       color: GraphUtil.ABNORMAL_COLOR,
-  //       dataPoints: this.abnormalFreq.map((freq: Frequency) => {
-  //         return {
-  //           x: freq.f,
-  //           y: freq.v
-  //         };
-  //       }),
-  //       toolTipContent: "{x}<br/> <span style='\"'color: {lineColor};'\"'>{name}</span>: <strong>{y}</strong>",
-  //       axisXType: (this.config.abnormal && this.abnormalFreq) ? 'secondary' : 'primary',
-  //     });
-  //   }
-
-  //   if (this.config.normal && this.normalFreq) {
-  //     data.push({
-  //       type: 'line',
-  //       showInLegend: true,
-  //       name: this.getNormalFreqLabel(),
-  //       color: GraphUtil.NORMAL_COLOR,
-  //       dataPoints: this.normalFreq.map((freq: Frequency) => {
-  //         return {
-  //           x: freq.f,
-  //           y: freq.v
-  //         };
-  //       }),
-  //       toolTipContent: "<span style='\"'color: {lineColor};'\"'>{name}</span>: <strong>{y}</strong>",
-  //     });
-  //   }
-
-  //   let axisX;
-  //   let axisX2;
-  //   if (this.normalFreq && this.abnormalFreq) {
-  //     axisX = {
-  //       title: this.getNormalFreqLabel()
-  //     };
-  //     axisX2 = {
-  //       title: this.getAbnormalFreqLabel()
-  //     };
-  //   } else if (this.abnormalFreq) {
-  //     axisX = {
-  //       title: this.getAbnormalFreqLabel()
-  //     };
-  //   } else {
-  //     axisX = {
-  //       title: this.getNormalFreqLabel()
-  //     };
-  //   }
+  ngOnChanges(changes: SimpleChanges): void {
 
 
-  //   const chart = new CanvasJS.Chart("fftchart", {
-  //     ...GraphUtil.commonGraphOptions,
-  //     axisX: {
-  //       ...(axisX ? axisX : {}),
-  //       crosshair: {
-  //         enabled: true
-  //       },
-  //       stripLines: this.fault
-  //         ? this.fault.fault_frequencies.map((v: number) => {
-  //           return {
-  //             value: v,
-  //             color: GraphUtil.STRIP_COLOR
-  //           };
-  //         })
-  //         : []
-  //     },
-  //     axisX2,
-  //     data
-  //   });
+    if(!this.chart){
+      this._createChart();
+    } 
 
-  //   chart.render();
-  // }
-
-  private _renderChart(): void {
-    const data = [];
-    if (this.config.abnormal && this.abnormalFreq) {
-      data.push({
-        type: 'line',
-        showInLegend: true,
-        name: 'Abnormal fft',
-        color: GraphUtil.ABNORMAL_COLOR,
-        lineDashType: "dash",
-        dataPoints: this.abnormalFreq.map((freq: Frequency) => {
-          return {
-            x: freq.f,
-            y: freq.v
-          };
-        }),
-        toolTipContent: "{x}<br/> <span style='\"'color: {lineColor};'\"'>{name}</span>: <strong>{y}</strong>",
-        axisXType: (this.config.abnormal && this.abnormalFreq) ? 'secondary' : 'primary',
-      });
+    if(this.normalFreq.length >0 ){
+      this._renderNormalInstanceData();
+    }
+    if(this.abnormalFreq.length > 0){
+      this._renderAbnormalInstanceData();
     }
 
-    if (this.config.normal && this.normalFreq) {
-      data.push({
-        type: 'line',
-        showInLegend: true,
-        name: 'Normal fft',
-        color: GraphUtil.NORMAL_COLOR,
-        dataPoints: this.normalFreq.map((freq: Frequency) => {
-          return {
-            x: freq.f,
-            y: freq.v
-          };
-        }),
-        toolTipContent:
-          "<span style='\"'color: {lineColor};'\"'>{name}</span>: <strong>{y}</strong>"
-      });
+    if(this.normalFreqAggregate && this.normalFreqAggregate.length > 0 ){
+      this._renderNormalAggregateData();
+    }
+    if(this.abnormalFreqAggregate && this.abnormalFreqAggregate.length > 0){
+      this._renderAbnormalAggregateData();
     }
 
 
-// Insert data for normal machine aggregate data...
-console.log('About to push the normal aggregate data to graph...');
-if (this.config.normal && this.normalFreqAggregate && this.normalFreqAggregate.length > 0) {
-  console.log('pushing the normal aggregate data to graph...');
-  console.log(this.normalFreqAggregate);
+    //Step 2 - Check if event is for fault selection dropdown.
+    if(changes.fault){
+       
+      if(changes.fault.currentValue != null) { // value selected.
+        console.log('fault dropdown selected.', changes.fault);
+        this._renderStripLine();
+      }
+      else{ // clean button push event.
+        console.log('clear stripline event...')
+        this._removeStripLine(); 
+      } 
+       
+    }
+ 
+  }
 
-  data.push({
-    type: 'line',
-    showInLegend: true,
-    name: 'Aggregate normal fft',
-    color: GraphUtil.NORMAL_COLOR_AGGREGATE,
-    lineDashType: 'dash',
-    dataPoints: this.normalFreqAggregate.map((freq: Frequency) => {
+  private _createChart(){
+    // var _data = this.data;
+    if(this.chart) 
+       return;
+      
+ 
+      this.chart = new CanvasJS.Chart('fftchart', {
+       ...GraphUtil.commonGraphOptions,
+       exportEnabled: true,
+       axisX: { 
+         title: this.getNormalFreqLabel(),
+         crosshair: {
+           enabled: true
+         },
+         stripLines: []
+       },
+       axisX2:{title: this.getAbnormalFreqLabel(),},
+       data:[{
+         type: 'line',
+         showInLegend: true,
+         name: 'Normal dfft',
+         color: GraphUtil.NORMAL_COLOR,
+         toolTipContent:
+           "<span style='\"'color: {lineColor};'\"'>{name}</span>: <strong>{y}</strong>"
+         },  
+         { 
+           type: 'line',
+           showInLegend: true,
+           name: 'Abnormal dfft',
+           color: GraphUtil.ABNORMAL_COLOR,
+           lineDashType: 'dash',
+           toolTipContent: "{x}<br/> <span style='\"'color: {lineColor};'\"'>{name}</span>: <strong>{y}</strong>",
+           axisXType: 'secondary'
+         },{
+             type: 'line',
+             showInLegend: true,
+             name: 'Aggregate normal dfft',
+             color: GraphUtil.NORMAL_COLOR_AGGREGATE,
+             lineDashType: 'dash',
+             toolTipContent: "{x}<br/> <span style='\"'color: {lineColor};'\"'>{name}</span>: <strong>{y}</strong>",
+             axisXType: (this.config.normal && this.normalFreqAggregate) ? 'secondary' : 'primary'
+         },{
+           type: 'line',
+           showInLegend: true,
+           name: 'Aggregate abnormal dfft',
+           color: GraphUtil.ABNORMAL_COLOR_AGGREGATE,
+           lineDashType: 'dash',
+           toolTipContent: "{x}<br/> <span style='\"'color: {lineColor};'\"'>{name}</span>: <strong>{y}</strong>",
+           axisXType: (this.config.abnormal && this.abnormalFreqAggregate) ? 'secondary' : 'primary',
+         }]
+     }); 
+ 
+     //this.chart.render(); // Do we need to render the empty chart ???
+   }
+
+   private _renderNormalInstanceData(){
+    console.log('fftchart._renderNormalInstanceData()');
+ 
+      // Get the datapoints ready...
+      var _d = this.normalFreq.map((freq: Frequency) => {
+        return {
+          x: freq.f,
+          y: freq.v
+        };
+      });
+
+      this.chart.options.data[0].dataPoints = _d; //assign it to chart.
+      this.chart.render(); //render it.
+  }
+
+  private _renderAbnormalInstanceData(){
+    console.log('ffftchart._renderAbnormalInstanceData()');
+ 
+    var _d = this.abnormalFreq.map((freq: Frequency) => {
       return {
         x: freq.f,
         y: freq.v
       };
-    }),
-    toolTipContent: "{x}<br/> <span style='\"'color: {lineColor};'\"'>{name}</span>: <strong>{y}</strong>",
-    axisXType: (this.config.normal && this.normalFreqAggregate) ? 'secondary' : 'primary',
-  });
-}
+    });
+    console.log('  ----  ', _d);
+    this.chart.options.data[1].dataPoints = _d; //assign it to chart.
+    
+    this.chart.render(); //render it.
+  }
 
-
-// Insert data for abnormal machine aggregate data...
-console.log('About to push the abnormal aggregate data to graph...');
-if (this.config.abnormal && this.abnormalFreqAggregate && this.abnormalFreqAggregate.length > 0) {
-console.log('pushing the abnormal aggregate data to graph...');
-//console.log(this.normalFreqAggregate);
-
-data.push({
-  type: 'line',
-  showInLegend: true,
-  name: 'Aggregate abnormal fft',
-  color: GraphUtil.ABNORMAL_COLOR_AGGREGATE,
-  lineDashType: 'dash',
-  dataPoints: this.abnormalFreqAggregate.map((freq: Frequency) => {
-    return {
-      x: freq.f,
-      y: freq.v
-    };
-  }),
-  toolTipContent: "{x}<br/> <span style='\"'color: {lineColor};'\"'>{name}</span>: <strong>{y}</strong>",
-  axisXType: (this.config.abnormal && this.abnormalFreqAggregate) ? 'secondary' : 'primary',
-});
-}
-
-
-    let axisX;
-    let axisX2;
-    if (this.config.abnormal && this.config.normal && this.normalFreq && this.abnormalFreq) {
-      axisX = {
-        title: this.getNormalFreqLabel()
+  private _renderNormalAggregateData(){
+    // console.log('dfftchart._renderNormalAggregateData()');
+ 
+    var _d = this.normalFreqAggregate.map((freq: Frequency) => {
+      return {
+        x: freq.f,
+        y: freq.v
       };
-      axisX2 = {
-        title: this.getAbnormalFreqLabel()
+    });
+    // console.log('  ----  ', _d);
+    this.chart.options.data[2].dataPoints = _d; //assign it to chart.
+    this.chart.render(); //render it.
+  }
+  private _renderAbnormalAggregateData(){
+    // console.log('dfftchart._renderAbnormalAggregateData()');
+ 
+    var _d = this.abnormalFreqAggregate.map((freq: Frequency) => {
+      return {
+        x: freq.f,
+        y: freq.v
       };
-    } else if (this.config.abnormal && this.abnormalFreq) {
-      axisX = {
-        title: this.getAbnormalFreqLabel()
-      };
-    } else if (this.config.normal && this.normalFreq) {
-      axisX = {
-        title: this.getNormalFreqLabel()
-      };
+    });
+    // console.log('  ----  ', _d);
+    this.chart.options.data[3].dataPoints = _d; //assign it to chart.
+    this.chart.render(); //render it.
+  }
+
+  private _renderStripLine(){
+    console.log('_renderStripline() executing....');
+    
+    // If fault is selected in dropdown 
+    if(this.fault && this.fault.fault_frequencies){ 
+      console.log('--- going to set stripline...');
+      this.fault.fault_frequencies.map((v: number) => {
+        this.chart.options.axisX.stripLines.push({
+          value: v,
+          color: GraphUtil.STRIP_COLOR,
+          thickness: 2,
+          showOnTop: true,
+        }); 
+        });
+      this.chart.render();
+      console.log('--- rendered.., ',this.chart.options.axisX.stripLines);
     }
 
-    const chart = new CanvasJS.Chart('fftchart', {
-      ...GraphUtil.commonGraphOptions,
-      exportEnabled: true,
-      axisX: {
-        ...(axisX ? axisX : {}),
-        crosshair: {
-          enabled: true
-        },
-        stripLines: this.fault
-          ? [
-            ...this.fault.fault_frequencies.map((v: number) => {
-              return {
-                value: this.fault.fault_id !== -1 ? (50 + v) : v,
-                color: GraphUtil.STRIP_COLOR,
-                thickness: 2,
-                showOnTop: true,
-              };
-            }),
-            ...this.fault.fault_frequencies.map((v: number) => {
-              return {
-                value: this.fault.fault_id !== -1 ? (50 - v) : v,
-                color: GraphUtil.STRIP_COLOR,
-                thickness: 2,
-                showOnTop: true,
-              };
-            })
-          ]
-          : []
-      },
-      axisX2,
-      data,
-      axisY: {
-        gridThickness: 0,
-        tickLength: 0,
-        // lineThickness: 0,
-        // labelFormatter: function (e) {
-        //   if(e.value == -45) {
-        //     return e.value;
-        //   }
-        //   return '';
-        // } ,
-        stripLines: [
-          {
-            value: -45,
-            color: "#ff1717",
-            label: "-45",
-            lineDashType: 'dot',
-            labelPlacement: "outside",
-            labelFontColor: "#000",
-            thickness: 2,
-            labelBackgroundColor: 'transparent'
-          }
-        ],
-
-      }
-    });
-
-    chart.render();
   }
+
+  private _removeStripLine(){
+    this.chart.options.axisX.stripLines.splice(0, this.chart.options.axisX.stripLines.length);
+    this.chart.render();
+  }
+
+  
 }

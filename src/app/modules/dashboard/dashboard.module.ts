@@ -15,6 +15,7 @@ import {
     MatButtonToggleModule 
 } from '@angular/material';
 import {MatRadioModule} from '@angular/material/radio';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {A11yModule} from '@angular/cdk/a11y';
@@ -93,10 +94,11 @@ const CUSTOM_FORMAT = {
         MatSelectModule,
         A11yModule,
         MatButtonToggleModule,
+        MatCheckboxModule,
         OwlDateTimeModule,
         OwlNativeDateTimeModule,
         OwlMomentDateTimeModule,
-        MatRadioModule,
+        // MatRadioModule,
         MatSliderModule
     ],
     providers: [

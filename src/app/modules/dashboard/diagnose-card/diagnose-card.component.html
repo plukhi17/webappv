@@ -9,7 +9,7 @@
 					<mat-form-field *ngIf="!loadingState.normal || !loadingState.abNormal">
 						<mat-select (valueChange)="setMetric($event)" placeholder="Select Metric">
 							<mat-option [value]="1">Health </mat-option>
-							<mat-option [value]="2">Status </mat-option>
+							<mat-option [value]="2">Availability </mat-option>
 						</mat-select>
 					</mat-form-field> 
 				</div> 

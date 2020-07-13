@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output, OnChanges, OnDestroy, ViewChild, SimpleChanges } from '@angular/core';
-import { DataConfig, Machine,DataConfigEx } from '../../../interfaces';
+import { DataConfig, Machine,DataConfigEx,Frequency ,DataConfigAggregate} from '../../../interfaces';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { MatSelect, MatSnackBar } from '@angular/material';
-import { takeUntil } from 'rxjs/operators';
+import { take, tap } from 'rxjs/operators';
+import { DataService } from '../../../services/data.service';
 
 
 @Component({
@@ -14,20 +15,27 @@ import { takeUntil } from 'rxjs/operators';
 export class SelectDateForFftDfftComponent implements OnInit, OnChanges, OnDestroy {
     @Input() config: DataConfig;
     @Output() configEx: EventEmitter<DataConfigEx> = new EventEmitter();
+    @Output() configAggregate: EventEmitter<DataConfigAggregate> = new EventEmitter();
   
 
     public maxDateTime = new Date();
     public formGroup: FormGroup;
+    public aggregateNormalTSEx: FormControl = new FormControl();
+    public aggregateAbnormalTSEx: FormControl = new FormControl();
     protected destoryed$ = new Subject<boolean>();
+    public isAggregateMode: boolean = false;
+    public abnormalFreqAggregate: Frequency[];
+    public normalFreqAggregate: Frequency[];
     
 
     @ViewChild('normalTSEx') selectNormalMachine: MatSelect;
     @ViewChild('abnormalTSEx') selectAbNormalMachine: MatSelect;
 
-
-    constructor(private snackBar: MatSnackBar) {
+ 
+    constructor(private dataService: DataService,private snackBar: MatSnackBar) {
         this._initialiseFormGroup();       
     }
+   
 
     get f() {
         return this.formGroup.controls;
@@ -48,16 +56,24 @@ export class SelectDateForFftDfftComponent implements OnInit, OnChanges, OnDestr
     syncTimestamp(event, type): void {
         if (type === 'normal') {
             this.f.normalTSEx.setValue(event.value);
-        } else {
+        } else if (type === 'abnormal') {
             this.f.abnormalTSEx.setValue(event.value);
-        }       
+        }   
+        else if (type === 'aggregateNormal') {
+            this.f.aggregateNormalTSEx.setValue(event.value);
+        }  
+        else {
+            this.f.aggregateAbnormalTSEx.setValue(event.value);
+        }      
     }
 
   
     private _initialiseFormGroup(): void {
         this.formGroup = new FormGroup({
             normalTSEx: new FormControl(null), 
-            abnormalTSEx: new FormControl(null) 
+            abnormalTSEx: new FormControl(null),
+            aggregateNormalTSEx: new FormControl(null), 
+            aggregateAbnormalTSEx: new FormControl(null) ,
         });
     }
 
@@ -77,7 +93,12 @@ export class SelectDateForFftDfftComponent implements OnInit, OnChanges, OnDestr
         this.snackBar.open(message, action, {
             duration: 3000,
         });
-    }
+    }     
+
+    checkAggregatevalue(event){        
+        this.isAggregateMode = event.checked;
+     }
+
     loadData(): void {
         // if (this.formGroup.invalid) {
         //     return;
@@ -139,8 +160,18 @@ export class SelectDateForFftDfftComponent implements OnInit, OnChanges, OnDestr
             abnormalTS: this.f.abnormalTSEx.value && this.f.abnormalTSEx.value._d.getTime(),
             abnormalDate: this.f.abnormalTSEx.value && this.f.abnormalTSEx.value._d,
 
+            normalAggregateTS: this.f.aggregateNormalTSEx.value && this.f.aggregateNormalTSEx.value._d.getTime(),
+            normalAggregateDate: this.f.aggregateNormalTSEx.value && this.f.aggregateNormalTSEx.value._d,
+      
+            abnormalAggregateTS: this.f.aggregateAbnormalTSEx.value && this.f.aggregateAbnormalTSEx.value._d.getTime(),
+            abnormalAggregateDate: this.f.aggregateAbnormalTSEx.value && this.f.aggregateAbnormalTSEx.value._d,
+
+            isAggregateMode:this.isAggregateMode,
             
-        });
+        });             
+     
+
+  
     }
 
 }

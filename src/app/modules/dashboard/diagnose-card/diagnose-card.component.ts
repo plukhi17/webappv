@@ -47,9 +47,9 @@ export class DiagnoseCardComponent implements OnChanges, OnInit {
         if (event.normal) {
             this.loadingState.normal = true;
             this.dataService.fetchMachineStatusAndAvailability(event.normal, event.normalTS, event.normalTS_To).pipe(
-                tap((mStaus:MachineStatusAvailabilityData) =>{  
+                tap((mStaus:any) =>{  
                     this.loadingState.normal = false;
-                    this.normalMachineStatus = mStaus;
+                    this.normalMachineStatus = mStaus.list;
                 
                 }),
                 take(1)
@@ -60,9 +60,9 @@ export class DiagnoseCardComponent implements OnChanges, OnInit {
         if (event.abnormal) {
             this.loadingState.abNormal = true;
             this.dataService.fetchMachineStatusAndAvailability(event.abnormal, event.abnormalTS,event.abnormalTS_To).pipe(
-                tap((mStaus:MachineStatusAvailabilityData) =>{  
+                tap((mStaus:any) =>{  
                     this.loadingState.abNormal = false;
-                    this.abnormalMachineStatus = mStaus;
+                    this.abnormalMachineStatus = mStaus.list;
                 }),
                 take(1)
             ).subscribe();    

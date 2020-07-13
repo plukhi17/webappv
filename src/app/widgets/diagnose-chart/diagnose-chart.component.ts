@@ -48,11 +48,12 @@ export class DiagnoseChartComponent implements OnChanges, OnInit {
   
     CanvasJS.addColorSet("mintoShades",
     [//colorSet Array
-    "#7AAC8D",
-    "#F6AA54",
-    "#DE3B00"              
+      "#DE3B00",
+      "#F6AA54",
+      "#7AAC8D"           
     ]); 
-
+    let axisY2;
+    
     if(this.normalMachineStatus){
 
       const data = [];
@@ -62,36 +63,62 @@ export class DiagnoseChartComponent implements OnChanges, OnInit {
           type: "bar",
           name: "companies",
           axisYType: "secondary",
+          yValueFormatString: "#,##0\"%\"",
           showInLegend: false,    
+          indexLabelPlacement: "inside",  
           dataPoints: [
-            { y: this.normalMachineStatus.normal_percentage, label: "Normal" },
-            { y: this.normalMachineStatus.warning_percentage, label: "Warning" },
-            { y: this.normalMachineStatus.critical_percentage, label: "Critical" } 
+            { y: this.normalMachineStatus.critical_percentage, label: "Critical" ,indexLabel: this.normalMachineStatus.critical_percentage.toString(),},
+            { y: this.normalMachineStatus.warning_percentage, label: "Warning" ,indexLabel: this.normalMachineStatus.warning_percentage.toString(),},
+            { y: this.normalMachineStatus.normal_percentage, label: "Normal" ,indexLabel: this.normalMachineStatus.normal_percentage.toString(),},
             ],
+          
         });  
+
+        axisY2 = {
+          maximum: 100,
+          minimum: 0,
+        };
       }else{
         data.push({
           type: "bar",
           name: "companies",
           axisYType: "secondary",
-          showInLegend: false,    
+          yValueFormatString: "#,##0\"%\"",
+          showInLegend: false,  
+          indexLabelPlacement: "inside",   
           dataPoints: [
-            { y: this.normalMachineStatus.running, label: "Running" },
-            { y: this.normalMachineStatus.idle, label: "Idle" },
-            { y: this.normalMachineStatus.stopped, label: "Stopped" } 
+            { y: this.normalMachineStatus.stopped, label: "Stopped",indexLabel: this.normalMachineStatus.stopped.toString()+"%",},
+            
+            { y: this.normalMachineStatus.idle, label: "Idle" ,indexLabel: this.normalMachineStatus.idle.toString()+"%",},
+            
+            { y: this.normalMachineStatus.running, label: "Running",indexLabel: this.normalMachineStatus.running.toString()+"%",},
             ],
+          
         });
+
+        axisY2 = {
+          maximum: 100,
+          minimum: 0,
+          suffix: "%",
+        };
+        
       } 
       var chart = new CanvasJS.Chart("diagnosechart", {
         colorSet: "mintoShades",
         animationEnabled: true, 
         exportEnabled: true,
         title:{
-          text:this.getNormalFreqLabel()
+          text:this.getNormalFreqLabel(),
+          fontSize: 20,
+          fontWeight: "lighter",
         },
         axisX:{
           interval: 1
         },
+        axisY: {
+          suffix: "%",
+        },
+        axisY2,
         data    
 
       });
@@ -107,26 +134,44 @@ export class DiagnoseChartComponent implements OnChanges, OnInit {
           type: "bar",
           name: "companies",
           axisYType: "secondary",
+          yValueFormatString: "#,##0\"%\"",
           showInLegend: false,    
+          indexLabelPlacement: "inside", 
           dataPoints: [
-            { y: this.abnormalMachineStatus.normal_percentage, label: "Normal" },
-            { y: this.abnormalMachineStatus.warning_percentage, label: "Warning" },
-            { y: this.abnormalMachineStatus.critical_percentage, label: "Critical" } 
-            ],
+            { y: this.abnormalMachineStatus.critical_percentage, label: "Critical" ,indexLabel: this.abnormalMachineStatus.critical_percentage.toString(),},
+            
+            { y: this.abnormalMachineStatus.warning_percentage, label: "Warning" ,indexLabel: this.abnormalMachineStatus.warning_percentage.toString(),},
+          
+            { y: this.abnormalMachineStatus.normal_percentage, label: "Normal" ,indexLabel: this.abnormalMachineStatus.normal_percentage.toString(),},  
+          ],
+          
         });  
+        axisY2 = {
+          maximum: 100,
+          minimum: 0,
+        };
 
       }else{
         data.push({
           type: "bar",
           name: "companies",
           axisYType: "secondary",
-          showInLegend: false,    
+          yValueFormatString: "#,##0\"%\"",
+          showInLegend: false,  
+          indexLabelPlacement: "inside",   
           dataPoints: [
-            { y: this.abnormalMachineStatus.running, label: "Running" },
-            { y: this.abnormalMachineStatus.idle, label: "Idle" },
-            { y: this.abnormalMachineStatus.stopped, label: "Stopped" } 
+            { y: this.abnormalMachineStatus.stopped, label: "Stopped" ,indexLabel: this.abnormalMachineStatus.stopped.toString()+"%",},
+            { y: this.abnormalMachineStatus.idle, label: "Idle" ,indexLabel: this.abnormalMachineStatus.idle.toString()+"%",},
+            { y: this.abnormalMachineStatus.running, label: "Running" ,indexLabel: this.abnormalMachineStatus.running.toString()+"%",},
             ],
+          
         });
+
+        axisY2 = {
+          maximum: 100,
+          minimum: 0,
+          suffix: "%",
+        };
       } 
 
       var abnormalChart = new CanvasJS.Chart("abnormalDiagnosechart", {
@@ -134,11 +179,17 @@ export class DiagnoseChartComponent implements OnChanges, OnInit {
         animationEnabled: true, 
         exportEnabled: true,
         title:{
-          text:this.getAbnormalFreqLabel()
+          text:this.getAbnormalFreqLabel(),
+          fontSize: 20,
+          fontWeight: "lighter",
         },
         axisX:{
           interval: 1
         },
+        axisY: {
+          suffix: "%",
+        },
+        axisY2,        
         data
 
       });

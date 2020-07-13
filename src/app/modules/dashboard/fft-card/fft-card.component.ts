@@ -41,6 +41,8 @@ export class FftCardComponent implements OnChanges, OnInit {
     public loadingState = {
         normal: true,
         abNormal: true,
+        normalAggregate:true,
+        abNormalAggregate:true
     };
 
 
@@ -60,6 +62,12 @@ export class FftCardComponent implements OnChanges, OnInit {
         if (this.config && this.config.normal && changes.configEx && changes.configEx.currentValue) {
             this._processMovingParts(this.config);
             this._fetchFrequencies(this.config, this.configEx);
+        }
+        if (this.config && this.config.normal 
+            && changes.configEx && changes.configEx.currentValue 
+            && this.configEx.isAggregateMode) {
+          
+            this._fetchFrequenciesAggregate(this.config, this.configEx);
         }
     }
 
@@ -128,34 +136,34 @@ export class FftCardComponent implements OnChanges, OnInit {
     * @param config
     * @private
     */
-    private _fetchFrequenciesAggregate(config: DataConfig, aggregateTS: number): void {
+   private _fetchFrequenciesAggregate(config: DataConfig,  configEx: DataConfigEx): void {
 
         this.abnormalFreqAggregate = [];
         this.normalFreqAggregate = [];
-        console.log('_fetchFrequenciesAggregate called...');
+        // console.log('_fetchFrequenciesAggregate called...');
         /* Fetch frequencies for normal machine. */
         if (config.normal) {
-            this.loadingState.normal = true;
-            this.dataService.fetchFrequenciesFftAggregate(config.normal, aggregateTS).pipe(
+            this.loadingState.normalAggregate = true;
+            this.dataService.fetchFrequenciesFftAggregate(config.normal, configEx.normalAggregateTS).pipe(
                 tap((freq: Frequency[]) => {
-                    this.loadingState.normal = false;
+                    this.loadingState.normalAggregate = false;
                     // console.log('normalFreq', freq);
                     this.normalFreqAggregate = freq
-                    console.log('normal Aggregate data fetched,', this.normalFreqAggregate);
+                    // console.log('normal Aggregate data fetched,', this.normalFreqAggregate);
                 }),
                 take(1)
             ).subscribe();
         }
 
         if (config.abnormal) {
-            this.loadingState.abNormal = true;
+            this.loadingState.abNormalAggregate = true;
             /* Fetch frequencies for abnormal machine. */
-            this.dataService.fetchFrequenciesFftAggregate(config.abnormal, aggregateTS).pipe(
+            this.dataService.fetchFrequenciesFftAggregate(config.abnormal, configEx.abnormalAggregateTS).pipe(
                 tap((freq: Frequency[]) => {
-                    this.loadingState.abNormal = false;
+                    this.loadingState.abNormalAggregate = false;
                     // console.log('abnormalFreq', freq);
                     this.abnormalFreqAggregate = freq
-                    console.log('Abnormal Aggregate data fetched,', this.abnormalFreqAggregate);
+                    // console.log('Abnormal Aggregate data fetched,', this.abnormalFreqAggregate);
                 }),
                 take(1)
             ).subscribe();

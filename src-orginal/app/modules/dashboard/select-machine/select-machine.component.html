@@ -1,0 +1,145 @@
+<div class="w-100">
+	<mat-card>
+		<mat-card-header>
+		
+		</mat-card-header>
+
+		<ng-container *ngIf="machines; else spinner">
+			<mat-card-content>
+				<form [formGroup]="formGroup">
+
+					<div class="row">
+						<div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+							<mat-card-title>Select Normal  Machine</mat-card-title>
+							<div class="row">
+								<!-- Normal -->
+								<div class="col-12 col-sm-12 col-md-6">
+									<mat-form-field>
+										<mat-select formControlName="normalMachine" placeholder="Normal Machine" #selectNormalMachine [compareWith]="compareWith">
+											<mat-option>
+												<ngx-mat-select-search [formControl]="searchNormalMachine"
+													placeholderLabel="Find Normal Machine..."
+													noEntriesFoundLabel="No matching Normal Machine found">
+												</ngx-mat-select-search>
+											</mat-option>
+											<mat-option *ngFor="let machine of filteredNormalMachines" [value]="machine">{{machine.name}}
+											</mat-option>
+										</mat-select>
+									</mat-form-field>
+								</div>
+								<div class="col-12 col-sm-8 col-md-4">
+									<mat-form-field>
+										<input (dateTimeInput)="syncTimestamp($event, 'normal')" [max]="maxDateTime"
+											[owlDateTime]="normalTS" formControlName="normalTS" placeholder="Select From Date"
+											matInput>
+										<mat-icon class="cur-p" [owlDateTimeTrigger]="normalTS" matSuffix inline>calendar_today
+										</mat-icon>
+										<owl-date-time #normalTS></owl-date-time>
+									</mat-form-field>
+								</div>	
+							</div>
+							<div class="row">
+								<!-- Normal-TO Timestamp -->
+								<div class="col-12 col-sm-12 col-md-6">
+								
+								</div>
+								<div class="col-12 col-sm-8 col-md-4">
+		
+									<mat-form-field>
+										<input (dateTimeInput)="syncTimestamp($event, 'normal_To')" [max]="maxDateTime"
+											[owlDateTime]="normalTS_To" formControlName="normalTS_To" placeholder="Select To Data"
+											matInput>
+										<mat-icon class="cur-p" [owlDateTimeTrigger]="normalTS_To" matSuffix inline>calendar_today
+										</mat-icon>
+										<owl-date-time #normalTS_To></owl-date-time>
+									</mat-form-field>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12 col-lg-12 col-sm-24 col-xs-24" *ngIf="f.normalMachine.value">
+									<h3>Selected Normal Machine</h3>
+									<h5>Name:</h5> {{f.normalMachine.value.name}}
+									<h5>Description:</h5> {{f.normalMachine.value.description}}
+								</div>
+							</div>
+							
+						</div>
+						<div class="col-md-6 col-lg-6 col-sm-12 col-xs-12 abnormal-wrap">
+							<mat-card-title>Select Abnormal  Machine</mat-card-title>
+							<div class="row">	
+								<!-- Abnormal -->
+								<div class="col-12 col-sm-12 col-md-6">
+									<mat-form-field>
+										<mat-select 
+										formControlName="abnormalMachine" 
+										placeholder="Abnormal Machine" 
+										#selectAbNormalMachine
+										[compareWith]="compareWith"
+										>
+											<mat-option>
+												<ngx-mat-select-search [formControl]="searchAbNormalMachine"
+													placeholderLabel="Find AbNormal Machine..."
+													noEntriesFoundLabel="No matching AbNormal Machine found">
+												</ngx-mat-select-search>
+											</mat-option>
+											<mat-option *ngFor="let machine of filteredAbnormalMachines" [value]="machine">{{machine.name}}
+											</mat-option>
+										</mat-select>
+									</mat-form-field>
+								</div>
+								<div class="col-12 col-sm-8 col-md-4">
+									<mat-form-field>
+										<input (dateTimeInput)="syncTimestamp($event, 'abnormal')" [max]="maxDateTime"
+											[owlDateTime]="abnormalTS" formControlName="abnormalTS" placeholder="Select From Date"
+											matInput>
+										<mat-icon class="cur-p" [owlDateTimeTrigger]="abnormalTS" matSuffix inline>
+											calendar_today
+										</mat-icon>
+										<owl-date-time #abnormalTS></owl-date-time>
+									</mat-form-field>
+								</div>
+							</div>
+							<div class="row">
+											<!-- Abnormal-TO Timestamp -->
+								<div class="col-12 col-sm-12 col-md-6">
+							
+								</div>
+								<div class="col-12 col-sm-8 col-md-4">
+									<mat-form-field>
+										<input (dateTimeInput)="syncTimestamp($event, 'abnormal_To')" [max]="maxDateTime"
+											[owlDateTime]="abnormalTS_To" formControlName="abnormalTS_To" placeholder="Select To Date"
+											matInput>
+										<mat-icon class="cur-p" [owlDateTimeTrigger]="abnormalTS_To" matSuffix inline>
+											calendar_today
+										</mat-icon>
+										<owl-date-time #abnormalTS_To></owl-date-time>
+									</mat-form-field>
+								</div>
+							</div>
+							<div class="row">
+						  		<div class="col-md-12 col-lg-12 col-sm-24 col-xs-24" *ngIf="f.abnormalMachine.value">
+								<h3>Selected Abnormal Machine</h3>
+								<h5>Name:</h5> {{f.abnormalMachine.value.name}}
+								<h5>Description:</h5> {{f.abnormalMachine.value.description}}
+							</div>
+						</div>
+
+						</div>
+					</div>
+				</form>
+			</mat-card-content>
+
+			<mat-card-actions align="end">
+				<button mat-button (click)="resetForm()">Reset</button>
+				<button (click)="loadData()" [disabled]="formGroup.invalid" cdkTrapFocus color="primary" mat-button>Load
+					Data
+				</button>
+			</mat-card-actions>
+		</ng-container>
+		<ng-template #spinner>
+			<mat-card-content fxLayoutAlign="center center">
+				<mat-spinner diameter="50" strokeWidth="5"></mat-spinner>
+			</mat-card-content>
+		</ng-template>
+	</mat-card>
+</div>
