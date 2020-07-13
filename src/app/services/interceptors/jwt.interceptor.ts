@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
-import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {StorageService} from '../storage.service';
-import {StorageConstant} from '../../constants';
+import { Injectable } from '@angular/core';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { StorageService } from '../storage.service';
+import { StorageConstant } from '../../constants';
 
 
 const TENANT_ID = 'tenant_id';

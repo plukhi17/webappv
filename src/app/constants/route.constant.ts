@@ -22,4 +22,7 @@ export abstract class RouteConstant {
     /* Monitor Module */
     static readonly MONITOR = '/console/monitor-real';
 
+    /* Analytics Module */
+    static readonly ANALYTICS_MODULE = '/console/analytics';
+
 }

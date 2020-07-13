@@ -7,9 +7,20 @@ import * as CanvasJS from "../../canvasjs.min.js";
   styleUrls: ['./pie-chart.component.scss']
 })
 export class PieChartComponent implements AfterViewInit {
-  @Input() title: String="Pie Chart";
+  @Input() title: String;
   @Input() height: number;
   @Input() width: number;
+  @Input() semi: boolean = false;
+  @Input() animationEnabled: boolean = true;
+  private _data: { y: number; label: string; }[] = [];
+  @Input()
+  public get data(): { y: number; label: string; }[] {
+    return this._data;
+  }
+  public set data(value: { y: number; label: string; }[]) {
+    this._data = value;
+    this._renderChart();
+  }
   constructor() { }
 
   ngAfterViewInit() {
@@ -17,28 +28,39 @@ export class PieChartComponent implements AfterViewInit {
   }
   _renderChart() {
     var chart = new CanvasJS.Chart("pieChart", {
-      animationEnabled: true,
+      animationEnabled: this.animationEnabled,
       height: this.height,
-      width:this.width,
+      width: this.width,
       title: {
         text: this.title
       },
       data: [{
         type: "pie",
-        startAngle: 240,
+        // startAngle: 240,
         //yValueFormatString: "##0.00\"%\"",
         indexLabel: "{label} {y}",
         dataPoints: [
-          {y: 79.45, label: "Google"},
-          {y: 7.31, label: "Bing"},
-          {y: 7.06, label: "Baidu"},
-          {y: 1.26, label: "Others"}
+          ...this.data
         ]
       }]
     });
-    chart.render();
-    
+    if (this.semi) {
+      this.convertToHalfPie(chart);
     }
+    chart.render();
+
   }
+
+  convertToHalfPie(chart: CanvasJS.Chart): void {
+    var sum = 0;
+    var dataPoints = chart.options.data[0].dataPoints;
+
+    for (var i = 0; i < dataPoints.length; i++) {
+      sum += dataPoints[i].y;
+    }
+
+    dataPoints.splice(0, 0, { y: sum, color: "transparent", toolTipContent: null });
+  }
+}
 
 

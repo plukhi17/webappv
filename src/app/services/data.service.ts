@@ -66,7 +66,7 @@ export class DataService {
                 } else {
                     console.log('error for fetchFreq', rawData);
                 }
-                
+
                 return freqs;
             }),
         );
@@ -93,7 +93,7 @@ export class DataService {
             }),
         );
     }
-    
+
     fetchFrequenciesFft(machine: Machine, timestamp: number): Observable<Frequency[]> {
         const timeString: string = DatetimeUtil.convertTimestampToDateString(timestamp);
         const url = `${this.baseUri}/${EndpointConstant.GET_TRANSFORMED_DATA_FFT}?equipment_id=${machine.id}&time_stamp=${timeString}`;
@@ -116,16 +116,16 @@ export class DataService {
             }),
         );
     }
-    fetchMachineStatusAndAvailability(machine: Machine, timestamp: number,timestamp_To: number): Observable<MachineStatusAvailabilityData> {
-     
+    fetchMachineStatusAndAvailability(machine: Machine, timestamp: number, timestamp_To: number): Observable<MachineStatusAvailabilityData> {
+
         const timeStringBeginning: string = DatetimeUtil.convertTimestampToDateString(timestamp);
         const timeStringEnd: string = DatetimeUtil.convertTimestampToDateString(timestamp_To);
-       
+
         const url = `${this.baseUri}/${EndpointConstant.GET_MACHINE_AVAILABILITY_STATUS}?equipment_id=${machine.id}&from_date=${timeStringBeginning}&to_date=${timeStringEnd}`;
-       
+
         return this.http.get<MachineStatusAvailabilityData>(url).pipe(
             map((machineStatus: any) => {
-                    return machineStatus;
+                return machineStatus;
             }),
         );
     }
@@ -210,7 +210,7 @@ export class DataService {
         return this.http.post<string>(`${this.baseUri}/${EndpointConstant.POST_EQUIPMENT_FAULT_INSTANCES}`, payload);
     }
 
-    customMultiplesFrequency(customMultiFreq: number, ) {
+    customMultiplesFrequency(customMultiFreq: number,) {
         const selectedFaultMultiples = [];
         if (customMultiFreq < 1) {
             this.openSnackBar('Please enter frequency more than 1.', 'Close');
@@ -230,6 +230,70 @@ export class DataService {
     private openSnackBar(message: string, action: string) {
         this.snackBar.open(message, action, {
             duration: 3000,
+        });
+    }
+
+    // Monitor Realtime apis
+    getRealtimeMetrics(): Observable<any> {
+        // return this.http.get(`${this.baseUri}/${EndpointConstant.GET_REALTIME_METRICS}`);
+        return this.http.get(`assets/data/realtime_data.json`).pipe(map((data: any) => data ? data.list : data));
+    }
+
+    getDaywiseAggregatedData(from?: string, to?: string): Observable<any> {
+        // return this.http.get(`${this.baseUri}/${EndpointConstant.GET_REALTIME_METRICS}`);
+        return this.http.get(`assets/data/daily_aggregated_data_for_heatmap.json`).pipe(map((data: any) => {
+            if (data && data.list) {
+                return this.filterDataByDate(data.list, from, to);
+            } else {
+                data;
+            }
+        }));
+    }
+
+    getHourlyAggregatedData(from?: string, to?: string): Observable<any> {
+        // return this.http.get(`${this.baseUri}/${EndpointConstant.GET_REALTIME_METRICS}`);
+        return this.http.get(`assets/data/hourly_aggregated_data_for_heatmap.json`).pipe(map((data: any) => {
+            if (data && data.list) {
+                return this.filterDataByDate(data.list, from, to);
+            } else {
+                data;
+            }
+        }));
+    }
+
+    getHourlyAggregatedDataForAnalytics(machine: Machine, fromDate: string, toDate: string): Observable<any> {
+        const params = new HttpParams()
+            .append('equipment_id', machine.id)
+            .append('from_date', fromDate)
+            .append('to_date', toDate);
+        return this.http.get(`${this.baseUri}/${EndpointConstant.GET_HOURLY_AGGREGATED_dATA}`, { params }).pipe(map((data: any) => data ? data.list : null));
+    }
+
+    getDailyComboChartDataForAnalytics(): Observable<any> {
+        return this.http.get(`assets/data/daily_aggregated_data_for_combochart.json`).pipe(map((data: any) => {
+            if (data && data.list) {
+                return data.list;
+                // return this.filterDataByDate(data.list, from, to);
+            } else {
+                data;
+            }
+        }));
+    }
+
+    filterDataByDate(data: any[], from?: string, to?: string): any[] {
+        const fromTimeStamp = from ? new Date(from).getTime() : null;
+        const toTimeStamp = to ? new Date(to).getTime() : null;
+        return data.filter((entry) => {
+            const entryTimeStamp = new Date(entry.telemetry_time_ist_day).getTime();
+            if (fromTimeStamp && toTimeStamp) {
+                return entryTimeStamp >= fromTimeStamp && entryTimeStamp <= toTimeStamp;
+            } else if (fromTimeStamp) {
+                return entryTimeStamp >= fromTimeStamp;
+            } else if (toTimeStamp) {
+                return entryTimeStamp <= toTimeStamp;
+            } else {
+                return false;
+            }
         });
     }
 }

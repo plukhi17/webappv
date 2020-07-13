@@ -16,7 +16,8 @@ html {
 	font-size: 16px;
 }
 
-html, body {
+html,
+body {
 	height: 100%;
 }
 
@@ -33,11 +34,15 @@ body {
 	font-family: 'Proxima Nova', Fallback, sans-serif;
 }
 
-button, a {
+button,
+a {
 	outline: unset !important;
 }
 
-a, a:hover, a:focus, a:visited {
+a,
+a:hover,
+a:focus,
+a:visited {
 	color: unset;
 	text-decoration: none;
 }
@@ -168,7 +173,10 @@ a, a:hover, a:focus, a:visited {
 }
 
 /* Material patches */
-.mat-h1, .mat-h2, .mat-h3, .mat-h4 {
+.mat-h1,
+.mat-h2,
+.mat-h3,
+.mat-h4 {
 	margin-bottom: 0;
 }
 
@@ -178,4 +186,17 @@ mat-form-field {
 
 .mat-card-header-text {
 	margin: 0 !important;
+}
+
+.canvasjs-chart-canvas {
+	position: inherit;
+}
+
+.overflow-auto {
+	overflow: auto;
+}
+
+.mat-header-cell,
+.mat-cell {
+	padding-right: 8px !important;
 }

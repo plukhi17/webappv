@@ -1,0 +1,15 @@
+.chart {
+    // height: 2000px;
+    // width: 2000px;
+    overflow: auto;
+
+    highcharts-chart {
+        overflow: auto !important;
+        height: 100%;
+    }
+}
+
+.card-title {
+    font-size: 20px;
+    font-weight: 500;
+}

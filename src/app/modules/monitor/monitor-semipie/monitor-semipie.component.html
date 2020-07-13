@@ -1,11 +1,11 @@
 <div class="monitor-pie">
 	<mat-card>
 		<mat-card-header>
-			<mat-card-title>Monitor</mat-card-title>
-	
+			<mat-card-title>Machine Counts by Availability Status</mat-card-title>
+
 		</mat-card-header>
 		<mat-card-content>
-		
+
 			<ng-template #spinner>
 				<div class="h-100 w-100" fxLayoutAlign="center center">
 					<mat-spinner diameter="50" strokeWidth="5"></mat-spinner>
@@ -18,6 +18,26 @@
 						different machine and starting time.</span>
 				</div>
 			</ng-template>
+			<div class="chart" fxLayout="row" fxLayoutAlign="start stretch" fxLayoutGap="16px" fxFlex='100'>
+				<div fxFlex='0 0 33%'>
+					<app-doughnut-chart #doughnutChart chartId='runningMachines' [semi]='true'
+						[data]='runningCountChart.data' [title]='"No. of Running Machines"'
+						[subtitles]='runningCountChart.subtitles' [animationEnabled]='false' height="160" width="230">
+					</app-doughnut-chart>
+				</div>
+				<div fxFlex='0 0 33%'>
+					<app-doughnut-chart #doughnutChart chartId='idleMachines' [semi]='true' [data]='idleCountChart.data'
+						[title]='"No. of Idle Machines"' [subtitles]='idleCountChart.subtitles'
+						[animationEnabled]='false' height="160" width="230">
+					</app-doughnut-chart>
+				</div>
+				<div fxFlex='0 0 33%'>
+					<app-doughnut-chart #doughnutChart chartId='stoppedMachines' [semi]='true'
+						[data]='stoppedCountChart.data' [title]='"No. of Stopped Machines"'
+						[subtitles]='stoppedCountChart.subtitles' [animationEnabled]='false' height="160" width="230">
+					</app-doughnut-chart>
+				</div>
+			</div>
 
 		</mat-card-content>
 	</mat-card>

@@ -1,3 +1,154 @@
-<p>
-  monitor-table works!
-</p>
+<div class="monitor-pie">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Monitor</mat-card-title>
+
+    </mat-card-header>
+    <mat-card-content>
+
+      <div class='overflow-auto w-100'>
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z0 w-100">
+
+          <!--- Note that these columns can be defined in any order.
+              The actual rendered columns are set as a property on the row definition" -->
+
+          <!-- Position Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef> Description </th>
+            <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="lastUpdatedTime">
+            <th mat-header-cell *matHeaderCellDef> Last Update Time </th>
+            <td mat-cell *matCellDef="let element"> {{element.lastUpdatedTime | date}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="ratedCurrent">
+            <th mat-header-cell *matHeaderCellDef> Rated Current </th>
+            <td mat-cell *matCellDef="let element"> {{element.ratedCurrent}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="avgCurrent">
+            <th mat-header-cell *matHeaderCellDef> Avg. Current </th>
+            <td mat-cell *matCellDef="let element"> {{element.avgCurrent}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="avgRiskScore">
+            <th mat-header-cell *matHeaderCellDef> Avg. Risk Score </th>
+            <td mat-cell *matCellDef="let element"> {{element.avgRiskScore}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef> Status </th>
+            <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+          </ng-container>
+
+          <!-- Weight Column -->
+          <ng-container matColumnDef="starts">
+            <th mat-header-cell *matHeaderCellDef> Starts </th>
+            <td mat-cell *matCellDef="let element"> {{element.starts}} </td>
+          </ng-container>
+
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="runningPercent">
+            <th mat-header-cell *matHeaderCellDef> Running Percent </th>
+            <td mat-cell *matCellDef="let element"> {{element.runningPercent}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="idlePercent">
+            <th mat-header-cell *matHeaderCellDef> Idle Percent </th>
+            <td mat-cell *matCellDef="let element"> {{element.idlePercent}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="stoppedPercent">
+            <th mat-header-cell *matHeaderCellDef> Stopped Percent </th>
+            <td mat-cell *matCellDef="let element"> {{element.stoppedPercent}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="fault">
+            <th mat-header-cell *matHeaderCellDef> Fault </th>
+            <td mat-cell *matCellDef="let element"> {{element.fault}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="overloads">
+            <th mat-header-cell *matHeaderCellDef> Overloads </th>
+            <td mat-cell *matCellDef="let element"> {{element.overloads}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="availabilityStatus">
+            <th mat-header-cell *matHeaderCellDef> Availability Status </th>
+            <td mat-cell *matCellDef="let element"> {{element.availabilityStatus}} </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+      <!-- <table id="customers">
+        <tr>
+          <th>Company</th>
+          <th>Contact</th>
+          <th>Country</th>
+        </tr>
+        <tr>
+          <td>Alfreds Futterkiste</td>
+          <td>Maria Anders</td>
+          <td>Germany</td>
+        </tr>
+        <tr>
+          <td>Berglunds snabbköp</td>
+          <td>Christina Berglund</td>
+          <td>Sweden</td>
+        </tr>
+        <tr>
+          <td>Centro comercial Moctezuma</td>
+          <td>Francisco Chang</td>
+          <td>Mexico</td>
+        </tr>
+        <tr>
+          <td>Ernst Handel</td>
+          <td>Roland Mendel</td>
+          <td>Austria</td>
+        </tr>
+        <tr>
+          <td>Island Trading</td>
+          <td>Helen Bennett</td>
+          <td>UK</td>
+        </tr>
+        <tr>
+          <td>Königlich Essen</td>
+          <td>Philip Cramer</td>
+          <td>Germany</td>
+        </tr>
+        <tr>
+          <td>Laughing Bacchus Winecellars</td>
+          <td>Yoshi Tannamuri</td>
+          <td>Canada</td>
+        </tr>
+        <tr>
+          <td>Magazzini Alimentari Riuniti</td>
+          <td>Giovanni Rovelli</td>
+          <td>Italy</td>
+        </tr>
+        <tr>
+          <td>North/South</td>
+          <td>Simon Crowther</td>
+          <td>UK</td>
+        </tr>
+        <tr>
+          <td>Paris spécialités</td>
+          <td>Marie Bertrand</td>
+          <td>France</td>
+        </tr>
+      </table> -->
+
+    </mat-card-content>
+  </mat-card>
+</div>
