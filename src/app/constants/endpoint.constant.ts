@@ -19,6 +19,7 @@ export abstract class EndpointConstant {
     static readonly GET_ALL_MACHINES_DAYWISE_AGGREGATED_DATA = 'get-all-machines-daywise-aggregated-data';
     static readonly GET_ALL_MACHINES_HOURLY_AGGREGATED_DATA = 'get-all-machines-hourly-aggregated-data';
 
+    static readonly GET_REALTIME_METRICS = 'get-realtime-metrics';
     static readonly GET_DAYWISE_AGGREGATED_dATA = 'get-daywise-aggregated-data';
     static readonly GET_HOURLY_AGGREGATED_dATA = 'get-hourly-aggregated-data';
 
