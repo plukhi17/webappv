@@ -36,11 +36,11 @@ export class MonitorPieComponent implements OnInit, AfterViewInit {
 
   updateChartData(): void {
     if (this.realTimeData) {
-      const faults = Array.from(new Set(this.realTimeData.map((data) => data.status)));
+      const faults = Array.from(new Set(this.realTimeData.map((data) => data.health_status)));
       faults.sort();
       this.data = [];
       faults.forEach((status, index) => {
-        this.data.push({ label: status, y: this.realTimeData.filter((data) => data.status === status).length, color: this.colors[index] })
+        this.data.push({ label: status, y: this.realTimeData.filter((data) => data.health_status === status).length, color: this.colors[index] })
       });
     }
     this.refreshChart();

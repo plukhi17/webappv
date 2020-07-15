@@ -235,33 +235,36 @@ export class DataService {
 
     // Monitor Realtime apis
     getRealtimeMetrics(): Observable<any> {
-        // return this.http.get(`${this.baseUri}/${EndpointConstant.GET_REALTIME_METRICS}`);
-        return this.http.get(`assets/data/realtime_data.json`).pipe(map((data: any) => data ? data.list : data));
+        return this.http.get(`${this.baseUri}/${EndpointConstant.GET_MACHINES_REALTIME_METRICS}`).pipe(map((data: any) => data ? data.list : data));
+        // return this.http.get(`assets/data/realtime_data.json`).pipe(map((data: any) => data ? data.list : data));
     }
 
     getDaywiseAggregatedData(from?: string, to?: string): Observable<any> {
-        // return this.http.get(`${this.baseUri}/${EndpointConstant.GET_REALTIME_METRICS}`);
-        return this.http.get(`assets/data/daily_aggregated_data_for_heatmap.json`).pipe(map((data: any) => {
-            if (data && data.list) {
-                return this.filterDataByDate(data.list, from, to);
-            } else {
-                data;
-            }
-        }));
+        const params = new HttpParams()
+            .append('from_date', from)
+            .append('to_date', to);
+        return this.http.get(`${this.baseUri}/${EndpointConstant.GET_DAYWISE_AGGREGATED_dATA}`, { params });
+        // return this.http.get(`assets/data/daily_aggregated_data_for_heatmap.json`).pipe(map((data: any) => {
+        //     if (data && data.list) {
+        //         return this.filterDataByDate(data.list, 'telemetry_time_ist_day', from, to);
+        //     } else {
+        //         data;
+        //     }
+        // }));
     }
 
-    getHourlyAggregatedData(from?: string, to?: string): Observable<any> {
+    getHourlyAggregatedDataForHeatMap(from?: string, to?: string): Observable<any> {
         // return this.http.get(`${this.baseUri}/${EndpointConstant.GET_REALTIME_METRICS}`);
         return this.http.get(`assets/data/hourly_aggregated_data_for_heatmap.json`).pipe(map((data: any) => {
             if (data && data.list) {
-                return this.filterDataByDate(data.list, from, to);
+                return this.filterDataByDate(data.list, 'telemetry_time_ist_day', from, to);
             } else {
                 data;
             }
         }));
     }
 
-    getHourlyAggregatedDataForAnalytics(machine: Machine, fromDate: string, toDate: string): Observable<any> {
+    getHourlyAggregatedData(machine: Machine, fromDate: string, toDate: string): Observable<any> {
         const params = new HttpParams()
             .append('equipment_id', machine.id)
             .append('from_date', fromDate)
@@ -269,22 +272,41 @@ export class DataService {
         return this.http.get(`${this.baseUri}/${EndpointConstant.GET_HOURLY_AGGREGATED_dATA}`, { params }).pipe(map((data: any) => data ? data.list : null));
     }
 
-    getDailyComboChartDataForAnalytics(): Observable<any> {
+    getDailyComboChartDataForAnalytics(from?: string, to?: string): Observable<any> {
         return this.http.get(`assets/data/daily_aggregated_data_for_combochart.json`).pipe(map((data: any) => {
             if (data && data.list) {
-                return data.list;
-                // return this.filterDataByDate(data.list, from, to);
+                // return data.list;
+                return this.filterDataByDate(data.list, 'telemetry_day', from, to);
             } else {
                 data;
             }
         }));
     }
 
-    filterDataByDate(data: any[], from?: string, to?: string): any[] {
+    getHourlyComboChartDataForAnalytics(from?: string, to?: string): Observable<any> {
+        return this.http.get(`assets/data/hourly_aggregated_data_from_combochart.json`).pipe(map((data: any) => {
+            if (data && data.list) {
+                // return data.list;
+                return this.filterDataByDate(data.list, 'telemetry_hour', from, to);
+            } else {
+                data;
+            }
+        }));
+    }
+
+    getHourlyAggregatedMetrics(machine: Machine, fromDate: string, toDate: string): Observable<any> {
+        const params = new HttpParams()
+            .append('equipment_id', machine.id)
+            .append('from_date', fromDate)
+            .append('to_date', toDate);
+        return this.http.get(`${this.baseUri}/${EndpointConstant.GET_HOURLY_AGGREGATED_METRICS}`, { params }).pipe(map((data: any) => data ? data.list : null));
+    }
+
+    filterDataByDate(data: any[], field?: string, from?: string, to?: string): any[] {
         const fromTimeStamp = from ? new Date(from).getTime() : null;
         const toTimeStamp = to ? new Date(to).getTime() : null;
         return data.filter((entry) => {
-            const entryTimeStamp = new Date(entry.telemetry_time_ist_day).getTime();
+            const entryTimeStamp = new Date(entry[field]).getTime();
             if (fromTimeStamp && toTimeStamp) {
                 return entryTimeStamp >= fromTimeStamp && entryTimeStamp <= toTimeStamp;
             } else if (fromTimeStamp) {

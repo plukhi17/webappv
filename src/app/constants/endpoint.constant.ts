@@ -15,7 +15,9 @@ export abstract class EndpointConstant {
     static readonly POST_EQUIPMENT_FAULT_INSTANCES = 'post-equipmentfaultinstances';
 
     // monitor-realtime apis
-    static readonly GET_REALTIME_METRICS = 'get-realtime-metrics';
+    static readonly GET_MACHINES_REALTIME_METRICS = 'get-machines-realtime-metrics';
     static readonly GET_DAYWISE_AGGREGATED_dATA = 'get-daywise-aggregated-data';
     static readonly GET_HOURLY_AGGREGATED_dATA = 'get-hourly-aggregated-data';
+
+    static readonly GET_HOURLY_AGGREGATED_METRICS = 'get-hourly-aggregated-metrics';
 }

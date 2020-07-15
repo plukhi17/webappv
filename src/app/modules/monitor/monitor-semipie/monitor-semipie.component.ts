@@ -56,13 +56,13 @@ export class MonitorSemipieComponent implements OnInit {
       this.idleMachines = 0;
       this.stoppedMachines = 0;
       this.realTimeData.forEach((data) => {
-        if (data.availabiltystatus === 'Running') {
+        if (data.availabilty_status === 'Running') {
           this.runningMachines++;
         }
-        if (data.availabiltystatus === 'Idle') {
+        if (data.availabilty_status === 'Idle') {
           this.idleMachines++;
         }
-        if (data.availabiltystatus === 'Stopped') {
+        if (data.availabilty_status === 'Stopped') {
           this.stoppedMachines++;
         }
       })

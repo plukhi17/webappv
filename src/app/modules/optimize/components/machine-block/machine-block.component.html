@@ -1,0 +1,125 @@
+<mat-card>
+    <mat-card-title>{{title}}</mat-card-title>
+    <ng-container *ngIf="machines; else spinner">
+        <mat-card-content>
+            <form [formGroup]="formGroup">
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-6">
+                                <mat-form-field>
+                                    <mat-select formControlName="machine" placeholder="Select Machine" #selectMachine
+                                        [compareWith]="compareWith">
+                                        <mat-option>
+                                            <ngx-mat-select-search [formControl]="searchMachine"
+                                                placeholderLabel="Find Machine..."
+                                                noEntriesFoundLabel="No matching Machine found">
+                                            </ngx-mat-select-search>
+                                        </mat-option>
+                                        <mat-option *ngFor="let machine of filteredMachines" [value]="machine">
+                                            {{machine.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-6">
+                                <mat-form-field>
+                                    <input (dateTimeInput)="syncTimestamp($event)" [max]="maxDateTime"
+                                        [selectMode]="'range'" [owlDateTime]="fromToDate" formControlName="fromToDate"
+                                        placeholder="Select From Date" matInput>
+                                    <mat-icon class="cur-p" [owlDateTimeTrigger]="fromToDate" matSuffix inline>
+                                        calendar_today
+                                    </mat-icon>
+                                    <owl-date-time #fromToDate></owl-date-time>
+                                </mat-form-field>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12 col-sm-24 col-xs-24" *ngIf="f?.machine?.value">
+                                <h3>Selected Machine</h3>
+                                <h5>Name:</h5> {{f?.machine?.value?.name}}
+                                <h5>Description:</h5> {{f?.machine?.value?.description}}
+                            </div>
+                        </div>
+                        <!-- {{formGroup?.value | json}} -->
+
+                    </div>
+                </div>
+            </form>
+        </mat-card-content>
+
+        <mat-card-actions align="end">
+            <button mat-button (click)="resetForm()">Reset</button>
+            <button (click)="loadData()"
+                [disabled]="!(formGroup?.value?.machine && formGroup?.value?.fromToDate?.length > 1)" cdkTrapFocus
+                color="primary" mat-button>Load
+                Data
+            </button>
+        </mat-card-actions>
+    </ng-container>
+    <ng-template #spinner>
+        <mat-card-content fxLayoutAlign="center center">
+            <mat-spinner diameter="50" strokeWidth="5"></mat-spinner>
+        </mat-card-content>
+    </ng-template>
+
+    <div class='row' *ngIf='this.aggregatedData'>
+        <div class='col-lg-6 col-md-6 col-sm-6 col-xs-12 mb-24'>
+            <mat-card class='card'>
+                <mat-card-header>
+                    <mat-card-title>Riskscore</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class='data-value'>{{aggregatedData?.avg_riskscore | number: '.0-4'}}</div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div class='col-lg-6 col-md-6 col-sm-6 col-xs-12 mb-24'>
+            <mat-card class='card'>
+                <mat-card-header>
+                    <mat-card-title>Availability</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class='data-value'>{{aggregatedData?.running | number: '.0-4'}}</div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+
+    <div class='row' *ngIf='aggregatedMetrics?.length'>
+        <mat-card-header class='col-12'>
+            <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px" fxFlexFill>
+                <h3>Scatter Chart</h3>
+                <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px">
+                    <mat-form-field>
+                        <mat-label>X-Axis</mat-label>
+                        <mat-select matInput name='bar' [(ngModel)]="xAxisFilter" (ngModelChange)='updateChartData()'>
+                            <mat-option *ngFor='let option of scatterChartOptions' [value]='option.value'>
+                                {{option.viewValue}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Y-Axis</mat-label>
+                        <mat-select matInput name='bar' [(ngModel)]="yAxisFilter" (ngModelChange)='updateChartData()'>
+                            <mat-option *ngFor='let option of scatterChartOptions' [value]='option.value'>
+                                {{option.viewValue}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </mat-card-header>
+        <div class='col-12 mb-24'>
+            <div class="chart">
+                <highcharts-chart #chart *ngIf='showChart' [Highcharts]="highcharts" [options]="chartOptions"
+                    style="width: 100%; height: 100%; display: block;">
+                </highcharts-chart>
+                <!-- <div id="chartContainer" style="height: 370px; width: 100%;"></div> -->
+            </div>
+        </div>
+    </div>
+</mat-card>

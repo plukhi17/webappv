@@ -1,9 +1,9 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {NavNode} from '../../../interfaces';
-import {RouteConstant} from '../../../constants';
-import {Subject} from 'rxjs';
-import {NavigationEnd, Router} from '@angular/router';
-import {filter, takeUntil, tap} from 'rxjs/operators';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NavNode } from '../../../interfaces';
+import { RouteConstant } from '../../../constants';
+import { Subject } from 'rxjs';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter, takeUntil, tap } from 'rxjs/operators';
 
 
 const NAV_TREE: NavNode[] = [
@@ -21,6 +21,16 @@ const NAV_TREE: NavNode[] = [
         icon: 'monitor',
         name: 'Monitor-Realtime',
         path: RouteConstant.MONITOR,
+    },
+    {
+        icon: 'analytics',
+        name: 'Analytics',
+        path: RouteConstant.ANALYTICS_MODULE,
+    },
+    {
+        icon: 'tune',
+        name: 'Optimize',
+        path: RouteConstant.OPTIMIZE,
     }
 ];
 

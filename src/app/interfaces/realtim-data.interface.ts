@@ -1,17 +1,16 @@
 export interface RealTimeData {
-    id: string;
-    name: string;
+    availabilty_status: string;
     description: string;
-    ratedcurrent: string;
-    lastupdatedtime: string;
-    starts: number;
-    avgcurrent: number;
-    avgriskscore: number;
-    status: string;
-    runningpercent: number;
-    idlepercent: number;
-    stoppedpercent: number;
+    device_status: string;
+    equipment_status: string;
+    equipment_type: string;
     fault: string;
-    overloads: number;
-    availabiltystatus: string;
+    health_status: string;
+    i_rms: number;
+    id: number;
+    instant_power: number;
+    name: string;
+    rated_current: number;
+    riskscore: number;
+    telemetry_time: string;
 }

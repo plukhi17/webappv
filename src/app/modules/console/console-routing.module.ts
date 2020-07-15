@@ -1,7 +1,7 @@
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
-import {ConsoleComponent} from './console.component';
-import {RouteConstant} from '../../constants';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { ConsoleComponent } from './console.component';
+import { RouteConstant } from '../../constants';
 
 
 const routes: Routes = [
@@ -9,13 +9,15 @@ const routes: Routes = [
         path: '',
         component: ConsoleComponent,
         children: [
-            {path: 'overview', loadChildren: '../analytics/analytics.module#AnalyticsModule'},
-            {path: 'machine-insights', loadChildren: '../dashboard/dashboard.module#DashboardModule'},
-             {path: 'monitor-real', loadChildren: '../monitor/monitor.module#MonitorModule'},
+            { path: 'overview', loadChildren: '../analytics/analytics.module#AnalyticsModule' },
+            { path: 'machine-insights', loadChildren: '../dashboard/dashboard.module#DashboardModule' },
+            { path: 'monitor-real', loadChildren: '../monitor/monitor.module#MonitorModule' },
+            { path: 'analytics', loadChildren: '../analytics-module/analytics-module.module#AnalyticsModuleModule' },
+            { path: 'optimize', loadChildren: '../optimize/optimize.module#OptimizeModule' },
             // {path: '**', redirectTo: RouteConstant.ANALYTICS, pathMatch: 'full'},
         ]
     },
-       
+
     // {path: 'monitor-real', loadChildren: '../monitor/monitor.module#MonitorModule'},
 ];
 

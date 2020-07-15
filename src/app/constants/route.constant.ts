@@ -25,4 +25,7 @@ export abstract class RouteConstant {
     /* Analytics Module */
     static readonly ANALYTICS_MODULE = '/console/analytics';
 
+    /* Optimize Module */
+    static readonly OPTIMIZE = '/console/optimize';
+
 }

@@ -2,6 +2,7 @@ import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
 import { HeatMapChartComponent } from 'src/app/widgets/shared/heat-map-chart/heat-map-chart.component';
 import { DataService } from 'src/app/services/data.service';
 import { take } from 'rxjs/operators';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-montior-heat',
@@ -49,7 +50,7 @@ export class MontiorHeatComponent implements OnInit {
   }
 
   getDaywiseAggregatedData(): void {
-    this.dataService.getDaywiseAggregatedData(this.filters.from.toUTCString(), this.filters.to.toUTCString()).pipe(take(1)).subscribe((data) => {
+    this.dataService.getDaywiseAggregatedData(moment(this.filters.from).format('YYYY-MM-DD HH:mm:ss'), moment(this.filters.to).format('YYYY-MM-DD HH:mm:ss')).pipe(take(1)).subscribe((data) => {
       console.log('getDaywiseAggregatedData', data);
       this.data = [];
       if (data && data.length) {

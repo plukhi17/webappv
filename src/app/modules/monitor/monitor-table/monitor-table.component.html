@@ -9,81 +9,69 @@
       <div class='overflow-auto w-100'>
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z0 w-100">
 
-          <!--- Note that these columns can be defined in any order.
-              The actual rendered columns are set as a property on the row definition" -->
-
-          <!-- Position Column -->
           <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef> Name </th>
             <td mat-cell *matCellDef="let element"> {{element.name}} </td>
           </ng-container>
 
-          <!-- Name Column -->
           <ng-container matColumnDef="description">
             <th mat-header-cell *matHeaderCellDef> Description </th>
             <td mat-cell *matCellDef="let element"> {{element.description}} </td>
           </ng-container>
 
-          <ng-container matColumnDef="lastUpdatedTime">
-            <th mat-header-cell *matHeaderCellDef> Last Update Time </th>
-            <td mat-cell *matCellDef="let element"> {{element.lastUpdatedTime | date}} </td>
+          <ng-container matColumnDef="equipment_type">
+            <th mat-header-cell *matHeaderCellDef> Equipment Type </th>
+            <td mat-cell *matCellDef="let element"> {{element.equipment_type}} </td>
           </ng-container>
 
-          <ng-container matColumnDef="ratedCurrent">
+          <ng-container matColumnDef="telemetry_time">
+            <th mat-header-cell *matHeaderCellDef> Last Updated </th>
+            <td mat-cell *matCellDef="let element"> {{element.telemetry_time | date}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="rated_current">
             <th mat-header-cell *matHeaderCellDef> Rated Current </th>
-            <td mat-cell *matCellDef="let element"> {{element.ratedCurrent}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.rated_current}} </td>
           </ng-container>
 
-          <ng-container matColumnDef="avgCurrent">
-            <th mat-header-cell *matHeaderCellDef> Avg. Current </th>
-            <td mat-cell *matCellDef="let element"> {{element.avgCurrent}} </td>
+          <ng-container matColumnDef="i_rms">
+            <th mat-header-cell *matHeaderCellDef> Current </th>
+            <td mat-cell *matCellDef="let element"> {{element.i_rms}} </td>
           </ng-container>
 
-          <ng-container matColumnDef="avgRiskScore">
-            <th mat-header-cell *matHeaderCellDef> Avg. Risk Score </th>
-            <td mat-cell *matCellDef="let element"> {{element.avgRiskScore}} </td>
+          <ng-container matColumnDef="riskscore">
+            <th mat-header-cell *matHeaderCellDef> Riskscore </th>
+            <td mat-cell *matCellDef="let element"> {{element.riskscore}} </td>
           </ng-container>
 
-          <ng-container matColumnDef="status">
-            <th mat-header-cell *matHeaderCellDef> Status </th>
-            <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+          <ng-container matColumnDef="instant_power">
+            <th mat-header-cell *matHeaderCellDef> Instant Power </th>
+            <td mat-cell *matCellDef="let element"> {{element.instant_power}} </td>
           </ng-container>
 
-          <!-- Weight Column -->
-          <ng-container matColumnDef="starts">
-            <th mat-header-cell *matHeaderCellDef> Starts </th>
-            <td mat-cell *matCellDef="let element"> {{element.starts}} </td>
+          <ng-container matColumnDef="equipment_status">
+            <th mat-header-cell *matHeaderCellDef> Equipment Status </th>
+            <td mat-cell *matCellDef="let element"> {{element.equipment_status}} </td>
           </ng-container>
 
-          <!-- Symbol Column -->
-          <ng-container matColumnDef="runningPercent">
-            <th mat-header-cell *matHeaderCellDef> Running Percent </th>
-            <td mat-cell *matCellDef="let element"> {{element.runningPercent}} </td>
+          <ng-container matColumnDef="device_status">
+            <th mat-header-cell *matHeaderCellDef> Device Status </th>
+            <td mat-cell *matCellDef="let element"> {{element.device_status}} </td>
           </ng-container>
 
-          <ng-container matColumnDef="idlePercent">
-            <th mat-header-cell *matHeaderCellDef> Idle Percent </th>
-            <td mat-cell *matCellDef="let element"> {{element.idlePercent}} </td>
+          <ng-container matColumnDef="health_status">
+            <th mat-header-cell *matHeaderCellDef> Health Status </th>
+            <td mat-cell *matCellDef="let element"> {{element.health_status}} </td>
           </ng-container>
 
-          <ng-container matColumnDef="stoppedPercent">
-            <th mat-header-cell *matHeaderCellDef> Stopped Percent </th>
-            <td mat-cell *matCellDef="let element"> {{element.stoppedPercent}} </td>
+          <ng-container matColumnDef="availabilty_status">
+            <th mat-header-cell *matHeaderCellDef> Availability </th>
+            <td mat-cell *matCellDef="let element"> {{element.availabilty_status}} </td>
           </ng-container>
 
           <ng-container matColumnDef="fault">
             <th mat-header-cell *matHeaderCellDef> Fault </th>
             <td mat-cell *matCellDef="let element"> {{element.fault}} </td>
-          </ng-container>
-
-          <ng-container matColumnDef="overloads">
-            <th mat-header-cell *matHeaderCellDef> Overloads </th>
-            <td mat-cell *matCellDef="let element"> {{element.overloads}} </td>
-          </ng-container>
-
-          <ng-container matColumnDef="availabilityStatus">
-            <th mat-header-cell *matHeaderCellDef> Availability Status </th>
-            <td mat-cell *matCellDef="let element"> {{element.availabilityStatus}} </td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
