@@ -83,6 +83,7 @@ export class MachineBlockComponent implements OnInit {
     }]
   };
   showChart: boolean = false;
+  loading: boolean = false;
 
   constructor(
     private dataService: DataService
@@ -146,15 +147,22 @@ export class MachineBlockComponent implements OnInit {
 
   loadData(): void {
     const data: any = this.formGroup.value;
+    this.loading = true;
     this.dataService.getHourlyAggregatedData(data.machine, moment(data.fromToDate[0]).format('YYYY-MM-DD HH:mm:ss'), moment(data.fromToDate[1]).format('YYYY-MM-DD HH:mm:ss'))
       .pipe(take(1)).subscribe((data) => {
         console.log('load data response', data);
-        this.aggregatedData = data;
+        this.loading = false;
+        if (data) {
+          this.aggregatedData = data;
+        } else {
+          this.aggregatedData = {};
+        }
       });
     this.dataService.getHourlyAggregatedMetrics(data.machine, moment(data.fromToDate[0]).format('YYYY-MM-DD HH:mm:ss'), moment(data.fromToDate[1]).format('YYYY-MM-DD HH:mm:ss'))
       .pipe(take(1)).subscribe((data) => {
         console.log('load data getHourlyAggregatedMetrics response', data);
         this.aggregatedMetrics = data;
+        this.loading = false;
         this.updateChartData();
       });
   }
@@ -169,6 +177,8 @@ export class MachineBlockComponent implements OnInit {
 
   resetForm() {
     this.formGroup.reset();
+    this.aggregatedData = null;
+    this.aggregatedMetrics = [];
   }
 
   ngOnDestroy(): void {

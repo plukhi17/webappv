@@ -12,7 +12,7 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class SelectMachineBlockComponent implements OnInit {
   @Input() machines: Machine[];
-  @Output() config: EventEmitter<DataConfig> = new EventEmitter();
+  @Output() config: EventEmitter<DataConfig | any> = new EventEmitter();
   public maxDateTime = new Date();
 
   public formGroup: FormGroup;
@@ -68,71 +68,9 @@ export class SelectMachineBlockComponent implements OnInit {
    * Converts form values into data-config object and emit back to parent component.
    */
   loadData(): void {
-    // if (this.formGroup.invalid) {
-    //     return;
-    // }
-
-    const normalMachineSelected = this.f.normalMachine.value;
-    const normalTSSelected = this.f.normalTS.value;
-    const abNormalMachineSelected = this.f.abnormalMachine.value;
-    const abNormalTSSelected = this.f.abnormalTS.value;
-
-    // Check pair of normal machine and time or abnormal machine and time are selected or not
-    if ((!abNormalMachineSelected && !abNormalTSSelected) && (!normalMachineSelected && !normalTSSelected)) {
-      this.openSnackBar('Please select atleast one pair of machine and time.', 'Close');
-      return;
-    } else {
-      // Check abNormal machine and abNormal time is selected or not
-      if (abNormalMachineSelected && !abNormalTSSelected) {
-        this.openSnackBar('AbNormal time is required.', 'Close');
-        return;
-      } else if (!abNormalMachineSelected && abNormalTSSelected) {
-        this.openSnackBar('AbNormal machine is required.', 'Close');
-        return;
-      }
-
-      // Check normal machine and normal time is selected or not
-      if (normalMachineSelected && !normalTSSelected) {
-        this.openSnackBar('Normal time is required.', 'Close');
-        return;
-      } else if (!normalMachineSelected && normalTSSelected) {
-        this.openSnackBar('Normal machine is required.', 'Close');
-        return;
-      }
-
-      if (normalMachineSelected && normalTSSelected && (abNormalMachineSelected || abNormalTSSelected)) {
-        if (!abNormalTSSelected) {
-          this.openSnackBar('AbNormal time is required.', 'Close');
-          return;
-        } else if (!abNormalMachineSelected) {
-          this.openSnackBar('AbNormal machine is required.', 'Close');
-          return;
-        }
-      } else if (abNormalMachineSelected && abNormalTSSelected && (normalMachineSelected || normalTSSelected)) {
-        if (!normalTSSelected) {
-          this.openSnackBar('Normal time is required.', 'Close');
-          return;
-        } else if (!normalMachineSelected) {
-          this.openSnackBar('Normal machine is required.', 'Close');
-          return;
-        }
-      }
-    }
-
     this.config.emit({
       normal: this.f.normalMachine.value && this.f.normalMachine.value,
-      normalTS: this.f.normalTS.value && this.f.normalTS.value._d.getTime(),
-      normalDate: this.f.normalTS.value && this.f.normalTS.value._d,
-      // Noraml To Data
-      normalTS_To: this.f.normalTS_To.value && this.f.normalTS_To.value._d.getTime(),
-      normalDate_To: this.f.normalTS_To.value && this.f.normalTS_To.value._d,
-
-      abnormal: this.f.abnormalMachine.value && this.f.abnormalMachine.value,
-      abnormalTS: this.f.abnormalTS.value && this.f.abnormalTS.value._d.getTime(),
-      abnormalDate: this.f.abnormalTS.value && this.f.abnormalTS.value._d,
-
-      abnormalTS_To: this.f.abnormalTS_To.value && this.f.abnormalTS_To.value._d.getTime(),
-      abnormalDate_To: this.f.abnormalTS_To.value && this.f.abnormalTS_To.value._d
+      fromToDate: this.f.fromToDate.value
     });
   }
 
@@ -218,7 +156,8 @@ export class SelectMachineBlockComponent implements OnInit {
       normalTS_To: new FormControl(null),
       abnormalMachine: new FormControl(null),
       abnormalTS: new FormControl(null),
-      abnormalTS_To: new FormControl(null)
+      abnormalTS_To: new FormControl(null),
+      fromToDate: new FormControl(null)
     });
   }
 
@@ -232,55 +171,6 @@ export class SelectMachineBlockComponent implements OnInit {
     // Add 'implements OnDestroy' to the class.
     this.destoryed$.next(true);
     this.destoryed$.complete();
-  }
-
-  static alteastOneMachine(AC: AbstractControl) {
-    const get = (key: string) => {
-      return AC.get(key).value;
-    };
-
-    const normalMachineSelected = get('normalMachine');
-    const normalTSSelected = get('normalTS');
-    const abNormalMachineSelected = get('abnormalMachine');
-    const abNormalTSSelected = get('abnormalTS');
-
-    // Check that both normal machine and abNormal machine are not selected
-    if (!normalMachineSelected && !abNormalMachineSelected) {
-      AC.get('normalMachine').setErrors({ required: true });
-    }
-    // Check normal machine and normal time is selected or not
-    if (normalMachineSelected && normalTSSelected) {
-      AC.get('normalMachine').setErrors(null);
-      AC.get('normalTS').setErrors(null);
-    } else {
-      if (normalMachineSelected) {
-        AC.get('normalTS').setErrors({ required: true });
-      } else {
-        AC.get('normalMachine').setErrors({ required: true });
-      }
-    }
-
-    // Check abNormal machine and abNormal time is selected or not
-    if (abNormalMachineSelected && abNormalTSSelected) {
-      AC.get('abnormalMachine').setErrors(null);
-      AC.get('abnormalTS').setErrors(null);
-    } else {
-      if (abNormalMachineSelected) {
-        AC.get('abnormalTS').setErrors({ required: true });
-      } else {
-        AC.get('abnormalMachine').setErrors({ required: true });
-      }
-    }
-    // if ((get('normalMachine') && get('normalTS')) ||
-    //     (get('abnormalMachine') && get('abnormalTS'))) {
-    //     AC.get('abnormalMachine').setErrors(null);
-    //     AC.get('normalMachine').setErrors(null);
-    // } else if (get('normalMachine') && get('normalTS')) {
-    //     AC.get('abnormalMachine').setErrors({ required: true });
-    // } else {
-    //     AC.get('normalMachine').setErrors({ required: true });
-    // }
-    return null;
   }
 
 }

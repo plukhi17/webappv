@@ -49,7 +49,7 @@ export class MontiorHeatComponent implements OnInit {
   }
 
   getDaywiseAggregatedData(): void {
-    this.dataService.getDaywiseAggregatedData(this.filters.from.toUTCString(), this.filters.to.toUTCString()).pipe(take(1)).subscribe((data) => {
+    this.dataService.getAllMachinesDaywiseAggregatedData(this.filters.from.toUTCString(), this.filters.to.toUTCString()).pipe(take(1)).subscribe((data) => {
       console.log('getDaywiseAggregatedData', data);
       this.data = [];
       if (data && data.length) {
@@ -69,7 +69,7 @@ export class MontiorHeatComponent implements OnInit {
   }
 
   getHourlyAggregatedData(): void {
-    this.dataService.getHourlyAggregatedData(this.filters.from.toUTCString(), this.filters.to.toUTCString()).pipe(take(1)).subscribe((data) => {
+    this.dataService.getAllMachinesHourlyAggregatedData(this.filters.from.toUTCString(), this.filters.to.toUTCString()).pipe(take(1)).subscribe((data) => {
       console.log('getDaywiseAggregatedData', data);
       this.data = [];
       if (data && data.length) {

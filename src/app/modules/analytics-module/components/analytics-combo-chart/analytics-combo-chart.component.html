@@ -30,12 +30,17 @@
     </mat-card-header>
 
     <mat-card-content>
-      <ng-template [ngIf]='true'>
+      <ng-template [ngIf]='data?.length' [ngIfElse]='naRef'>
         <div class="chart">
           <highcharts-chart #chart *ngIf='showChart' [Highcharts]="highcharts" [options]="chartOptions"
             style="width: 100%; height: 100%; display: block;">
           </highcharts-chart>
           <!-- <div id="chartContainer" style="height: 370px; width: 100%;"></div> -->
+        </div>
+      </ng-template>
+      <ng-template #naRef>
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px">
+          <span>No data available for applied filter.</span>
         </div>
       </ng-template>
 

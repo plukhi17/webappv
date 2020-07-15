@@ -1,8 +1,18 @@
-<div class='row'>
-  <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12 col-xl-6 mb-24'>
-    <app-machine-block title='Machine 1' [machines]='machines'></app-machine-block>
-  </div>
-  <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12 col-xl-6 mb-24'>
+<div class='row' #printDataRef id='printData'>
+  <ng-template ngFor let-title [ngForOf]='machineBlocks'>
+    <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12 col-xl-6 mb-24'>
+      <app-machine-block [title]='title' [machines]='machines'></app-machine-block>
+    </div>
+  </ng-template>
+  <!-- <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12 col-xl-6 mb-24'>
     <app-machine-block title='Machine 2' [machines]='machines'></app-machine-block>
-  </div>
+  </div> -->
+</div>
+<div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="16px">
+  <button mat-raised-button color='primary' printSectionId='printData' (click)="printData()">Download</button>
+</div>
+
+<div id="download">
+  <img #canvas>
+  <a #downloadLink></a>
 </div>

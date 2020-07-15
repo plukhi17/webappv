@@ -239,29 +239,31 @@ export class DataService {
         // return this.http.get(`assets/data/realtime_data.json`).pipe(map((data: any) => data ? data.list : data));
     }
 
-    getDaywiseAggregatedData(from?: string, to?: string): Observable<any> {
+    getAllMachinesDaywiseAggregatedData(fromDate?: string, toDate?: string): Observable<any> {
         const params = new HttpParams()
-            .append('from_date', from)
-            .append('to_date', to);
-        return this.http.get(`${this.baseUri}/${EndpointConstant.GET_DAYWISE_AGGREGATED_dATA}`, { params });
-        // return this.http.get(`assets/data/daily_aggregated_data_for_heatmap.json`).pipe(map((data: any) => {
-        //     if (data && data.list) {
-        //         return this.filterDataByDate(data.list, 'telemetry_time_ist_day', from, to);
-        //     } else {
-        //         data;
-        //     }
-        // }));
+            .append('from_date', fromDate)
+            .append('to_date', toDate);
+        return this.http.get(`${this.baseUri}/${EndpointConstant.GET_ALL_MACHINES_DAYWISE_AGGREGATED_DATA}`, { params })
+            .pipe(
+                map((data: any) => data ? data.list : data),
+                map((data: any[]) => {
+                    if (data.length) {
+                        data.forEach((entry) => {
+                            if (!entry.telemetry_time) {
+                                entry.telemetry_time = entry.telemetry_;
+                            }
+                        });
+                    }
+                    return data;
+                })
+            );
     }
 
-    getHourlyAggregatedDataForHeatMap(from?: string, to?: string): Observable<any> {
-        // return this.http.get(`${this.baseUri}/${EndpointConstant.GET_REALTIME_METRICS}`);
-        return this.http.get(`assets/data/hourly_aggregated_data_for_heatmap.json`).pipe(map((data: any) => {
-            if (data && data.list) {
-                return this.filterDataByDate(data.list, 'telemetry_time_ist_day', from, to);
-            } else {
-                data;
-            }
-        }));
+    getAllMachinesHourlyAggregatedData(fromDate?: string, toDate?: string): Observable<any> {
+        const params = new HttpParams()
+            .append('from_date', fromDate)
+            .append('to_date', toDate);
+        return this.http.get(`${this.baseUri}/${EndpointConstant.GET_ALL_MACHINES_HOURLY_AGGREGATED_DATA}`, { params }).pipe(map((data: any) => data ? data.list : data));
     }
 
     getHourlyAggregatedData(machine: Machine, fromDate: string, toDate: string): Observable<any> {
@@ -272,26 +274,12 @@ export class DataService {
         return this.http.get(`${this.baseUri}/${EndpointConstant.GET_HOURLY_AGGREGATED_dATA}`, { params }).pipe(map((data: any) => data ? data.list : null));
     }
 
-    getDailyComboChartDataForAnalytics(from?: string, to?: string): Observable<any> {
-        return this.http.get(`assets/data/daily_aggregated_data_for_combochart.json`).pipe(map((data: any) => {
-            if (data && data.list) {
-                // return data.list;
-                return this.filterDataByDate(data.list, 'telemetry_day', from, to);
-            } else {
-                data;
-            }
-        }));
-    }
-
-    getHourlyComboChartDataForAnalytics(from?: string, to?: string): Observable<any> {
-        return this.http.get(`assets/data/hourly_aggregated_data_from_combochart.json`).pipe(map((data: any) => {
-            if (data && data.list) {
-                // return data.list;
-                return this.filterDataByDate(data.list, 'telemetry_hour', from, to);
-            } else {
-                data;
-            }
-        }));
+    getDaywiseAggregatedMetrics(machine: Machine, fromDate: string, toDate: string): Observable<any> {
+        const params = new HttpParams()
+            .append('equipment_id', machine.id)
+            .append('from_date', fromDate)
+            .append('to_date', toDate);
+        return this.http.get(`${this.baseUri}/${EndpointConstant.GET_DAYWISE_AGGREGATED_METRICS}`, { params }).pipe(map((data: any) => data ? data.list : null));
     }
 
     getHourlyAggregatedMetrics(machine: Machine, fromDate: string, toDate: string): Observable<any> {

@@ -7,7 +7,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="row">
-                            <div class="col-12 col-sm-12 col-md-6">
+                            <div class="col-12 col-sm-12 col-md-5">
                                 <mat-form-field>
                                     <mat-select formControlName="machine" placeholder="Select Machine" #selectMachine
                                         [compareWith]="compareWith">
@@ -23,11 +23,11 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 col-sm-12 col-md-6">
-                                <mat-form-field>
+                            <div class="col-12 col-sm-12 col-md-7">
+                                <mat-form-field class='from-to-date-selection'>
                                     <input (dateTimeInput)="syncTimestamp($event)" [max]="maxDateTime"
                                         [selectMode]="'range'" [owlDateTime]="fromToDate" formControlName="fromToDate"
-                                        placeholder="Select From Date" matInput>
+                                        placeholder="Select Date Range" matInput>
                                     <mat-icon class="cur-p" [owlDateTimeTrigger]="fromToDate" matSuffix inline>
                                         calendar_today
                                     </mat-icon>
@@ -66,60 +66,73 @@
         </mat-card-content>
     </ng-template>
 
-    <div class='row' *ngIf='this.aggregatedData'>
-        <div class='col-lg-6 col-md-6 col-sm-6 col-xs-12 mb-24'>
-            <mat-card class='card'>
-                <mat-card-header>
-                    <mat-card-title>Riskscore</mat-card-title>
-                </mat-card-header>
-                <mat-card-content>
-                    <div class='data-value'>{{aggregatedData?.avg_riskscore | number: '.0-4'}}</div>
-                </mat-card-content>
-            </mat-card>
+    <ng-template [ngIf]='!loading' [ngIfElse]='spinner'>
+        <div class='row' *ngIf='this.aggregatedData'>
+            <div class='col-lg-6 col-md-6 col-sm-6 col-xs-12 mb-24'>
+                <mat-card class='card'>
+                    <mat-card-header>
+                        <mat-card-title>Riskscore</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div class='data-value'
+                            *ngIf='(aggregatedData?.avg_riskscore !== null && aggregatedData?.avg_riskscore !== undefined); else naRef'>
+                            {{aggregatedData?.avg_riskscore | number: '.0-4'}}</div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+            <div class='col-lg-6 col-md-6 col-sm-6 col-xs-12 mb-24'>
+                <mat-card class='card'>
+                    <mat-card-header>
+                        <mat-card-title>Availability</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div class='data-value'
+                            *ngIf='(aggregatedData?.running !== null && aggregatedData?.running !== undefined); else naRef'>
+                            {{aggregatedData?.running | number: '.0-4'}}</div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+            <ng-template #naRef>
+                <div class='data-value na'>NA</div>
+            </ng-template>
         </div>
-        <div class='col-lg-6 col-md-6 col-sm-6 col-xs-12 mb-24'>
-            <mat-card class='card'>
-                <mat-card-header>
-                    <mat-card-title>Availability</mat-card-title>
-                </mat-card-header>
-                <mat-card-content>
-                    <div class='data-value'>{{aggregatedData?.running | number: '.0-4'}}</div>
-                </mat-card-content>
-            </mat-card>
-        </div>
-    </div>
 
-    <div class='row' *ngIf='aggregatedMetrics?.length'>
-        <mat-card-header class='col-12'>
-            <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px" fxFlexFill>
-                <h3>Scatter Chart</h3>
-                <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px">
-                    <mat-form-field>
-                        <mat-label>X-Axis</mat-label>
-                        <mat-select matInput name='bar' [(ngModel)]="xAxisFilter" (ngModelChange)='updateChartData()'>
-                            <mat-option *ngFor='let option of scatterChartOptions' [value]='option.value'>
-                                {{option.viewValue}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Y-Axis</mat-label>
-                        <mat-select matInput name='bar' [(ngModel)]="yAxisFilter" (ngModelChange)='updateChartData()'>
-                            <mat-option *ngFor='let option of scatterChartOptions' [value]='option.value'>
-                                {{option.viewValue}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
+        <div class='row' *ngIf='aggregatedMetrics?.length'>
+            <mat-card-header class='col-12'>
+                <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px" fxFlexFill>
+                    <h3>Scatter Chart</h3>
+                    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px">
+                        <mat-form-field>
+                            <mat-label>X-Axis</mat-label>
+                            <mat-select matInput name='bar' [(ngModel)]="xAxisFilter"
+                                (ngModelChange)='updateChartData()'>
+                                <mat-option *ngFor='let option of scatterChartOptions' [value]='option.value'
+                                    [disabled]='option?.value === yAxisFilter'>
+                                    {{option.viewValue}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Y-Axis</mat-label>
+                            <mat-select matInput name='bar' [(ngModel)]="yAxisFilter"
+                                (ngModelChange)='updateChartData()'>
+                                <mat-option *ngFor='let option of scatterChartOptions' [value]='option.value'
+                                    [disabled]='option?.value === xAxisFilter'>
+                                    {{option.viewValue}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </mat-card-header>
+            <div class='col-12 mb-24'>
+                <div class="chart">
+                    <highcharts-chart #chart *ngIf='showChart' [Highcharts]="highcharts" [options]="chartOptions"
+                        style="width: 100%; height: 100%; display: block;">
+                    </highcharts-chart>
+                    <!-- <div id="chartContainer" style="height: 370px; width: 100%;"></div> -->
                 </div>
             </div>
-        </mat-card-header>
-        <div class='col-12 mb-24'>
-            <div class="chart">
-                <highcharts-chart #chart *ngIf='showChart' [Highcharts]="highcharts" [options]="chartOptions"
-                    style="width: 100%; height: 100%; display: block;">
-                </highcharts-chart>
-                <!-- <div id="chartContainer" style="height: 370px; width: 100%;"></div> -->
-            </div>
         </div>
-    </div>
+    </ng-template>
 </mat-card>

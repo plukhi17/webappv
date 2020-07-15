@@ -15,12 +15,11 @@
                 <!-- Normal -->
                 <div class="col-lg-3 col-sm-12 col-md-6">
                   <mat-form-field>
-                    <mat-select formControlName="normalMachine" placeholder="Normal Machine" #selectNormalMachine
+                    <mat-select formControlName="normalMachine" placeholder="Select Machine" #selectNormalMachine
                       [compareWith]="compareWith">
                       <mat-option>
-                        <ngx-mat-select-search [formControl]="searchNormalMachine"
-                          placeholderLabel="Find Normal Machine..."
-                          noEntriesFoundLabel="No matching Normal Machine found">
+                        <ngx-mat-select-search [formControl]="searchNormalMachine" placeholderLabel="Find Machine..."
+                          noEntriesFoundLabel="No matching Machine found">
                         </ngx-mat-select-search>
                       </mat-option>
                       <mat-option *ngFor="let machine of filteredNormalMachines" [value]="machine">{{machine.name}}
@@ -29,38 +28,14 @@
                   </mat-form-field>
                 </div>
                 <div class="col-lg-3 col-sm-8 col-md-6">
-                  <mat-form-field>
-                    <input (dateTimeInput)="syncTimestamp($event, 'normal')" [max]="maxDateTime"
-                      [owlDateTime]="normalTS" formControlName="normalTS" placeholder="Select From Date" matInput>
-                    <mat-icon class="cur-p" [owlDateTimeTrigger]="normalTS" matSuffix inline>calendar_today
+                  <mat-form-field class='from-to-date-selection'>
+                    <input (dateTimeInput)="syncTimestamp($event)" [max]="maxDateTime" [selectMode]="'range'"
+                      [owlDateTime]="fromToDate" formControlName="fromToDate" placeholder="Select Date Range" matInput>
+                    <mat-icon class="cur-p" [owlDateTimeTrigger]="fromToDate" matSuffix inline>
+                      calendar_today
                     </mat-icon>
-                    <owl-date-time #normalTS></owl-date-time>
+                    <owl-date-time #fromToDate></owl-date-time>
                   </mat-form-field>
-                </div>
-                <div class="col-lg-3 col-sm-8 col-md-6">
-                  <mat-form-field>
-                    <input (dateTimeInput)="syncTimestamp($event, 'normal_To')" [max]="maxDateTime"
-                      [owlDateTime]="normalTS_To" formControlName="normalTS_To" placeholder="Select To Data" matInput>
-                    <mat-icon class="cur-p" [owlDateTimeTrigger]="normalTS_To" matSuffix inline>calendar_today
-                    </mat-icon>
-                    <owl-date-time #normalTS_To></owl-date-time>
-                  </mat-form-field>
-                </div>
-              </div>
-              <div class="row">
-                <!-- Normal-TO Timestamp -->
-                <div class="col-12 col-sm-12 col-md-4">
-
-                </div>
-                <div class="col-12 col-sm-8 col-md-4">
-
-                  <!-- <mat-form-field>
-                    <input (dateTimeInput)="syncTimestamp($event, 'normal_To')" [max]="maxDateTime"
-                      [owlDateTime]="normalTS_To" formControlName="normalTS_To" placeholder="Select To Data" matInput>
-                    <mat-icon class="cur-p" [owlDateTimeTrigger]="normalTS_To" matSuffix inline>calendar_today
-                    </mat-icon>
-                    <owl-date-time #normalTS_To></owl-date-time>
-                  </mat-form-field> -->
                 </div>
               </div>
               <div class="row">
@@ -78,7 +53,9 @@
 
       <mat-card-actions align="end">
         <button mat-button (click)="resetForm()">Reset</button>
-        <button (click)="loadData()" [disabled]="formGroup.invalid" cdkTrapFocus color="primary" mat-button>Load
+        <button (click)="loadData()"
+          [disabled]="!(formGroup?.value?.normalMachine && formGroup?.value?.fromToDate?.length > 1)" cdkTrapFocus
+          color="primary" mat-button>Load
           Data
         </button>
       </mat-card-actions>
