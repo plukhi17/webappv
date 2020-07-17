@@ -3,12 +3,12 @@
 	<!-- Left Navigation -->
 	<mat-sidenav #appnav [mode]="mobileView ? 'over' : 'side'" [opened]="!mobileView">
 		<app-navigation></app-navigation>
-	</mat-sidenav> 
+	</mat-sidenav>
 
 	<mat-sidenav-content>
 
 		<!-- App Toolbar -->
-		<app-toolbar></app-toolbar>
+		<app-toolbar [mobileView]='mobileView' (toggleNavbar)='appnav?.toggle()'></app-toolbar>
 		<!-- <app-toolbar (toggleNavbar)="appnav.toggle()"></app-toolbar> -->
 
 		<div [ngClass]="{'p-24': applyPadding}">

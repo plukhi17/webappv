@@ -31,7 +31,7 @@ export class MachineBlockComponent implements OnInit {
   protected destoryed$ = new Subject<boolean>();
   public maxDateTime = new Date();
   aggregatedData: any;
-  aggregatedMetrics: any[] = [];
+  aggregatedMetrics: any[];
 
   scatterChartOptions: { value: string, viewValue: string, color: any }[] = [
     {
@@ -65,6 +65,7 @@ export class MachineBlockComponent implements OnInit {
 
   xAxisFilter: string = 'avg_riskscore';
   yAxisFilter: string = 'runningpercent';
+  tooltipFilter: string[] = ['idlepercent', 'avg_i_rms', 'starts'];
 
   highcharts = Highcharts;
   chartOptions: Highcharts.Options | any = {
@@ -161,7 +162,11 @@ export class MachineBlockComponent implements OnInit {
     this.dataService.getHourlyAggregatedMetrics(data.machine, moment(data.fromToDate[0]).format('YYYY-MM-DD HH:mm:ss'), moment(data.fromToDate[1]).format('YYYY-MM-DD HH:mm:ss'))
       .pipe(take(1)).subscribe((data) => {
         console.log('load data getHourlyAggregatedMetrics response', data);
-        this.aggregatedMetrics = data;
+        if (data) {
+          this.aggregatedMetrics = data;
+        } else {
+          this.aggregatedMetrics = undefined;
+        }
         this.loading = false;
         this.updateChartData();
       });
@@ -193,6 +198,7 @@ export class MachineBlockComponent implements OnInit {
       this.chartOptions.series = [];
       const xAxis = this.scatterChartOptions.filter((e) => e.value === this.xAxisFilter)[0];
       const yAxis = this.scatterChartOptions.filter((e) => e.value === this.yAxisFilter)[0];
+
       const series = {
         type: 'scatter',
         zoomType: 'xy',
@@ -201,10 +207,29 @@ export class MachineBlockComponent implements OnInit {
       }
       this.chartOptions.series.push(series);
       this.chartOptions.title.text = `${xAxis.viewValue} x ${yAxis.viewValue}`;
-      this.chartOptions.plotOptions.scatter.tooltip = {
-        headerFormat: '<b>{series.name}</b><br>',
-        pointFormat: `{point.x} ${xAxis.viewValue}, {point.y} ${yAxis.viewValue}`
+      if (this.tooltipFilter && this.tooltipFilter.length) {
+        const component = this;
+        this.chartOptions.tooltip = {
+          formatter: function () {
+            const filteredData = component.aggregatedMetrics.filter((e) => e[component.xAxisFilter] === this.x && e[component.yAxisFilter] === this.y);
+            let tooltip = '';
+            if (filteredData.length) {
+              component.tooltipFilter.forEach((key) => {
+                const chartOption = component.scatterChartOptions.filter((option) => option.value === key);
+                const keyViewValue = chartOption.length ? chartOption[0].viewValue : key;
+                tooltip += `<b>${keyViewValue}: </b>${filteredData[0][key]}<br>`
+              })
+            }
+            return tooltip;
+          }
+        }
+      } else {
+        this.chartOptions.plotOptions.scatter.tooltip = {
+          headerFormat: '<b>{series.name}</b><br>',
+          pointFormat: `{point.x} ${xAxis.viewValue}, {point.y} ${yAxis.viewValue}`
+        }
       }
+
       console.log('chart series', this.chartOptions.series);
     }
     this.updateChart();

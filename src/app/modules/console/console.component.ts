@@ -1,9 +1,10 @@
-import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
+import { Component, HostListener, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router, NavigationEnd, RouterEvent } from '@angular/router';
 import { RouteConstant } from '../../constants';
 import { NavService } from '../../services/nav.service';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { MatSidenav } from '@angular/material';
 
 
 const MOBILE_WIDTH = 992;
@@ -16,6 +17,7 @@ const MOBILE_WIDTH = 992;
 })
 export class ConsoleComponent implements OnInit, OnDestroy {
 
+    @ViewChild('appnav') appnav: MatSidenav;
     public mobileView: boolean = window.innerWidth <= MOBILE_WIDTH;     // Is mobile view active
     public applyPadding = true;
     private destroyed$: Subject<boolean> = new Subject<boolean>();
@@ -25,7 +27,7 @@ export class ConsoleComponent implements OnInit, OnDestroy {
         private navService: NavService
     ) {
         if (router.url === RouteConstant.CONSOLE) {
-            this.navService.navigate(RouteConstant.ANALYTICS);
+            this.navService.navigate(RouteConstant.MONITOR);
         }
         this.setNavigationEvent();
     }
@@ -44,6 +46,9 @@ export class ConsoleComponent implements OnInit, OnDestroy {
             takeUntil(this.destroyed$)
         ).subscribe((route: RouterEvent) => {
             this.applyPadding = route.url !== RouteConstant.ANALYTICS;
+            if (this.mobileView && this.appnav && this.appnav.opened) {
+                this.appnav.close();
+            }
         });
     }
 

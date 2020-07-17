@@ -2,8 +2,8 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Machine } from 'src/app/interfaces';
 import { DataService } from 'src/app/services/data.service';
 import { tap, take } from 'rxjs/operators';
-import * as html2canvas from 'html2canvas';
-
+import * as html2canvasWrong from 'html2canvas';
+var html2canvas = html2canvasWrong as any as (element: HTMLElement, options?: Partial<html2canvasWrong.Options>) => Promise<HTMLCanvasElement>;
 @Component({
   selector: 'app-optimize',
   templateUrl: './optimize.component.html',
@@ -36,7 +36,7 @@ export class OptimizeComponent implements OnInit {
     ).subscribe();
   }
 
-  printData(id: string): void {
+  printData(id?: string): void {
     // var printContents = document.getElementById(id).innerHTML;
     // var originalContents = document.body.innerHTML;
 

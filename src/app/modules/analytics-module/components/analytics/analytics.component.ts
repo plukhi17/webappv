@@ -1,10 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { DataConfig, DataConfigEx, Machine } from 'src/app/interfaces';
-import { DataService } from 'src/app/services/data.service';
-import { tap, take } from 'rxjs/operators';
-import * as moment from 'moment';
-import { CHART } from 'src/app/constants/chart.constant';
-import { PieChartComponent } from 'src/app/widgets/shared/pie-chart/pie-chart.component';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-analytics',

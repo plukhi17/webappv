@@ -7,16 +7,11 @@ import { filter, takeUntil, tap } from 'rxjs/operators';
 
 
 const NAV_TREE: NavNode[] = [
-    {
-        icon: 'bubble_chart',
-        name: 'Overview',
-        path: RouteConstant.OVERVIEW
-    },
-    {
-        icon: 'dashboard',
-        name: 'Machine Insights',
-        path: RouteConstant.DASHBOARD,
-    },
+    // {
+    //     icon: 'bubble_chart',
+    //     name: 'Overview',
+    //     path: RouteConstant.OVERVIEW
+    // },
     {
         icon: 'monitor',
         name: 'Monitor-Realtime',
@@ -31,6 +26,11 @@ const NAV_TREE: NavNode[] = [
         icon: 'tune',
         name: 'Optimize',
         path: RouteConstant.OPTIMIZE,
+    },
+    {
+        icon: 'dashboard',
+        name: 'Machine Insights',
+        path: RouteConstant.DASHBOARD,
     }
 ];
 

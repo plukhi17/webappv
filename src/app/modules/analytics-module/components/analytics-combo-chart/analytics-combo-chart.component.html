@@ -1,24 +1,25 @@
 <div class="analytic-combo h-100">
   <mat-card>
     <mat-card-header>
-      <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px" fxFlexFill>
+      <div fxLayout="row" fxLayout.lt-md='column' fxLayoutAlign="space-between center" fxLayoutGap="16px" fxFlexFill>
         <mat-card-title>Combo Chart</mat-card-title>
-        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
-          <mat-form-field>
+        <div fxLayout="row" fxLayout.lt-sm='column' fxLayoutAlign="start center" fxLayoutGap="16px"
+          [ngClass.lt-sm]='"w-100"'>
+          <mat-form-field [ngClass.lt-sm]='"w-100"'>
             <mat-label>Line</mat-label>
             <mat-select matInput name='line' [(ngModel)]="filters.line" (ngModelChange)='updateChartData()'>
               <mat-option *ngFor='let option of lineChartOptions' [value]='option.value'>{{option.viewValue}}
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-form-field>
+          <mat-form-field [ngClass.lt-sm]='"w-100"'>
             <mat-label>Bar</mat-label>
             <mat-select matInput name='bar' [(ngModel)]="filters.bar" (ngModelChange)='updateChartData()'>
               <mat-option *ngFor='let option of barChartOptions' [value]='option.value'>{{option.viewValue}}
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-form-field>
+          <mat-form-field [ngClass.lt-sm]='"w-100"'>
             <mat-label>Selection Type</mat-label>
             <mat-select matInput name='bar' [(ngModel)]="filters.filterType" (ngModelChange)='onTypeChange()'>
               <mat-option *ngFor='let option of filterTypeOptions' [value]='option.value'>{{option.viewValue}}

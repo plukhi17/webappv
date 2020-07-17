@@ -1,12 +1,12 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AuthService} from '../../../services/auth.service';
-import {catchError, takeUntil, tap} from 'rxjs/operators';
-import {CognitoUserSession} from 'amazon-cognito-identity-js';
-import {StorageService} from '../../../services/storage.service';
-import {RouteConstant, StorageConstant} from '../../../constants';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {NavService} from '../../../services/nav.service';
-import {of, Subject} from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AuthService } from '../../../services/auth.service';
+import { catchError, takeUntil, tap } from 'rxjs/operators';
+import { CognitoUserSession } from 'amazon-cognito-identity-js';
+import { StorageService } from '../../../services/storage.service';
+import { RouteConstant, StorageConstant } from '../../../constants';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NavService } from '../../../services/nav.service';
+import { of, Subject } from 'rxjs';
 
 
 const CUSTOM_TENANT_ID = 'custom:tenantId';
@@ -28,7 +28,7 @@ export class LoginComponent implements OnDestroy, OnInit {
     private unsubscribe: Subject<void> = new Subject();
 
     constructor(private authService: AuthService,
-                private navService: NavService) {
+        private navService: NavService) {
         this.authService.logout();
         this._buildLoginFG();
     }
@@ -55,7 +55,7 @@ export class LoginComponent implements OnDestroy, OnInit {
                 StorageService.setItem(StorageConstant.PLANT_ID, result.getIdToken().payload[CUSTOM_PLANT_ID]);
                 StorageService.setItem(StorageConstant.TENANT_ID, result.getIdToken().payload[CUSTOM_TENANT_ID]);
                 /* Navigate to dashboard. */
-                this.navService.navigate(RouteConstant.ANALYTICS);
+                this.navService.navigate(RouteConstant.MONITOR);
             }),
             catchError((err) => {
                 this.showSpinner = false;

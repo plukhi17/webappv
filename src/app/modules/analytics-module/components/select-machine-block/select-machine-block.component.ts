@@ -1,9 +1,9 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, SimpleChanges } from '@angular/core';
-import { Machine, DataConfig } from 'src/app/interfaces';
-import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatSelect, MatSnackBar } from '@angular/material';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { DataConfig, Machine } from 'src/app/interfaces';
 
 @Component({
   selector: 'app-select-machine-block',

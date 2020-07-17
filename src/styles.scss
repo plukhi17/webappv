@@ -204,3 +204,9 @@ mat-form-field {
 .from-to-date-selection {
 	min-width: 280px;
 }
+
+highcharts-chart {
+	.highcharts-credits {
+		display: none;
+	}
+}

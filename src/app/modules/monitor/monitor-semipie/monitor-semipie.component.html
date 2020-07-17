@@ -18,20 +18,21 @@
 						different machine and starting time.</span>
 				</div>
 			</ng-template>
-			<div class="chart" fxLayout="row" fxLayoutAlign="start stretch" fxLayoutGap="16px" fxFlex='100'>
-				<div fxFlex='0 0 33%'>
+			<div class="chart" [ngClass.lt-sm]="'chart-lg-sm'" fxLayout="row" fxLayout.lt-sm='column'
+				fxLayoutAlign="start stretch" fxLayoutGap="16px" fxFlex='100'>
+				<div fxFlex='0 0 33%' fxFlex.fxLayout.lt-sm='100%'>
 					<app-doughnut-chart #doughnutChart chartId='runningMachines' [semi]='true'
 						[data]='runningCountChart.data' [title]='"No. of Running Machines"'
 						[subtitles]='runningCountChart.subtitles' [animationEnabled]='false' height="160" width="230">
 					</app-doughnut-chart>
 				</div>
-				<div fxFlex='0 0 33%'>
+				<div fxFlex='0 0 33%' fxFlex.fxLayout.lt-sm='100%'>
 					<app-doughnut-chart #doughnutChart chartId='idleMachines' [semi]='true' [data]='idleCountChart.data'
 						[title]='"No. of Idle Machines"' [subtitles]='idleCountChart.subtitles'
 						[animationEnabled]='false' height="160" width="230">
 					</app-doughnut-chart>
 				</div>
-				<div fxFlex='0 0 33%'>
+				<div fxFlex='0 0 33%' fxFlex.fxLayout.lt-sm='100%'>
 					<app-doughnut-chart #doughnutChart chartId='stoppedMachines' [semi]='true'
 						[data]='stoppedCountChart.data' [title]='"No. of Stopped Machines"'
 						[subtitles]='stoppedCountChart.subtitles' [animationEnabled]='false' height="160" width="230">

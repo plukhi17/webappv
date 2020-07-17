@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CHART } from 'src/app/constants/chart.constant';
-import { PieChartComponent } from 'src/app/widgets/shared/pie-chart/pie-chart.component';
-import { DataConfig, DataConfigEx, Machine } from 'src/app/interfaces';
-import { DataService } from 'src/app/services/data.service';
-import { tap, take } from 'rxjs/operators';
 import * as moment from 'moment';
+import { take, tap } from 'rxjs/operators';
+import { CHART } from 'src/app/constants/chart.constant';
+import { Machine } from 'src/app/interfaces';
+import { DataService } from 'src/app/services/data.service';
+import { PieChartComponent } from 'src/app/widgets/shared/pie-chart/pie-chart.component';
 
 @Component({
   selector: 'app-machine-view',

@@ -3,6 +3,9 @@
 		<!-- <div class="md-cntr" fxLayoutAlign="center center">
 			<img alt="minto.ai" class="logo" src="../../../../assets/img/logo.png">
 		</div> -->
+		<button mat-icon-button *ngIf='mobileView' (click)="toggle()">
+			<mat-icon>menu</mat-icon>
+		</button>
 		<div class="spacer"></div>
 		<div *ngIf="userName" class="mr-16 mat-h4 col-pr">
 			<span class="d-none d-sm-inline">Welcome, &nbsp;</span>

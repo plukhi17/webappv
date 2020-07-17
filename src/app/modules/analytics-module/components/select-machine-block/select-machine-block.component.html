@@ -52,12 +52,12 @@
       </mat-card-content>
 
       <mat-card-actions align="end">
-        <button mat-button (click)="resetForm()">Reset</button>
         <button (click)="loadData()"
           [disabled]="!(formGroup?.value?.normalMachine && formGroup?.value?.fromToDate?.length > 1)" cdkTrapFocus
-          color="primary" mat-button>Load
+          color="primary" mat-raised-button>Load
           Data
         </button>
+        <button mat-button (click)="resetForm()">Reset</button>
       </mat-card-actions>
     </ng-container>
     <ng-template #spinner>

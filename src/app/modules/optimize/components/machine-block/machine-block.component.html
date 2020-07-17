@@ -52,12 +52,12 @@
         </mat-card-content>
 
         <mat-card-actions align="end">
-            <button mat-button (click)="resetForm()">Reset</button>
             <button (click)="loadData()"
                 [disabled]="!(formGroup?.value?.machine && formGroup?.value?.fromToDate?.length > 1)" cdkTrapFocus
-                color="primary" mat-button>Load
-                Data
+                color="primary" mat-raised-button>
+                Load Data
             </button>
+            <button mat-button (click)="resetForm()">Reset</button>
         </mat-card-actions>
     </ng-container>
     <ng-template #spinner>
@@ -97,12 +97,13 @@
             </ng-template>
         </div>
 
-        <div class='row' *ngIf='aggregatedMetrics?.length'>
+        <div class='row' *ngIf='aggregatedMetrics'>
             <mat-card-header class='col-12'>
-                <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px" fxFlexFill>
+                <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="16px" fxFlexFill>
                     <h3>Scatter Chart</h3>
-                    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px">
-                        <mat-form-field>
+                    <div class='scatter-chart-filter' fxLayout="row" fxLayout.lt-sm='column'
+                        fxLayoutAlign="center center" fxLayoutGap="16px" [ngClass.lt-sm]="'w-100'">
+                        <mat-form-field [ngClass.gt-sm]="'filter-field'" [ngClass.lt-sm]="'w-100'">
                             <mat-label>X-Axis</mat-label>
                             <mat-select matInput name='bar' [(ngModel)]="xAxisFilter"
                                 (ngModelChange)='updateChartData()'>
@@ -112,7 +113,7 @@
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
-                        <mat-form-field>
+                        <mat-form-field [ngClass.gt-sm]="'filter-field'" [ngClass.lt-sm]="'w-100'">
                             <mat-label>Y-Axis</mat-label>
                             <mat-select matInput name='bar' [(ngModel)]="yAxisFilter"
                                 (ngModelChange)='updateChartData()'>
@@ -122,16 +123,32 @@
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
+                        <mat-form-field [ngClass.gt-sm]="'filter-field'" [ngClass.lt-sm]="'w-100'">
+                            <mat-label>Tooltip</mat-label>
+                            <mat-select matInput name='bar' [(ngModel)]="tooltipFilter"
+                                (ngModelChange)='updateChartData()' multiple>
+                                <mat-option *ngFor='let option of scatterChartOptions' [value]='option.value'>
+                                    {{option.viewValue}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
                 </div>
             </mat-card-header>
             <div class='col-12 mb-24'>
-                <div class="chart">
-                    <highcharts-chart #chart *ngIf='showChart' [Highcharts]="highcharts" [options]="chartOptions"
-                        style="width: 100%; height: 100%; display: block;">
-                    </highcharts-chart>
-                    <!-- <div id="chartContainer" style="height: 370px; width: 100%;"></div> -->
-                </div>
+                <ng-template [ngIf]='aggregatedMetrics?.length' [ngIfElse]='naRef'>
+                    <div class="chart">
+                        <highcharts-chart #chart *ngIf='showChart' [Highcharts]="highcharts" [options]="chartOptions"
+                            style="width: 100%; height: 100%; display: block;">
+                        </highcharts-chart>
+                        <!-- <div id="chartContainer" style="height: 370px; width: 100%;"></div> -->
+                    </div>
+                </ng-template>
+                <ng-template #naRef>
+                    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px">
+                        <span>No data available for applied filter.</span>
+                    </div>
+                </ng-template>
             </div>
         </div>
     </ng-template>
