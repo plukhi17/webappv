@@ -14,6 +14,7 @@ import { MonitorTableComponent } from './monitor-table/monitor-table.component';
 import { MontiorHeatComponent } from './montior-heat/montior-heat.component';
 import { SharedModule } from 'src/app/widgets/shared/shared.module';
 import { FormsModule } from '@angular/forms';
+import { HighchartsChartModule } from 'highcharts-angular';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { FormsModule } from '@angular/forms';
     MonitorRoutingModule,
     SharedModule,
     FormsModule,
+    HighchartsChartModule,
 
 
     /* Material modules */

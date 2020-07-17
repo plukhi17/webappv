@@ -65,9 +65,14 @@
           <mat-card-title>Pie Chart</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <div class="chart" *ngIf='showPieChart; else naRef'>
+          <!-- <div class="chart" *ngIf='showPieChart; else naRef'>
             <app-pie-chart #pieChart [data]='data' [animationEnabled]='false' height="160" width="240">
             </app-pie-chart>
+          </div> -->
+          <div class="chart">
+            <highcharts-chart #chart *ngIf='showChart' [Highcharts]="highcharts" [options]="chartOptions"
+              style="width: 100%; height: 100%; display: block;">
+            </highcharts-chart>
           </div>
         </mat-card-content>
       </mat-card>

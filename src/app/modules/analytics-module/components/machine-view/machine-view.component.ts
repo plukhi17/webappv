@@ -1,17 +1,18 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import * as moment from 'moment';
 import { take, tap } from 'rxjs/operators';
 import { CHART } from 'src/app/constants/chart.constant';
 import { Machine } from 'src/app/interfaces';
 import { DataService } from 'src/app/services/data.service';
 import { PieChartComponent } from 'src/app/widgets/shared/pie-chart/pie-chart.component';
+import * as Highcharts from 'highcharts';
 
 @Component({
   selector: 'app-machine-view',
   templateUrl: './machine-view.component.html',
   styleUrls: ['./machine-view.component.scss']
 })
-export class MachineViewComponent implements OnInit {
+export class MachineViewComponent implements OnInit, AfterViewInit {
 
   data: { y: number, label: string, [key: string]: any }[] = [];
   colors: string[] = CHART.MONITOR_PIE.colors;
@@ -26,11 +27,49 @@ export class MachineViewComponent implements OnInit {
   showPieChart = true;
   loading = false;
 
+  showChart = false;
+  highcharts = Highcharts;
+  chartOptions: Highcharts.Options | any = {
+    title: {
+      text: ''
+    },
+    plotOptions: {
+      series: {
+        animation: false
+      },
+      pie: {
+        allowPointSelect: true,
+        cursor: 'pointer',
+        dataLabels: {
+          enabled: true,
+          format: '{point.name}: <b>{point.y}</b>',
+          distance: 10,
+          style: {
+            fontSize: '12px'
+          }
+        },
+        minSize: '400px',
+        showInLegend: false,
+        size: '120%'
+      }
+    },
+    series: [],
+    tooltip: {
+      pointFormat: '{point.name}: <b>{point.y}</b>'
+    }
+  };
+
+  afterViewInitCalled = false;
+
   constructor(private dataService: DataService) {
     this._fetchMachines();
   }
 
   ngOnInit() {
+  }
+
+  ngAfterViewInit(): void {
+    this.afterViewInitCalled = true;
   }
 
   /**
@@ -67,7 +106,7 @@ export class MachineViewComponent implements OnInit {
           this.aggregatedData = {};
         }
         this.loading = false;
-        this.updateChartData();
+        this.updateChartData2();
       });
   }
 
@@ -117,6 +156,33 @@ export class MachineViewComponent implements OnInit {
   refreshChart(): void {
     if (this.pieChart) {
       this.pieChart._renderChart();
+    }
+  }
+
+  updateChartData2(): void {
+    if (this.aggregatedData && (this.aggregatedData.running || this.aggregatedData.idle || this.aggregatedData.stopped)) {
+      this.chartOptions.series = [];
+      const data = [];
+      data.push({ y: this.aggregatedData.running || 0, name: 'Running', color: CHART.ANALYSIS_PIE.RUNNING.color });
+      data.push({ y: this.aggregatedData.idle || 0, name: 'Idle', color: CHART.ANALYSIS_PIE.IDLE.color });
+      data.push({ y: this.aggregatedData.stopped || 0, name: 'Stopped', color: CHART.ANALYSIS_PIE.STOPPED.color });
+      const series = {
+        type: 'pie',
+        name: `Pie Chart`,
+        data: data
+      }
+      this.chartOptions.series.push(series);
+      this.chartOptions.title = '';
+    }
+    this.updateChart();
+  }
+
+  updateChart(): void {
+    this.showChart = false;
+    if (this.afterViewInitCalled) {
+      setTimeout(() => {
+        this.showChart = true;
+      }, 50);
     }
   }
 

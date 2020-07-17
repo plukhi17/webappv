@@ -7,30 +7,30 @@
       <mat-card-header>
         <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="16px">
           <!-- <mat-card-title>Machine Status</mat-card-title> -->
-          <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="16px" fxFlexFill>
+          <div fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="16px" fxFlexFill>
             <!-- {{filters | json}} -->
-            <mat-form-field>
+            <mat-form-field [ngClass.lt-sm]="'w-100'">
               <input [owlDateTime]="fromDateTime" placeholder="Select From Date" matInput [(ngModel)]="filters.from">
               <mat-icon class="cur-p" [owlDateTimeTrigger]="fromDateTime" matSuffix inline>calendar_today
               </mat-icon>
               <owl-date-time #fromDateTime></owl-date-time>
             </mat-form-field>
 
-            <mat-form-field>
+            <mat-form-field [ngClass.lt-sm]="'w-100'">
               <input [owlDateTime]="toDateTime" placeholder="Select To Date" matInput [(ngModel)]="filters.to">
               <mat-icon class="cur-p" [owlDateTimeTrigger]="toDateTime" matSuffix inline>calendar_today
               </mat-icon>
               <owl-date-time #toDateTime></owl-date-time>
             </mat-form-field>
 
-            <mat-form-field>
+            <mat-form-field [ngClass.lt-sm]="'w-100'">
               <mat-label>Select Type</mat-label>
               <mat-select matInput name='viewMode' [(ngModel)]="viewMode" (ngModelChange)='prepareChartData(data)'>
                 <mat-option *ngFor='let option of viewModeOptions' [value]='option.value'>{{option.viewValue}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            <mat-form-field>
+            <mat-form-field fxFlex.lt-sm>
               <mat-label>Select Filter Type</mat-label>
               <mat-select matInput name='filterType' [(ngModel)]="filterType">
                 <mat-option value='daywise'>Day Wise</mat-option>

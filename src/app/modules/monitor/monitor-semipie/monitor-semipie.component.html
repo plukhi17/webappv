@@ -19,24 +19,40 @@
 				</div>
 			</ng-template>
 			<div class="chart" [ngClass.lt-sm]="'chart-lg-sm'" fxLayout="row" fxLayout.lt-sm='column'
-				fxLayoutAlign="start stretch" fxLayoutGap="16px" fxFlex='100'>
+				fxLayoutAlign="start stretch" fxLayoutGap="8px" fxFlex='100'>
 				<div fxFlex='0 0 33%' fxFlex.fxLayout.lt-sm='100%'>
-					<app-doughnut-chart #doughnutChart chartId='runningMachines' [semi]='true'
+					<!-- <app-doughnut-chart #doughnutChart chartId='runningMachines' [semi]='true'
 						[data]='runningCountChart.data' [title]='"No. of Running Machines"'
-						[subtitles]='runningCountChart.subtitles' [animationEnabled]='false' height="160" width="230">
-					</app-doughnut-chart>
+						[subtitles]='runningCountChart.subtitles' [animationEnabled]='false' height="160" width="230"
+						[ngStyle.lt-sm]='{"height": "270px"}'>
+					</app-doughnut-chart> -->
+					<div class="chart">
+						<highcharts-chart #chart *ngIf='showChart' [Highcharts]="highcharts"
+							[options]="runningChartOptions" style="width: 100%; height: 100%; display: block;">
+						</highcharts-chart>
+					</div>
 				</div>
 				<div fxFlex='0 0 33%' fxFlex.fxLayout.lt-sm='100%'>
-					<app-doughnut-chart #doughnutChart chartId='idleMachines' [semi]='true' [data]='idleCountChart.data'
+					<!-- <app-doughnut-chart #doughnutChart chartId='idleMachines' [semi]='true' [data]='idleCountChart.data'
 						[title]='"No. of Idle Machines"' [subtitles]='idleCountChart.subtitles'
 						[animationEnabled]='false' height="160" width="230">
-					</app-doughnut-chart>
+					</app-doughnut-chart> -->
+					<div class="chart">
+						<highcharts-chart #chart *ngIf='showChart' [Highcharts]="highcharts"
+							[options]="idleChartOptions" style="width: 100%; height: 100%; display: block;">
+						</highcharts-chart>
+					</div>
 				</div>
 				<div fxFlex='0 0 33%' fxFlex.fxLayout.lt-sm='100%'>
-					<app-doughnut-chart #doughnutChart chartId='stoppedMachines' [semi]='true'
+					<!-- <app-doughnut-chart #doughnutChart chartId='stoppedMachines' [semi]='true'
 						[data]='stoppedCountChart.data' [title]='"No. of Stopped Machines"'
 						[subtitles]='stoppedCountChart.subtitles' [animationEnabled]='false' height="160" width="230">
-					</app-doughnut-chart>
+					</app-doughnut-chart> -->
+					<div class="chart">
+						<highcharts-chart #chart *ngIf='showChart' [Highcharts]="highcharts"
+							[options]="stoppedChartOptions" style="width: 100%; height: 100%; display: block;">
+						</highcharts-chart>
+					</div>
 				</div>
 			</div>
 
