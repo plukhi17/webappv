@@ -14,7 +14,7 @@
               <div class="row">
                 <!-- Normal -->
                 <div class="col-lg-3 col-sm-12 col-md-6">
-                  <mat-form-field>
+                  <mat-form-field [ngClass.lt-sm]='"w-100"'>
                     <mat-select formControlName="normalMachine" placeholder="Select Machine" #selectNormalMachine
                       [compareWith]="compareWith">
                       <mat-option>
@@ -28,7 +28,7 @@
                   </mat-form-field>
                 </div>
                 <div class="col-lg-3 col-sm-8 col-md-6">
-                  <mat-form-field class='from-to-date-selection'>
+                  <mat-form-field [ngClass.gt-xs]="'from-to-date-selection'" [ngClass.lt-sm]='"w-100"'>
                     <input (dateTimeInput)="syncTimestamp($event)" [max]="maxDateTime" [selectMode]="'range'"
                       [owlDateTime]="fromToDate" formControlName="fromToDate" placeholder="Select Date Range" matInput>
                     <mat-icon class="cur-p" [owlDateTimeTrigger]="fromToDate" matSuffix inline>

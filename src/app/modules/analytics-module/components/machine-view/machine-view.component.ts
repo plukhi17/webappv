@@ -161,6 +161,7 @@ export class MachineViewComponent implements OnInit, AfterViewInit {
 
   updateChartData2(): void {
     if (this.aggregatedData && (this.aggregatedData.running || this.aggregatedData.idle || this.aggregatedData.stopped)) {
+      this.showPieChart = true;
       this.chartOptions.series = [];
       const data = [];
       data.push({ y: this.aggregatedData.running || 0, name: 'Running', color: CHART.ANALYSIS_PIE.RUNNING.color });
@@ -173,6 +174,8 @@ export class MachineViewComponent implements OnInit, AfterViewInit {
       }
       this.chartOptions.series.push(series);
       this.chartOptions.title = '';
+    } else {
+      this.showPieChart = false;
     }
     this.updateChart();
   }

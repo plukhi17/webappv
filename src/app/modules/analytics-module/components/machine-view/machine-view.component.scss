@@ -13,9 +13,13 @@
 }
 
 
-@media only screen and (max-width: 600px) and (min-width: 400px) {
+@media only screen and (max-width: 600px) {
     .chart {
         height: 15rem;
         overflow: hidden;
+    }
+
+    .data-value {
+        text-align: center;
     }
 }
