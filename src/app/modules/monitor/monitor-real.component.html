@@ -1,12 +1,20 @@
-<div class="row ">
-	<div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-24">
-		<app-monitor-pie [data]='data'></app-monitor-pie>
+<div class="row monitor-real-cntr" fxFlexFill>
+	<div class='col-lg-5 col-md-12'>
+		<div class='row'>
+			<div class='col-md-6 col-sm-12'>
+				<app-monitor-health-status [data]='data'></app-monitor-health-status>
+			</div>
+			<div class='col-md-6 col-sm-12'>
+				<app-monitor-availability-status [data]='data'></app-monitor-availability-status>
+			</div>
+		</div>
 	</div>
-	<div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 mb-24">
-		<!-- <app-monitor-semipie></app-monitor-semipie> -->
-		<!-- <div fxLayout="row" fxLayoutAlign="start stretch" fxLayoutGap="16px" fxFlexFill> -->
-		<app-monitor-semipie [data]='data'></app-monitor-semipie>
-		<!-- </div> -->
+	<div class='col-lg-7 col-md-12'>
+		<app-monitor-cards [data]='data'></app-monitor-cards>
+	</div>
+
+	<div>
+		<app-monitor-machine-life-indicator></app-monitor-machine-life-indicator>
 	</div>
 
 	<!-- <div class="col-4 mb-24">

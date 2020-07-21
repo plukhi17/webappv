@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild, AfterViewInit } from '@angular/core';
-import { MatTableDataSource, MatPaginator } from '@angular/material';
+import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 
 @Component({
   selector: 'app-monitor-table',
@@ -18,11 +18,12 @@ export class MonitorTableComponent implements OnInit, AfterViewInit {
     this.setTableData();
   }
 
-  displayedColumns: string[] = ['name', 'description', 'equipment_type', 'telemetry_time', 'rated_current', 'i_rms', 'riskscore', 'instant_power', 'equipment_status', 'device_status', 'health_status', 'availabilty_status', 'fault'];
+  displayedColumns: string[] = ['name', 'description', 'equipment_type', 'telemetry_time', 'availabilty_status', 'rated_current', 'i_rms', 'instant_power', 'health_status', 'riskscore', 'fault', 'device_status'];
 
   dataSource = new MatTableDataSource<any>([]);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor() { }
 
@@ -32,6 +33,7 @@ export class MonitorTableComponent implements OnInit, AfterViewInit {
     this.dataSource = new MatTableDataSource<any>(this.data);
     this.dataSource.paginator = this.paginator;
     this.dataSource.paginator.pageSize = 10;
+    this.dataSource.sort = this.sort;
   }
 
   setTableData(): void {

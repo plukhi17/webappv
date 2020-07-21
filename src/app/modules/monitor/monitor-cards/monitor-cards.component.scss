@@ -1,0 +1,40 @@
+.monitor-card {
+    // border: 1px solid black;
+    color: white;
+
+    .card-title {
+        white-space: nowrap;
+    }
+
+    .card-value {
+        /* display: flex; */
+        /* justify-content: center; */
+        /* align-self: center; */
+        font-size: 96px;
+        font-weight: bold;
+        line-height: 96px;
+    }
+
+    .arrow-block {
+        padding-left: 24px;
+
+        .value {
+            font-size: 24px;
+        }
+
+        .arrow {
+            font-size: 60px;
+            height: 60px;
+            line-height: 60px;
+            width: 60px;
+
+            &.up {
+                color: green;
+            }
+
+            &.down {
+                color: red;
+            }
+        }
+    }
+}

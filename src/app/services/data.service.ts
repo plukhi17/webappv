@@ -239,6 +239,20 @@ export class DataService {
         // return this.http.get(`assets/data/realtime_data.json`).pipe(map((data: any) => data ? data.list : data));
     }
 
+    getPlantLifeValue(): Observable<any> {
+        return this.http.get(`${this.baseUri}/${EndpointConstant.GET_PLANT_LIFE_VALUE}`).pipe(map((data: any) => (data && data.list && data.list.length) ? data.list[0] : data));
+    }
+
+    getHourlyPlantLifeValue(): Observable<any> {
+        return this.http.get(`${this.baseUri}/${EndpointConstant.GET_HOURLY_PLANT_LIFE_VALUE}`).pipe(map((data: any) => data ? data.list : data));
+    }
+
+    getHourlyMachineLifeValue(machine: Machine): Observable<any> {
+        const params = new HttpParams()
+            .append('equipment_id', machine.id);
+        return this.http.get(`${this.baseUri}/${EndpointConstant.GET_HOURLY_MACHINE_LIFE_VALUE}`, { params }).pipe(map((data: any) => data ? data.list : data));
+    }
+
     getAllMachinesDaywiseAggregatedData(fromDate?: string, toDate?: string): Observable<any> {
         const params = new HttpParams()
             .append('from_date', fromDate)

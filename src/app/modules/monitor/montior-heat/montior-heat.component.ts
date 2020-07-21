@@ -3,6 +3,7 @@ import { HeatMapChartComponent } from 'src/app/widgets/shared/heat-map-chart/hea
 import { DataService } from 'src/app/services/data.service';
 import { take } from 'rxjs/operators';
 import * as moment from 'moment';
+import { CHART } from 'src/app/constants/chart.constant';
 
 type AllMachinesData = { id: number, name: string, telemetry_time: string, running: number, avg_riskscore: number };
 @Component({
@@ -134,6 +135,11 @@ export class MontiorHeatComponent implements OnInit {
       }
     }
     this.heatMapChart.chartOptions.series[0].dataLabels.enabled = false;
+    this.heatMapChart.chartOptions.colorAxis = {
+      min: 0,
+      minColor: (this.viewMode === 'avg_riskscore') ? CHART.MONITOR_HEAT.RISKSCORE.minColor : CHART.MONITOR_HEAT.AVAILABILITY.minColor,
+      maxColor: (this.viewMode === 'avg_riskscore') ? CHART.MONITOR_HEAT.RISKSCORE.maxColor : CHART.MONITOR_HEAT.AVAILABILITY.maxColor
+    }
 
     // this.heatMapChart.chartHeight = 2000;
     this.updateChart(this.chartSeries);

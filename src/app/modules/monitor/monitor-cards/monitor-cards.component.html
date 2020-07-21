@@ -1,0 +1,53 @@
+<div fxLayout="row" fxLayout.lt-sm='column' fxLayoutAlign="start stretch" fxLayoutGap="16px" fxFlexFill>
+  <mat-card class='monitor-card' fxFlex='1 1 33.33%' fxFlex.lt-sm='100%'
+    [style.background]='cardColors?.AVAILABLE?.color'>
+    <mat-card-header>
+      <mat-card-title class='card-title'>Machines Available</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px" fxFlexFill>
+        <div class='card-value'>{{availableMachines}}</div>
+      </div>
+    </mat-card-content>
+    <mat-card-footer>
+      <div class='arrow-block' fxLayout="row" fxLayoutAlign="start center">
+        <div class='value'>2</div>
+        <mat-icon class='arrow up'>arrow_drop_up</mat-icon>
+      </div>
+    </mat-card-footer>
+  </mat-card>
+  <mat-card class='monitor-card' fxFlex='1 1 33.33%' fxFlex.lt-sm='1 1 100%'
+    [style.background]='cardColors?.OVERLOADS?.color'>
+    <mat-card-header>
+      <mat-card-title class='card-title'>Number of Overloads</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px" fxFlexFill>
+        <div class='card-value'>{{overloadedMachines}}</div>
+      </div>
+    </mat-card-content>
+    <mat-card-footer>
+      <div class='arrow-block' fxLayout="row" fxLayoutAlign="start center">
+        <div class='value'>7.5%</div>
+        <mat-icon class='arrow down'>arrow_drop_down</mat-icon>
+      </div>
+    </mat-card-footer>
+  </mat-card>
+  <mat-card class='monitor-card' fxFlex='1 1 33.33%' fxFlex.lt-sm='1 1 100%'
+    [style.background]='cardColors?.INDICATOR?.color'>
+    <mat-card-header>
+      <mat-card-title class='card-title'>Plant Life Indicator</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px" fxFlexFill>
+        <div class='card-value'>{{(plantLifeValue == null) ? 'NA' : plantLifeValue}}</div>
+      </div>
+    </mat-card-content>
+    <mat-card-footer>
+      <div class='arrow-block' fxLayout="row" fxLayoutAlign="start center">
+        <div class='value'>12%</div>
+        <mat-icon class='arrow down'>arrow_drop_down</mat-icon>
+      </div>
+    </mat-card-footer>
+  </mat-card>
+</div>

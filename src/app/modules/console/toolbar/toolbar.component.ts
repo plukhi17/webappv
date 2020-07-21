@@ -1,25 +1,61 @@
-import { Component, EventEmitter, OnInit, Output, Input } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, Input, OnDestroy } from '@angular/core';
 import { NavService } from '../../../services/nav.service';
 import { RouteConstant } from '../../../constants';
 import { AuthService } from '../../../services/auth.service';
-import { take, tap } from 'rxjs/operators';
+import { take, tap, takeUntil, filter } from 'rxjs/operators';
+import { NavNode } from 'src/app/interfaces';
+import { Router, NavigationEnd } from '@angular/router';
+import { Subject } from 'rxjs';
 
+const NAV_TREE: NavNode[] = [
+    // {
+    //     icon: 'bubble_chart',
+    //     name: 'Overview',
+    //     path: RouteConstant.OVERVIEW
+    // },
+    {
+        icon: 'monitor',
+        name: 'Monitor-Realtime',
+        path: RouteConstant.MONITOR,
+    },
+    {
+        icon: 'analytics',
+        name: 'Analytics',
+        path: RouteConstant.ANALYTICS_MODULE,
+    },
+    {
+        icon: 'tune',
+        name: 'Optimize',
+        path: RouteConstant.OPTIMIZE,
+    },
+    {
+        icon: 'dashboard',
+        name: 'Machine Insights',
+        path: RouteConstant.DASHBOARD,
+    }
+];
 
 @Component({
     selector: 'app-toolbar',
     templateUrl: './toolbar.component.html',
     styleUrls: ['./toolbar.component.scss']
 })
-export class ToolbarComponent implements OnInit {
+export class ToolbarComponent implements OnInit, OnDestroy {
 
     @Input() mobileView: boolean = false;
     @Output() toggleNavbar: EventEmitter<void> = new EventEmitter();
 
     public userName: string;
+    public activePath: string;
+    public navTree: NavNode[] = NAV_TREE;
+    private unsubscribe: Subject<void> = new Subject();
 
-    constructor(private authService: AuthService,
+    constructor(
+        private router: Router,
+        private authService: AuthService,
         private navService: NavService) {
         this._fetchPrincipal();
+        this._subscribeToUrl();
     }
 
     ngOnInit() {
@@ -38,5 +74,24 @@ export class ToolbarComponent implements OnInit {
             tap((payload: any) => this.userName = payload.name),
             take(1)
         ).subscribe();
+    }
+
+    /**
+     * Subscribe to url changes.
+     *
+     * @private
+     */
+    private _subscribeToUrl(): void {
+        this.activePath = this.router.url;
+        this.router.events.pipe(
+            takeUntil(this.unsubscribe),
+            filter((event) => event instanceof NavigationEnd),
+            tap((event: NavigationEnd) => this.activePath = event.url)
+        ).subscribe();
+    }
+
+    ngOnDestroy(): void {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 }

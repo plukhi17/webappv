@@ -1,0 +1,18 @@
+<div class="monitor-pie h-100">
+  <mat-card class='h-100'>
+
+    <mat-card-header>
+      <mat-card-title>Availability Status</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+
+      <div class="chart">
+        <highcharts-chart #chart *ngIf='showChart' [Highcharts]="highcharts" [options]="chartOptions"
+          style="width: 100%; height: 100%; display: block;">
+        </highcharts-chart>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+</div>

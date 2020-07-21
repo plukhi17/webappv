@@ -6,6 +6,17 @@
 		<button mat-icon-button *ngIf='mobileView' (click)="toggle()">
 			<mat-icon>menu</mat-icon>
 		</button>
+		<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+			<!-- <app-nav-item *ngFor="let node of navTree" [activePath]="activePath" [node]="node"></app-nav-item> -->
+			<div *ngFor="let node of navTree" class="nv-cntr">
+				<a [class.active]="activePath === node.path" [routerLink]="node.path" class="mat-h4 nv-item w-100"
+					fxLayoutAlign="start center">
+					<!-- <mat-icon class="mr-16">{{node.icon}}</mat-icon> -->
+					<span>{{node.name}}</span>
+					<span *ngIf="!node.path" class="ml-16 col-pr mat-caption">Coming soon</span>
+				</a>
+			</div>
+		</div>
 		<div class="spacer"></div>
 		<div *ngIf="userName" class="mr-16 mat-h4 col-pr">
 			<span class="d-none d-sm-inline">Welcome, &nbsp;</span>
