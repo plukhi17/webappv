@@ -1,3 +1,42 @@
-<p>
-  monitor-machine-life-indicator works!
-</p>
+<div class="monitor-pie h-100">
+  <mat-card class='h-100'>
+
+    <mat-card-header>
+      <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px" fxFlexFill>
+        <div fxLayout='row' fxLayoutAlign="start center" fxLayoutGap="16px">
+          <mat-card-title>Plant/Machine Life Value</mat-card-title>
+          <mat-spinner [diameter]='24' *ngIf='loading'></mat-spinner>
+        </div>
+        <mat-form-field>
+          <mat-select placeholder="Select Machine" #selectMachine name='selectMachine' [(ngModel)]="selectedMachine"
+            (ngModelChange)='getData();'>
+            <mat-option>
+              <!-- <ngx-mat-select-search [formControl]="searchMachine"
+                      placeholderLabel="Find Machine..."
+                      noEntriesFoundLabel="No matching Machine found">
+                  </ngx-mat-select-search> -->
+            </mat-option>
+            <mat-option *ngFor="let machine of machines" [value]="machine">
+              {{machine.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+
+      <div class="chart" *ngIf='!noData; else noDataRef'>
+        <highcharts-chart #chart *ngIf='showChart' [Highcharts]="highcharts" [options]="chartOptions"
+          style="width: 100%; height: 100%; display: block;">
+        </highcharts-chart>
+      </div>
+      <ng-template #noDataRef>
+        <div class='d-flex flex-row justify-content-center w-100' *ngIf='!loading'>
+          No data available {{selectedMachine ? ('for machine '+ selectedMachine?.name) : ''}}.
+        </div>
+      </ng-template>
+
+    </mat-card-content>
+  </mat-card>
+</div>

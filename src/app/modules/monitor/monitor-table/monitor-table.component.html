@@ -39,7 +39,11 @@
             <td mat-cell *matCellDef="let element"> {{element.availabilty_status}} </td>
           </ng-container>
 
-          <!-- Idle (In Hrs) column -->
+          <!-- Idle (In Hrs) column : idle_time_in_hrs -->
+          <ng-container matColumnDef="idle_time_in_hrs">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Idle (in Hrs) </th>
+            <td mat-cell *matCellDef="let element"> {{element.idle_time_in_hrs}} </td>
+          </ng-container>
 
           <ng-container matColumnDef="rated_current">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Rated Current </th>
@@ -66,7 +70,11 @@
             <td mat-cell *matCellDef="let element"> {{element.health_status}} </td>
           </ng-container>
 
-          <!-- Total Warning column -->
+          <!-- Total Warning column: warning_count -->
+          <ng-container matColumnDef="warning_count">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Warnings </th>
+            <td mat-cell *matCellDef="let element"> {{element.warning_count}} </td>
+          </ng-container>
 
           <ng-container matColumnDef="riskscore">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Instant Riskscore </th>

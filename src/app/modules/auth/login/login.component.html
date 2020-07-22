@@ -1,7 +1,10 @@
 <div class="w-100">
 	<mat-card>
 		<mat-card-header>
-			<mat-card-title>Login to Minto</mat-card-title>
+			<div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px" fxFlexFill>
+				<img class='logo' src='../../../../assets/img/logo.png'>
+				<mat-card-title>Login to Minto</mat-card-title>
+			</div>
 		</mat-card-header>
 		<mat-divider></mat-divider>
 		<mat-card-content class="pt-24">
@@ -20,16 +23,16 @@
 				</mat-form-field>
 				<mat-form-field hintLabel="Enter password">
 					<mat-icon matPrefix inline class="mr-8">vpn_key</mat-icon>
-					<input formControlName="password" [type]="showPassword ? 'text': 'password'"
-					       matInput placeholder="Password">
+					<input formControlName="password" [type]="showPassword ? 'text': 'password'" matInput
+						placeholder="Password">
 					<mat-error *ngIf="f.password.hasError('required')">Password is required.</mat-error>
 					<mat-icon matSuffix (click)="showPassword = !showPassword" inline>
 						{{showPassword ? 'visibility_off' : 'visibility'}}
 					</mat-icon>
 				</mat-form-field>
 				<div class="mt-24" fxLayoutAlign="center">
-					<button mat-flat-button type="submit" color="primary"
-					        class="w-100" (click)="authenticUser()" [disabled]="loginFG.invalid">
+					<button mat-flat-button type="submit" color="primary" class="w-100" (click)="authenticUser()"
+						[disabled]="loginFG.invalid">
 						<ng-container *ngIf="!showSpinner; else spinner">
 							<span>Login</span>
 						</ng-container>

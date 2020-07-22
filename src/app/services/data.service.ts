@@ -233,6 +233,10 @@ export class DataService {
         });
     }
 
+    getPlants(): Observable<any> {
+        return this.http.get(`${this.baseUri}/${EndpointConstant.GET_PLANTS}`).pipe(map((data: any) => data ? data.list : data));
+    }
+
     // Monitor Realtime apis
     getRealtimeMetrics(): Observable<any> {
         return this.http.get(`${this.baseUri}/${EndpointConstant.GET_MACHINES_REALTIME_METRICS}`).pipe(map((data: any) => data ? data.list : data));

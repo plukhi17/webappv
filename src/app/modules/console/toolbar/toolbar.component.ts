@@ -3,37 +3,9 @@ import { NavService } from '../../../services/nav.service';
 import { RouteConstant } from '../../../constants';
 import { AuthService } from '../../../services/auth.service';
 import { take, tap, takeUntil, filter } from 'rxjs/operators';
-import { NavNode } from 'src/app/interfaces';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subject } from 'rxjs';
-
-const NAV_TREE: NavNode[] = [
-    // {
-    //     icon: 'bubble_chart',
-    //     name: 'Overview',
-    //     path: RouteConstant.OVERVIEW
-    // },
-    {
-        icon: 'monitor',
-        name: 'Monitor-Realtime',
-        path: RouteConstant.MONITOR,
-    },
-    {
-        icon: 'analytics',
-        name: 'Analytics',
-        path: RouteConstant.ANALYTICS_MODULE,
-    },
-    {
-        icon: 'tune',
-        name: 'Optimize',
-        path: RouteConstant.OPTIMIZE,
-    },
-    {
-        icon: 'dashboard',
-        name: 'Machine Insights',
-        path: RouteConstant.DASHBOARD,
-    }
-];
+import { Plant } from 'src/app/interfaces/plant.interface';
 
 @Component({
     selector: 'app-toolbar',
@@ -43,11 +15,13 @@ const NAV_TREE: NavNode[] = [
 export class ToolbarComponent implements OnInit, OnDestroy {
 
     @Input() mobileView: boolean = false;
+    @Input() plants: Plant[] = [];
+    @Input() selectedPlant: Plant;
     @Output() toggleNavbar: EventEmitter<void> = new EventEmitter();
+    @Output() plantChange: EventEmitter<Plant> = new EventEmitter();
 
     public userName: string;
     public activePath: string;
-    public navTree: NavNode[] = NAV_TREE;
     private unsubscribe: Subject<void> = new Subject();
 
     constructor(
@@ -88,6 +62,12 @@ export class ToolbarComponent implements OnInit, OnDestroy {
             filter((event) => event instanceof NavigationEnd),
             tap((event: NavigationEnd) => this.activePath = event.url)
         ).subscribe();
+    }
+
+    onPlantChange(plant: Plant): void {
+        if (!this.selectedPlant || plant.id != this.selectedPlant.id) {
+            this.plantChange.emit(plant);
+        }
     }
 
     ngOnDestroy(): void {

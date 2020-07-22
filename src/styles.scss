@@ -218,3 +218,12 @@ highcharts-chart {
 		box-shadow: none !important;
 	}
 }
+
+.profile-menu {
+	overflow: hidden;
+	margin-top: 8px;
+
+	.mat-menu-content {
+		overflow: hidden;
+	}
+}

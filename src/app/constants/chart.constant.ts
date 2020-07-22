@@ -48,4 +48,15 @@ export class CHART {
             maxColor: '#00ff00'
         }
     }
+    static readonly MONITOR_TOP_MACHINES = {
+        RUNNING: {
+            color: "#00C2CB"
+        },
+        IDLE: {
+            color: "#FF5757"
+        },
+        STOPPED: {
+            color: "#C0C1C3"
+        }
+    }
 }

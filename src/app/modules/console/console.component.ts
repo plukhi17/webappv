@@ -1,10 +1,13 @@
 import { Component, HostListener, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router, NavigationEnd, RouterEvent } from '@angular/router';
-import { RouteConstant } from '../../constants';
+import { RouteConstant, StorageConstant } from '../../constants';
 import { NavService } from '../../services/nav.service';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter, takeUntil, take } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { MatSidenav } from '@angular/material';
+import { DataService } from 'src/app/services/data.service';
+import { Plant } from 'src/app/interfaces/plant.interface';
+import { StorageService } from 'src/app/services/storage.service';
 
 
 const MOBILE_WIDTH = 992;
@@ -20,15 +23,20 @@ export class ConsoleComponent implements OnInit, OnDestroy {
     @ViewChild('appnav') appnav: MatSidenav;
     public mobileView: boolean = window.innerWidth <= MOBILE_WIDTH;     // Is mobile view active
     public applyPadding = true;
+    plants: Plant[] = [];
+    selectedPlant: Plant;
     private destroyed$: Subject<boolean> = new Subject<boolean>();
 
     constructor(
         private router: Router,
-        private navService: NavService
+        private navService: NavService,
+        private dataService: DataService,
+        private storageService: StorageService
     ) {
         if (router.url === RouteConstant.CONSOLE) {
             this.navService.navigate(RouteConstant.MONITOR);
         }
+        this.getPlants();
         this.setNavigationEvent();
     }
 
@@ -50,6 +58,32 @@ export class ConsoleComponent implements OnInit, OnDestroy {
                 this.appnav.close();
             }
         });
+    }
+
+    getPlants(): void {
+        this.dataService.getPlants().pipe(take(1)).subscribe((plants: Plant[]) => {
+            this.plants = plants;
+            if (this.plants && this.plants.length) {
+                const selectedPlantId = StorageService.getItem(StorageConstant.PLANT_ID);
+                if (selectedPlantId !== null && selectedPlantId !== undefined) {
+                    if (this.plants.filter((p) => p.id == +selectedPlantId).length) {
+                        this.selectedPlant = this.plants.filter((p) => p.id == +selectedPlantId)[0];
+                    }
+                }
+                if (!this.selectedPlant) {
+                    this.selectedPlant = this.plants.filter((p) => p.id == +selectedPlantId)[0];
+                    StorageService.setItem(StorageConstant.PLANT_ID, this.selectedPlant.id + '');
+                    window.location.reload();
+                }
+            }
+        });
+    }
+
+    onPlantChange(plant: Plant): void {
+        if (plant) {
+            StorageService.setItem(StorageConstant.PLANT_ID, plant.id + '');
+            window.location.reload();
+        }
     }
 
     ngOnDestroy() {

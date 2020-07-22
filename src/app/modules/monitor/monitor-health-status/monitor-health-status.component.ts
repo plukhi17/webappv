@@ -45,14 +45,14 @@ export class MonitorHealthStatusComponent implements OnInit {
             fontSize: '12px'
           }
         },
-        minSize: '300px',
+        // minSize: '300px',
         showInLegend: false,
         // startAngle: -90,
         // endAngle: 90,
         // center: ['50%', '90%'],
         // size: '180%'
-        // center: ['50%', '50%'],
-        // size: '45%',
+        center: ['50%', '50%'],
+        size: '120%',
         innerSize: '50%'
       }
     },

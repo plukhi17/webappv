@@ -1,14 +1,15 @@
 <mat-sidenav-container class="h-100 w-100">
 
 	<!-- Left Navigation -->
-	<mat-sidenav #appnav [mode]="mobileView ? 'over' : 'side'" [opened]="!mobileView && false">
+	<mat-sidenav #appnav [mode]="'over'">
 		<app-navigation></app-navigation>
 	</mat-sidenav>
 
 	<mat-sidenav-content>
 
 		<!-- App Toolbar -->
-		<app-toolbar [mobileView]='mobileView' (toggleNavbar)='appnav?.toggle()'></app-toolbar>
+		<app-toolbar [mobileView]='mobileView' [plants]='plants' [selectedPlant]='selectedPlant'
+			(toggleNavbar)='appnav?.toggle()' (plantChange)='onPlantChange($event)'></app-toolbar>
 		<!-- <app-toolbar (toggleNavbar)="appnav.toggle()"></app-toolbar> -->
 
 		<div [ngClass]="{'p-24': applyPadding}">

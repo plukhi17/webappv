@@ -1,5 +1,5 @@
 <div class="row monitor-real-cntr" fxFlexFill>
-	<div class='col-lg-5 col-md-12'>
+	<div class='col-lg-6 col-md-12 mb-24'>
 		<div class='row'>
 			<div class='col-md-6 col-sm-12'>
 				<app-monitor-health-status [data]='data'></app-monitor-health-status>
@@ -9,12 +9,16 @@
 			</div>
 		</div>
 	</div>
-	<div class='col-lg-7 col-md-12'>
+	<div class='col-lg-6 col-md-12 mb-24'>
 		<app-monitor-cards [data]='data'></app-monitor-cards>
 	</div>
 
-	<div>
+	<div class='col-lg-8 col-md-12 mb-24'>
 		<app-monitor-machine-life-indicator></app-monitor-machine-life-indicator>
+	</div>
+
+	<div class='col-lg-4 col-md-12 mb-24'>
+		<app-monitor-machines-available [data]='data'></app-monitor-machines-available>
 	</div>
 
 	<!-- <div class="col-4 mb-24">

@@ -21,51 +21,38 @@ export class MonitorMachinesAvailableComponent implements OnInit {
   }
   public set realTimeData(value: RealTimeData[]) {
     this._realTimeData = value;
-    this.updateChartData();
+    this.filterDataByAvailability();
+    // this.updateChartData();
   }
 
   showChart = false;
   highcharts = Highcharts;
-  chartOptions: Highcharts.Options | any = {
-    title: {
-      text: ''
+  chartOptions = {
+    chart: {
+      type: 'bar'
     },
-    plotOptions: {
-      series: {
-        animation: false
-      },
-      pie: {
-        allowPointSelect: true,
-        cursor: 'pointer',
-        dataLabels: {
-          enabled: true,
-          format: '{point.name}: <b>{point.y}</b>',
-          distance: 10,
-          style: {
-            fontSize: '12px'
-          }
-        },
-        minSize: '300px',
-        showInLegend: false,
-        // startAngle: -90,
-        // endAngle: 90,
-        // center: ['50%', '90%'],
-        // size: '180%'
-        center: ['50%', '50%'],
-        // size: '45%',
-        innerSize: '50%'
+    title: {},
+    xAxis: {
+      categories: [],
+      title: {
+        text: null
       }
     },
-    series: [],
-    tooltip: {
-      pointFormat: '{point.name}: <b>{point.y}</b>'
-    }
+    plotOptions: {
+      bar: {
+        dataLabels: {
+          enabled: true
+        }
+      },
+      series: {
+        stacking: 'normal'
+      }
+    },
+    series: []
   };
 
   afterViewInitCalled = false;
-  runningMachines: number = 0;
-  idleMachines: number = 0;
-  stoppedMachines: number = 0;
+  topMachines: RealTimeData[] = [];
 
   constructor() { }
 
@@ -78,36 +65,39 @@ export class MonitorMachinesAvailableComponent implements OnInit {
     this.updateChart();
   }
 
+  filterDataByAvailability(): void {
+    const data = this.realTimeData.map((entry) => {
+      entry['availability'] = +parseFloat((entry.running + entry.idle).toFixed(2));
+      return entry;
+    });
+    data.sort((a, b) => b['availability'] - a['availability']);
+    this.topMachines = data.slice(0, 5);
+    console.log('data filtered', this.topMachines);
+    this.updateChartData();
+  }
+
 
   updateChartData(): void {
-    if (this.realTimeData && this.realTimeData.length) {
-      if (this.realTimeData) {
-        this.runningMachines = 0;
-        this.idleMachines = 0;
-        this.stoppedMachines = 0;
-        this.realTimeData.forEach((data) => {
-          if (data.availabilty_status === 'Running') {
-            this.runningMachines++;
-          }
-          if (data.availabilty_status === 'Idle') {
-            this.idleMachines++;
-          }
-          if (data.availabilty_status === 'Stopped') {
-            this.stoppedMachines++;
-          }
-        })
-      }
+    if (this.topMachines && this.topMachines.length) {
+      this.chartOptions.xAxis.categories = this.topMachines.map((m) => m.name);
       this.chartOptions.series = [];
-      const data = [];
-      data.push({ name: 'Running', y: this.runningMachines, color: CHART.MONITOR_SEMIPIE.RUNNING.color });
-      data.push({ name: 'Idle', y: this.idleMachines, color: CHART.MONITOR_SEMIPIE.IDLE.color });
-      data.push({ name: 'Stopped', y: this.stoppedMachines, color: CHART.MONITOR_SEMIPIE.STOPPED.color });
-      const series = {
-        type: 'pie',
-        name: `Monitor Status`,
-        data: data
-      }
-      this.chartOptions.series.push(series);
+      const data: { name: string, data: number[], color?: string }[] = [];
+      data.push({
+        name: 'Running',
+        data: this.topMachines.map((m) => m.running),
+        color: CHART.MONITOR_TOP_MACHINES.RUNNING.color
+      });
+      data.push({
+        name: 'Idle',
+        data: this.topMachines.map((m) => m.idle),
+        color: CHART.MONITOR_TOP_MACHINES.IDLE.color
+      });
+      data.push({
+        name: 'Stopped',
+        data: this.topMachines.map((m) => m.stopped),
+        color: CHART.MONITOR_TOP_MACHINES.STOPPED.color
+      });
+      this.chartOptions.series = data;
       this.chartOptions.title = '';
     }
     this.updateChart();

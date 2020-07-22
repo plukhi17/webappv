@@ -4,15 +4,16 @@
 
     .card-title {
         white-space: nowrap;
+        font-size: 14px;
     }
 
     .card-value {
         /* display: flex; */
         /* justify-content: center; */
         /* align-self: center; */
-        font-size: 96px;
+        font-size: 78px;
         font-weight: bold;
-        line-height: 96px;
+        // line-height: 96px;
     }
 
     .arrow-block {

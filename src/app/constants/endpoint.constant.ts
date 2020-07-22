@@ -14,6 +14,8 @@ export abstract class EndpointConstant {
     static readonly GET_IRMS_FREQUENCY = 'get-irmsdata';
     static readonly POST_EQUIPMENT_FAULT_INSTANCES = 'post-equipmentfaultinstances';
 
+    static readonly GET_PLANTS = 'plants';
+
     // monitor-realtime apis
     static readonly GET_MACHINES_REALTIME_METRICS = 'get-machines-realtime-metrics';
     static readonly GET_ALL_MACHINES_DAYWISE_AGGREGATED_DATA = 'get-all-machines-daywise-aggregated-data';

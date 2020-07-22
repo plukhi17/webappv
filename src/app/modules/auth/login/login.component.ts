@@ -1,12 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
-import { catchError, takeUntil, tap } from 'rxjs/operators';
+import { catchError, takeUntil, tap, take } from 'rxjs/operators';
 import { CognitoUserSession } from 'amazon-cognito-identity-js';
 import { StorageService } from '../../../services/storage.service';
 import { RouteConstant, StorageConstant } from '../../../constants';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NavService } from '../../../services/nav.service';
 import { of, Subject } from 'rxjs';
+import { DataService } from 'src/app/services/data.service';
+import { Plant } from 'src/app/interfaces/plant.interface';
 
 
 const CUSTOM_TENANT_ID = 'custom:tenantId';
@@ -28,7 +30,8 @@ export class LoginComponent implements OnDestroy, OnInit {
     private unsubscribe: Subject<void> = new Subject();
 
     constructor(private authService: AuthService,
-        private navService: NavService) {
+        private navService: NavService,
+        private dataService: DataService) {
         this.authService.logout();
         this._buildLoginFG();
     }
@@ -52,10 +55,14 @@ export class LoginComponent implements OnDestroy, OnInit {
             tap((result: CognitoUserSession) => {
                 /* Store idToken and tenantId. */
                 StorageService.setItem(StorageConstant.ID_TOKEN, result.getIdToken().getJwtToken());
-                StorageService.setItem(StorageConstant.PLANT_ID, result.getIdToken().payload[CUSTOM_PLANT_ID]);
                 StorageService.setItem(StorageConstant.TENANT_ID, result.getIdToken().payload[CUSTOM_TENANT_ID]);
-                /* Navigate to dashboard. */
-                this.navService.navigate(RouteConstant.MONITOR);
+                this.dataService.getPlants().pipe(take(1)).subscribe((plants: Plant[]) => {
+                    if (plants && plants.length) {
+                        StorageService.setItem(StorageConstant.PLANT_ID, plants[0].id.toString());
+                    }
+                    /* Navigate to dashboard. */
+                    this.navService.navigate(RouteConstant.MONITOR);
+                })
             }),
             catchError((err) => {
                 this.showSpinner = false;

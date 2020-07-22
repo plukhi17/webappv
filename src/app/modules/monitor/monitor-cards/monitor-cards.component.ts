@@ -38,19 +38,18 @@ export class MonitorCardsComponent implements OnInit {
   updateCardsData(): void {
     if (this.realTimeData) {
       this.availableMachines = this.realTimeData.filter((entry) => ['Running', 'Idle'].includes(entry.availabilty_status)).length;
-      // this.overloadedMachines = this.realTimeData.filter((entry) => entry.overload).length;
-      this.overloadedMachines = Math.round(Math.random() * 100);
+      this.overloadedMachines = this.realTimeData.filter((entry) => entry.overload).length;
     }
   }
 
   getPlantLifeValue(): void {
     this.dataService.getPlantLifeValue().pipe(take(1)).subscribe((data: {
-      plant_life_value: number
+      present_plant_life_value: number
       previous_plant_life_value: number
     }) => {
       if (data) {
-        if (data.plant_life_value !== null && data.plant_life_value !== undefined) {
-          this.plantLifeValue = data.plant_life_value;
+        if (data.present_plant_life_value !== null && data.present_plant_life_value !== undefined) {
+          this.plantLifeValue = data.present_plant_life_value;
         } else {
           this.plantLifeValue = null;
         }
