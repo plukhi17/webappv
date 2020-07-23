@@ -64,6 +64,10 @@ export class ConsoleComponent implements OnInit, OnDestroy {
         this.dataService.getPlants().pipe(take(1)).subscribe((plants: Plant[]) => {
             this.plants = plants;
             if (this.plants && this.plants.length) {
+                // const plant = JSON.parse(JSON.stringify(this.plants[0]));
+                // plant.id = 13;
+                // plant.name = "Micro Foundary Plant"
+                // this.plants.push(plant);
                 const selectedPlantId = StorageService.getItem(StorageConstant.PLANT_ID);
                 if (selectedPlantId !== null && selectedPlantId !== undefined) {
                     if (this.plants.filter((p) => p.id == +selectedPlantId).length) {

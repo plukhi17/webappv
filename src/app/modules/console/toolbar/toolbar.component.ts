@@ -3,9 +3,38 @@ import { NavService } from '../../../services/nav.service';
 import { RouteConstant } from '../../../constants';
 import { AuthService } from '../../../services/auth.service';
 import { take, tap, takeUntil, filter } from 'rxjs/operators';
+import { NavNode } from 'src/app/interfaces';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subject } from 'rxjs';
 import { Plant } from 'src/app/interfaces/plant.interface';
+
+const NAV_TREE: NavNode[] = [
+    // {
+    //     icon: 'bubble_chart',
+    //     name: 'Overview',
+    //     path: RouteConstant.OVERVIEW
+    // },
+    {
+        icon: 'monitor',
+        name: 'Monitor-Realtime',
+        path: RouteConstant.MONITOR,
+    },
+    {
+        icon: 'analytics',
+        name: 'Analytics',
+        path: RouteConstant.ANALYTICS_MODULE,
+    },
+    {
+        icon: 'tune',
+        name: 'Optimize',
+        path: RouteConstant.OPTIMIZE,
+    },
+    {
+        icon: 'dashboard',
+        name: 'Machine Insights',
+        path: RouteConstant.DASHBOARD,
+    }
+];
 
 @Component({
     selector: 'app-toolbar',
@@ -22,6 +51,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
     public userName: string;
     public activePath: string;
+    public navTree: NavNode[] = NAV_TREE;
     private unsubscribe: Subject<void> = new Subject();
 
     constructor(
