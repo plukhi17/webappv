@@ -117,9 +117,11 @@ export class MontiorHeatComponent implements OnInit {
   updateDataForChart(): void {
     this.heatMapChart.chartOptions.xAxis.categories = this.xAxisCategories.map(entry => {
       if (this.filterType === 'daywise') {
-        return moment(entry).format('MMM DD YYYY')
+        // return moment(entry).format('MMM DD YYYY')
+        return entry;
       } else {
-        return moment(entry).format('MMM DD YYYY HH:mm:ss')
+        // return moment(entry).format('MMM DD YYYY HH:mm:ss')
+        return entry;
       }
     });
     this.heatMapChart.chartOptions.yAxis.categories = this.yAxisCategories;

@@ -83,9 +83,9 @@ export class MonitorMachinesAvailableComponent implements OnInit {
       this.chartOptions.series = [];
       const data: { name: string, data: number[], color?: string }[] = [];
       data.push({
-        name: 'Running',
-        data: this.topMachines.map((m) => m.running),
-        color: CHART.MONITOR_TOP_MACHINES.RUNNING.color
+        name: 'Stopped',
+        data: this.topMachines.map((m) => m.stopped),
+        color: CHART.MONITOR_TOP_MACHINES.STOPPED.color
       });
       data.push({
         name: 'Idle',
@@ -93,9 +93,9 @@ export class MonitorMachinesAvailableComponent implements OnInit {
         color: CHART.MONITOR_TOP_MACHINES.IDLE.color
       });
       data.push({
-        name: 'Stopped',
-        data: this.topMachines.map((m) => m.stopped),
-        color: CHART.MONITOR_TOP_MACHINES.STOPPED.color
+        name: 'Running',
+        data: this.topMachines.map((m) => m.running),
+        color: CHART.MONITOR_TOP_MACHINES.RUNNING.color
       });
       this.chartOptions.series = data;
       this.chartOptions.title = '';

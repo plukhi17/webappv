@@ -10,12 +10,13 @@
         <mat-form-field>
           <mat-select placeholder="Select Machine" #selectMachine name='selectMachine' [(ngModel)]="selectedMachine"
             (ngModelChange)='getData();'>
-            <mat-option>
-              <!-- <ngx-mat-select-search [formControl]="searchMachine"
+            <mat-option value='pl'>Plant Life Value</mat-option>
+            <!-- <mat-option> -->
+            <!-- <ngx-mat-select-search [formControl]="searchMachine"
                       placeholderLabel="Find Machine..."
                       noEntriesFoundLabel="No matching Machine found">
                   </ngx-mat-select-search> -->
-            </mat-option>
+            <!-- </mat-option> -->
             <mat-option *ngFor="let machine of machines" [value]="machine">
               {{machine.name}}
             </mat-option>
@@ -33,7 +34,7 @@
       </div>
       <ng-template #noDataRef>
         <div class='d-flex flex-row justify-content-center w-100' *ngIf='!loading'>
-          No data available {{selectedMachine ? ('for machine '+ selectedMachine?.name) : ''}}.
+          No data available {{(selectedMachine?.name) ? ('for machine '+ selectedMachine?.name) : ''}}.
         </div>
       </ng-template>
 

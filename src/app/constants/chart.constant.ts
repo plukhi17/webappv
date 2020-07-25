@@ -40,12 +40,12 @@ export class CHART {
     }
     static readonly MONITOR_HEAT = {
         RISKSCORE: {
-            minColor: '#00ff00',
-            maxColor: '#ff0000'
+            minColor: '#7AAC8D',
+            maxColor: '#DE3B00'
         },
         AVAILABILITY: {
-            minColor: '#ff0000',
-            maxColor: '#00ff00'
+            minColor: '#DE3B00',
+            maxColor: '#7AAC8D'
         }
     }
     static readonly MONITOR_TOP_MACHINES = {
