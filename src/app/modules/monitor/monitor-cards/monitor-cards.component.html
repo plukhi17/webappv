@@ -1,6 +1,5 @@
 <div fxLayout="row" fxLayout.lt-sm='column' fxLayoutAlign="start stretch" fxLayoutGap="16px" fxFlexFill>
-  <mat-card class='monitor-card' fxFlex='1 1 33.33%' fxFlex.lt-sm='100%'
-    [style.background]='cardColors?.AVAILABLE?.color'>
+  <mat-card class='monitor-card' fxFlex='1 1 33.33%' fxFlex.lt-sm='100%' [style.background]='MACHINES_AVAILABLE_COLOR'>
     <div fxLayout="column" fxLayoutAlign="space-between stretch" fxFlexFill>
       <mat-card-header>
         <mat-card-title class='card-title'>Machines Available</mat-card-title>
@@ -18,8 +17,7 @@
       </mat-card-footer>
     </div>
   </mat-card>
-  <mat-card class='monitor-card' fxFlex='1 1 33.33%' fxFlex.lt-sm='1 1 100%'
-    [style.background]='cardColors?.OVERLOADS?.color'>
+  <mat-card class='monitor-card' fxFlex='1 1 33.33%' fxFlex.lt-sm='1 1 100%' [style.background]='OVERLOADS_COLOR'>
     <div fxLayout="column" fxLayoutAlign="space-between stretch" fxFlexFill>
       <mat-card-header>
         <mat-card-title class='card-title'>Number of Overloads</mat-card-title>

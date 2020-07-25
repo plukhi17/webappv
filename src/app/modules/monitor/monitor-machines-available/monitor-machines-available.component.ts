@@ -27,7 +27,7 @@ export class MonitorMachinesAvailableComponent implements OnInit {
 
   showChart = false;
   highcharts = Highcharts;
-  chartOptions = {
+  chartOptions: any = {
     chart: {
       type: 'bar'
     },
@@ -80,6 +80,11 @@ export class MonitorMachinesAvailableComponent implements OnInit {
   updateChartData(): void {
     if (this.topMachines && this.topMachines.length) {
       this.chartOptions.xAxis.categories = this.topMachines.map((m) => m.name);
+      if (!this.chartOptions.yAxis) {
+        this.chartOptions.yAxis = {};
+      }
+      this.chartOptions.yAxis.min = 0;
+      this.chartOptions.yAxis.max = 100;
       this.chartOptions.series = [];
       const data: { name: string, data: number[], color?: string }[] = [];
       data.push({

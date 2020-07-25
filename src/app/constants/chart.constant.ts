@@ -27,12 +27,37 @@ export class CHART {
             color: "#BF4E85"
         }
     }
+    static readonly MONITOR_HEALTH_DONUT = {
+        NORMAL: {
+            color: "#66CDAA"
+        },
+        WARNING: {
+            color: "#FFA500"
+        },
+        CRITICAL: {
+            color: "#FF4500"
+        }
+    }
+    static readonly MONITOR_AVAILABILITY_DONUT = {
+        RUNNING: {
+            color: "#4682B4"
+        },
+        IDLE: {
+            color: "#F08080"
+        },
+        STOPPED: {
+            color: "#A9A9A9"
+        }
+    }
     static readonly MONITOR_CARDS = {
         AVAILABLE: {
-            color: '#3EDAD7'
+            DEFAULT: '#3EDAD7',
+            LESS_THAN_90: '#FFD700',
+            LESS_THAN_40: '#DC143C'
         },
         OVERLOADS: {
-            color: '#37C9F0'
+            DEFAULT: '#DC143C',
+            UPTO_80: '#FFD700'
         },
         INDICATOR: {
             color: '#2C91D5'

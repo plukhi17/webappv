@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import Heatmap from 'highcharts/modules/heatmap.js';
 import { HighchartsChartComponent } from 'highcharts-angular';
+import HighchartsBoost from 'highcharts/modules/boost';
 
 @Component({
   selector: 'app-heat-map-chart',
@@ -17,6 +18,11 @@ export class HeatMapChartComponent implements OnInit {
       type: 'heatmap',
       marginTop: 40,
       marginBottom: 80
+    },
+    boost: {
+      useGPUTranslations: true,
+      seriesThreshold: 0,
+      allowForce: true
     },
     title: {
       // text: 'Sales per employee per weekday'
@@ -45,7 +51,8 @@ export class HeatMapChartComponent implements OnInit {
       name: 'Sales per employee',
       borderWidth: 1,
       data: [],
-
+      boostThreshold: 1,
+      turboThreshold: Number.MAX_VALUE,
       dataLabels: {
         enabled: true,
         color: '#000000'
@@ -59,6 +66,7 @@ export class HeatMapChartComponent implements OnInit {
   constructor() {
 
     Heatmap(Highcharts);
+    HighchartsBoost(Highcharts);
   }
 
   ngOnInit() {

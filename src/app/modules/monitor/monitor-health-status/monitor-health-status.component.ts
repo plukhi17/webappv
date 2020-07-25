@@ -82,9 +82,12 @@ export class MonitorHealthStatusComponent implements OnInit {
       const faults = Array.from(new Set(this.realTimeData.map((data) => data.health_status)));
       faults.sort();
       const data = [];
-      faults.forEach((status, index) => {
-        data.push({ name: status, y: this.realTimeData.filter((data) => data.health_status === status).length, color: this.colors[index] })
-      });
+      // faults.forEach((status, index) => {
+      //   data.push({ name: status, y: this.realTimeData.filter((data) => data.health_status === status).length, color: this.colors[index] })
+      // });
+      data.push({ name: 'Normal', y: this.realTimeData.filter((data) => data.health_status === 'Normal').length, color: CHART.MONITOR_HEALTH_DONUT.NORMAL.color });
+      data.push({ name: 'Warning', y: this.realTimeData.filter((data) => data.health_status === 'Warning').length, color: CHART.MONITOR_HEALTH_DONUT.WARNING.color });
+      data.push({ name: 'Critical', y: this.realTimeData.filter((data) => data.health_status === 'Critical').length, color: CHART.MONITOR_HEALTH_DONUT.CRITICAL.color });
       const series = {
         type: 'pie',
         name: `Monitor Status`,

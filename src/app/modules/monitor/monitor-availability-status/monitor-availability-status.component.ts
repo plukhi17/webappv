@@ -99,9 +99,9 @@ export class MonitorAvailabilityStatusComponent implements OnInit {
       }
       this.chartOptions.series = [];
       const data = [];
-      data.push({ name: 'Running', y: this.runningMachines, color: CHART.MONITOR_SEMIPIE.RUNNING.color });
-      data.push({ name: 'Idle', y: this.idleMachines, color: CHART.MONITOR_SEMIPIE.IDLE.color });
-      data.push({ name: 'Stopped', y: this.stoppedMachines, color: CHART.MONITOR_SEMIPIE.STOPPED.color });
+      data.push({ name: 'Running', y: this.runningMachines, color: CHART.MONITOR_AVAILABILITY_DONUT.RUNNING.color });
+      data.push({ name: 'Idle', y: this.idleMachines, color: CHART.MONITOR_AVAILABILITY_DONUT.IDLE.color });
+      data.push({ name: 'Stopped', y: this.stoppedMachines, color: CHART.MONITOR_AVAILABILITY_DONUT.STOPPED.color });
       const series = {
         type: 'pie',
         name: `Monitor Status`,

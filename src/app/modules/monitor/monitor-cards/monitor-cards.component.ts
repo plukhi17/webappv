@@ -26,6 +26,8 @@ export class MonitorCardsComponent implements OnInit {
   plantLifeValue = null;
 
   cardColors = CHART.MONITOR_CARDS;
+  MACHINES_AVAILABLE_COLOR = CHART.MONITOR_CARDS.AVAILABLE.DEFAULT;
+  OVERLOADS_COLOR = CHART.MONITOR_CARDS.OVERLOADS.DEFAULT;
 
   constructor(
     private dataService: DataService
@@ -38,7 +40,23 @@ export class MonitorCardsComponent implements OnInit {
   updateCardsData(): void {
     if (this.realTimeData) {
       this.availableMachines = this.realTimeData.filter((entry) => ['Running', 'Idle'].includes(entry.availabilty_status)).length;
+      let availablePercent = 0;
+      if (this.realTimeData.length) {
+        availablePercent = this.availableMachines * 100 / this.realTimeData.length;
+        if (availablePercent < 40) {
+          this.MACHINES_AVAILABLE_COLOR = CHART.MONITOR_CARDS.AVAILABLE.LESS_THAN_40;
+        } else if (availablePercent < 90) {
+          this.MACHINES_AVAILABLE_COLOR = CHART.MONITOR_CARDS.AVAILABLE.LESS_THAN_90;
+        } else {
+          this.MACHINES_AVAILABLE_COLOR = CHART.MONITOR_CARDS.AVAILABLE.DEFAULT;
+        }
+      }
       this.overloadedMachines = this.realTimeData.filter((entry) => entry.overload).length;
+      if (this.overloadedMachines < 80) {
+        this.OVERLOADS_COLOR = CHART.MONITOR_CARDS.OVERLOADS.UPTO_80;
+      } else {
+        this.OVERLOADS_COLOR = CHART.MONITOR_CARDS.OVERLOADS.DEFAULT;
+      }
     }
   }
 
