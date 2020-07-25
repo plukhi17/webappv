@@ -93,7 +93,7 @@ export class MonitorMachineLifeIndicatorComponent implements OnInit {
     if (this.plantLifeValues && this.plantLifeValues.length) {
       this.noData = false;
       this.chartOptions.series = [];
-      const time = this.plantLifeValues.map((data) => data.telemetry_hour); // moment(data.telemetry_hour).format('YYYY-MM-DD HH:mm:ss')
+      const time = this.plantLifeValues.map((data) => data.telemetry_hour.replace('.000Z', '')); // moment(data.telemetry_hour).format('YYYY-MM-DD HH:mm:ss')
       const data = this.plantLifeValues.map((data) => data.plant_life_value);
 
       this.chartOptions.xAxis.categories = time;
@@ -113,7 +113,7 @@ export class MonitorMachineLifeIndicatorComponent implements OnInit {
     if (this.machineLifeValues && this.machineLifeValues.length) {
       this.noData = false;
       this.chartOptions.series = [];
-      const time = this.machineLifeValues.map((data) => data.telemetry_hour); // moment(data.telemetry_hour).format('YYYY-MM-DD HH:mm:ss')
+      const time = this.machineLifeValues.map((data) => data.telemetry_hour.replace('.000Z', '')); // moment(data.telemetry_hour).format('YYYY-MM-DD HH:mm:ss')
       const data = this.machineLifeValues.map((data) => data.machine_life_value);
 
       this.chartOptions.xAxis.categories = time;
