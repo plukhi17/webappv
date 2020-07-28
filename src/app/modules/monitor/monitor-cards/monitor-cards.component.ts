@@ -23,7 +23,7 @@ export class MonitorCardsComponent implements OnInit {
 
   availableMachines = 0;
   overloadedMachines = 0;
-  plantLifeValue = null;
+  plantLifeValue = { value: 0, percent: 0 };
 
   cardColors = CHART.MONITOR_CARDS;
   MACHINES_AVAILABLE_COLOR = CHART.MONITOR_CARDS.AVAILABLE.DEFAULT;
@@ -67,12 +67,21 @@ export class MonitorCardsComponent implements OnInit {
     }) => {
       if (data) {
         if (data.present_plant_life_value !== null && data.present_plant_life_value !== undefined) {
-          this.plantLifeValue = data.present_plant_life_value;
+          this.plantLifeValue.value = data.present_plant_life_value;
+          this.plantLifeValue.percent = this.calculatePercent(data.previous_plant_life_value, data.present_plant_life_value);
         } else {
-          this.plantLifeValue = null;
+          this.plantLifeValue = { value: 0, percent: 0 };
         }
       }
     })
+  }
+
+  calculatePercent(before: number, after: number): number {
+    let percent = 0;
+    if (before || after) {
+      percent = (after - before) * 2 * 100 / (after + before);
+    }
+    return percent;
   }
 
 }

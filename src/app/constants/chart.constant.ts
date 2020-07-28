@@ -38,6 +38,17 @@ export class CHART {
             color: "#FF4500"
         }
     }
+    static readonly RISKSCORE = {
+        NORMAL: {
+            color: "#66CDAA"
+        },
+        WARNING: {
+            color: "#FFA500"
+        },
+        CRITICAL: {
+            color: "#FF4500"
+        }
+    }
     static readonly MONITOR_AVAILABILITY_DONUT = {
         RUNNING: {
             color: "#4682B4"

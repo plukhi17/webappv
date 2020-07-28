@@ -36,7 +36,11 @@
 
           <ng-container matColumnDef="availabilty_status">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Availability </th>
-            <td mat-cell *matCellDef="let element"> {{element.availabilty_status}} </td>
+            <td mat-cell *matCellDef="let element">
+              <span
+                [style.color]="(availabilityColors[element?.availabilty_status?.toUpperCase()]) ? availabilityColors[element?.availabilty_status?.toUpperCase()]?.color : 'black'">
+                {{element.availabilty_status}} </span>
+            </td>
           </ng-container>
 
           <!-- Idle (In Hrs) column : idle_time_in_hrs -->
@@ -67,7 +71,11 @@
 
           <ng-container matColumnDef="health_status">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Instant Health Status </th>
-            <td mat-cell *matCellDef="let element"> {{element.health_status}} </td>
+            <td mat-cell *matCellDef="let element">
+              <span
+                [style.color]="(healthStatusColors[element?.health_status?.toUpperCase()]) ? healthStatusColors[element?.health_status?.toUpperCase()]?.color : 'black'">
+                {{element.health_status}} </span>
+            </td>
           </ng-container>
 
           <!-- Total Warning column: warning_count -->
@@ -78,7 +86,13 @@
 
           <ng-container matColumnDef="riskscore">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Instant Riskscore </th>
-            <td mat-cell *matCellDef="let element"> {{element.riskscore}} </td>
+            <td mat-cell *matCellDef="let element">
+              <span [style.color]='(element?.riskscore >= 70) ? riskscoreColors.CRITICAL.color : 
+                ((element?.riskscore >= 50) ? riskscoreColors.WARNING.color :
+                (element?.riskscore >= 30) ? riskscoreColors.NORMAL.color : "black")'>
+                {{element.riskscore}}
+              </span>
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="fault">

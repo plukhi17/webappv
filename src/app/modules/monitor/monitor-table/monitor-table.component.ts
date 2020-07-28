@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, ViewChild, AfterViewInit } from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
+import { CHART } from 'src/app/constants/chart.constant';
 
 @Component({
   selector: 'app-monitor-table',
@@ -24,6 +25,10 @@ export class MonitorTableComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+
+  availabilityColors = CHART.MONITOR_AVAILABILITY_DONUT;
+  healthStatusColors = CHART.MONITOR_HEALTH_DONUT;
+  riskscoreColors = CHART.RISKSCORE;
 
   constructor() { }
 
