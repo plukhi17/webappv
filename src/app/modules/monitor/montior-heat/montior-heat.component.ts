@@ -140,6 +140,7 @@ export class MontiorHeatComponent implements OnInit {
     this.heatMapChart.chartOptions.colorAxis = {
       min: 0,
       minColor: (this.viewMode === 'avg_riskscore') ? CHART.MONITOR_HEAT.RISKSCORE.minColor : CHART.MONITOR_HEAT.AVAILABILITY.minColor,
+      max: 100,
       maxColor: (this.viewMode === 'avg_riskscore') ? CHART.MONITOR_HEAT.RISKSCORE.maxColor : CHART.MONITOR_HEAT.AVAILABILITY.maxColor
     }
 

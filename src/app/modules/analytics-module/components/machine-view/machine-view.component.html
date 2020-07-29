@@ -6,78 +6,102 @@
   <ng-template [ngIf]='!loading' [ngIfElse]='spinner'>
     <div class='col-12'>
       <div class='row' *ngIf='aggregatedData'>
-        <div class='col-lg-3 col-md-6 col-sm-12 col-xs-12 mb-24'>
-          <mat-card>
-            <mat-card-header>
-              <mat-card-title>Rated</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              <div class='data-value'
-                *ngIf='(aggregatedData?.rated_current !== null && aggregatedData?.rated_current !== undefined); else naRef'>
-                {{aggregatedData?.rated_current | number: '.0-4'}}</div>
-            </mat-card-content>
-          </mat-card>
+        <div class='col-lg-6 col-md-12 mb-1'>
+          <div fxLayout="row" fxLayout.lt-sm='column' fxLayoutAlign="start stretch" fxLayoutGap="16px" fxFlexFill>
+            <mat-card class='analysis-card default-shadow' fxFlex='1 1 33.33%' fxFlex.lt-sm='100%'
+              [style.color]='currentColor'>
+              <div fxLayout="column" fxLayoutAlign="start stretch" fxFlexFill>
+                <mat-card-header>
+                  <mat-card-title class="card-title">Instant Current</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="16px" fxFlexFill>
+                    <div class='card-value'>
+                      <span
+                        *ngIf='(aggregatedData?.avg_i_rms !== null && aggregatedData?.avg_i_rms !== undefined); else naRef'>{{aggregatedData?.avg_i_rms | number: '.0-4'}}</span>
+                    </div>
+                  </div>
+                </mat-card-content>
+                <mat-card-footer>
+                  <div class='arrow-block my-3' fxLayout="row" fxLayoutAlign="start center"
+                    *ngIf='(aggregatedData?.rated_current !== null && aggregatedData?.rated_current !== undefined);'>
+                    <div class='value'>{{aggregatedData?.rated_current | number: '.0-4'}} (Rated Current)</div>
+                  </div>
+                </mat-card-footer>
+              </div>
+            </mat-card>
+            <mat-card class='analysis-card default-shadow' fxFlex='1 1 33.33%' fxFlex.lt-sm='1 1 100%'
+              [style.color]='riskscoreColor'>
+              <div fxLayout="column" fxLayoutAlign="start stretch" fxFlexFill>
+                <mat-card-header>
+                  <mat-card-title class="card-title">Risk Score</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px" fxFlexFill>
+                    <div class='card-value'>
+                      <span
+                        *ngIf='(aggregatedData?.avg_riskscore !== null && aggregatedData?.avg_riskscore !== undefined); else naRef'>{{aggregatedData?.avg_riskscore | number: '.0-4'}}</span>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </div>
+            </mat-card>
+            <mat-card class='analysis-card default-shadow' fxFlex='1 1 33.33%' fxFlex.lt-sm='1 1 100%'
+              [style.color]='overloadsColor'>
+              <div fxLayout="column" fxLayoutAlign="start stretch" fxFlexFill>
+                <mat-card-header>
+                  <mat-card-title class="card-title">Overloads</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px" fxFlexFill>
+                    <div class='card-value'>
+                      <span
+                        *ngIf='(aggregatedData?.overloads !== null && aggregatedData?.overloads !== undefined); else naRef'>{{aggregatedData?.overloads | number: '.0-4'}}</span>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </div>
+            </mat-card>
+          </div>
         </div>
-        <div class='col-lg-3 col-md-6 col-sm-12 col-xs-12 mb-24'>
-          <mat-card>
-            <mat-card-header>
-              <mat-card-title>I-RMS</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              <div class='data-value'
-                *ngIf='(aggregatedData?.avg_i_rms !== null && aggregatedData?.avg_i_rms !== undefined); else naRef'>
-                {{aggregatedData?.avg_i_rms | number: '.0-4'}}</div>
-            </mat-card-content>
-          </mat-card>
-        </div>
-        <div class='col-lg-3 col-md-6 col-sm-12 col-xs-12 mb-24'>
-          <mat-card>
-            <mat-card-header>
-              <mat-card-title>Risk Score</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              <div class='data-value'
-                *ngIf='(aggregatedData?.avg_riskscore !== null && aggregatedData?.avg_riskscore !== undefined); else naRef'>
-                {{aggregatedData?.avg_riskscore | number: '.0-4'}}</div>
-            </mat-card-content>
-          </mat-card>
-        </div>
-        <div class='col-lg-3 col-md-6 col-sm-12 col-xs-12 mb-24'>
-          <mat-card>
-            <mat-card-header>
-              <mat-card-title>Overloads</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              <div class='data-value'
-                *ngIf='(aggregatedData?.overloads !== null && aggregatedData?.overloads !== undefined); else naRef'>
-                {{aggregatedData?.overloads | number: '.0-4'}}</div>
-            </mat-card-content>
-          </mat-card>
+        <div class='col-lg-6 col-md-12'>
+          <div class='row'>
+            <div class='col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-24'>
+              <mat-card>
+                <mat-card-header>
+                  <mat-card-title>Health Status</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <div class="chart" *ngIf='showHealthChartBlock; else naRef'>
+                    <highcharts-chart #chart *ngIf='showHealthChart' [Highcharts]="highcharts"
+                      [options]="healthChartOptions" style="width: 100%; height: 100%; display: block;">
+                    </highcharts-chart>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+            <div class='col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-24'>
+              <mat-card>
+                <mat-card-header>
+                  <mat-card-title>Availability Status</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <div class="chart" *ngIf='showAvailabilityChartBlock; else naRef'>
+                    <highcharts-chart #chart *ngIf='showAvailabilityChart' [Highcharts]="highcharts"
+                      [options]="availabilityChartOptions" style="width: 100%; height: 100%; display: block;">
+                    </highcharts-chart>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
         </div>
       </div>
     </div>
     <ng-template #naRef>
       <div class='data-value na'>NA</div>
     </ng-template>
-    <div class='col-lg-3 col-md-6 col-sm-12 col-xs-12 mb-24' *ngIf='aggregatedData'>
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title>Pie Chart</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <!-- <div class="chart" *ngIf='showPieChart; else naRef'>
-            <app-pie-chart #pieChart [data]='data' [animationEnabled]='false' height="160" width="240">
-            </app-pie-chart>
-          </div> -->
-          <div class="chart" *ngIf='showPieChart; else naRef'>
-            <highcharts-chart #chart *ngIf='showChart' [Highcharts]="highcharts" [options]="chartOptions"
-              style="width: 100%; height: 100%; display: block;">
-            </highcharts-chart>
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </div>
-    <div class='col-lg-9 col-md-12 col-sm-12 col-xs-12 mb-24' *ngIf='comboChartData'>
+    <div class='col-12 mb-24' *ngIf='comboChartData'>
       <app-analytics-combo-chart [data]='comboChartData' (typeChange)='onTypeChange($event)'>
       </app-analytics-combo-chart>
     </div>

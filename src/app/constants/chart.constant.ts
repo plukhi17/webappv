@@ -27,7 +27,7 @@ export class CHART {
             color: "#BF4E85"
         }
     }
-    static readonly MONITOR_HEALTH_DONUT = {
+    static readonly HEALTH_STATUS = {
         NORMAL: {
             color: "#66CDAA"
         },
@@ -49,7 +49,7 @@ export class CHART {
             color: "#FF4500"
         }
     }
-    static readonly MONITOR_AVAILABILITY_DONUT = {
+    static readonly AVAILABILITY_STATUS = {
         RUNNING: {
             color: "#4682B4"
         },
@@ -82,17 +82,6 @@ export class CHART {
         AVAILABILITY: {
             minColor: '#DE3B00',
             maxColor: '#7AAC8D'
-        }
-    }
-    static readonly MONITOR_TOP_MACHINES = {
-        RUNNING: {
-            color: "#00C2CB"
-        },
-        IDLE: {
-            color: "#FF5757"
-        },
-        STOPPED: {
-            color: "#C0C1C3"
         }
     }
 }

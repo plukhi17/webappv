@@ -3,7 +3,7 @@ import { DataService } from 'src/app/services/data.service';
 import { take, tap } from 'rxjs/operators';
 import { Machine } from 'src/app/interfaces';
 import * as Highcharts from 'highcharts';
-import * as moment from 'moment';
+import { CHART } from 'src/app/constants/chart.constant';
 
 @Component({
   selector: 'app-monitor-machine-life-indicator',
@@ -99,7 +99,8 @@ export class MonitorMachineLifeIndicatorComponent implements OnInit {
       this.chartOptions.xAxis.categories = time;
       const series = {
         name: `Plant Life Value`,
-        data: data
+        data: data,
+        color: CHART.MONITOR_CARDS.INDICATOR.color
       }
       this.chartOptions.series.push(series);
       this.chartOptions.title = '';
@@ -119,7 +120,8 @@ export class MonitorMachineLifeIndicatorComponent implements OnInit {
       this.chartOptions.xAxis.categories = time;
       const series = {
         name: `${this.selectedMachine.name} Life Value`,
-        data: data
+        data: data,
+        color: CHART.MONITOR_CARDS.INDICATOR.color
       }
       this.chartOptions.series.push(series);
       this.chartOptions.title = '';

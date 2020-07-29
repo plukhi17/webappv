@@ -39,10 +39,20 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-12 col-lg-12 col-sm-24 col-xs-24" *ngIf="f.normalMachine.value">
-                  <h3>Selected Normal Machine</h3>
-                  <h5>Name:</h5> {{f.normalMachine.value.name}}
-                  <h5>Description:</h5> {{f.normalMachine.value.description}}
+                <div class="col-md-7 col-lg-9 col-sm-24 col-xs-24">
+                  <!-- <h3>Selected Normal Machine</h3> -->
+                  <span *ngIf="f?.normalMachine?.value">{{f.normalMachine.value.name}}:
+                    {{f.normalMachine.value.description}} </span>
+                  <!-- <h5>Name:</h5> {{f.normalMachine.value.name}}
+                  <h5>Description:</h5> {{f.normalMachine.value.description}} -->
+                </div>
+                <div class='col-lg-3 col-md-5 col-sm-12 col-xs-12  d-flex justify-content-end'>
+                  <button (click)="loadData()"
+                    [disabled]="!(formGroup?.value?.normalMachine && formGroup?.value?.fromToDate?.length > 1)"
+                    cdkTrapFocus color="primary" mat-raised-button class='mx-3'>Load
+                    Data
+                  </button>
+                  <button mat-button (click)="resetForm()">Reset</button>
                 </div>
               </div>
 
@@ -50,15 +60,6 @@
           </div>
         </form>
       </mat-card-content>
-
-      <mat-card-actions align="end">
-        <button (click)="loadData()"
-          [disabled]="!(formGroup?.value?.normalMachine && formGroup?.value?.fromToDate?.length > 1)" cdkTrapFocus
-          color="primary" mat-raised-button>Load
-          Data
-        </button>
-        <button mat-button (click)="resetForm()">Reset</button>
-      </mat-card-actions>
     </ng-container>
     <ng-template #spinner>
       <mat-card-content fxLayoutAlign="center center">

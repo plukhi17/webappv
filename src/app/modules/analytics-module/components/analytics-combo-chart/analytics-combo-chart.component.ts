@@ -25,31 +25,37 @@ export class AnalyticsComboChartComponent implements OnInit, AfterViewInit {
   @ViewChild('chart') chart: HighchartsChartComponent;
   showChart = false;
 
-  lineChartOptions: { value: string, viewValue: string, color: any }[] = [
+  lineChartOptions: { value: string, viewValue: string, color: any, yAxis?: number }[] = [
     {
-      value: 'avg_riskscore', viewValue: 'Risk Score', color: ''
+      value: 'avg_riskscore', viewValue: 'Risk Score', color: '', yAxis: 1
     },
     {
-      value: 'starts', viewValue: 'Starts', color: ''
+      value: 'starts', viewValue: 'No. of Starts', color: ''
     },
-    // {
-    //   value: 'avg_riskscore', viewValue: 'Risk Score'
-    // },
-    // {
-    //   value: 'avg_riskscore', viewValue: 'Risk Score'
-    // },
+    {
+      value: 'machine_life_value', viewValue: 'Machine Life Indicator', color: ''
+    },
+    {
+      value: 'avg_i_rms', viewValue: 'Current', color: ''
+    },
+    {
+      value: 'overloads', viewValue: 'Overloads', color: ''
+    },
   ]
 
-  barChartOptions: { value: string, viewValue: string, color: any }[] = [
+  barChartOptions: { value: string, viewValue: string, color: any, yAxis?: number }[] = [
     {
-      value: 'availability', viewValue: 'Availability', color: ''
+      value: 'availability', viewValue: 'Availability', color: '', yAxis: 1
     },
     {
-      value: 'warnings', viewValue: 'Warnings', color: ''
+      value: 'machine_status', viewValue: 'Machine Status', color: '', yAxis: 1
     },
-    {
-      value: 'rated_current', viewValue: 'Rated Current', color: ''
-    },
+    // {
+    //   value: 'warnings', viewValue: 'Warnings', color: ''
+    // },
+    // {
+    //   value: 'rated_current', viewValue: 'Rated Current', color: ''
+    // },
   ];
 
   filterTypeOptions: { value: string, viewValue: string }[] = [
@@ -62,20 +68,34 @@ export class AnalyticsComboChartComponent implements OnInit, AfterViewInit {
   ]
 
   filters = {
-    line: 'avg_riskscore',
-    bar: 'warnings',
+    line: ['avg_riskscore', 'starts'],
+    bar: 'availability',
     filterType: 'daily'
   }
 
   highcharts = Highcharts;
   chartOptions: Highcharts.Options | any = {
     title: {
-      text: 'Analytics'
+      text: 'Reliability Analysis'
     },
     xAxis: {
       categories: []
     },
-    series: []
+    yAxis: [
+      {
+        title: ''
+      },
+      {
+        title: '',
+        opposite: true,
+        min: 0,
+        max: 100
+      }
+    ],
+    series: [],
+    chart: {
+      zoomType: 'xy'
+    }
   };
 
   constructor() {
@@ -100,10 +120,12 @@ export class AnalyticsComboChartComponent implements OnInit, AfterViewInit {
       const categories = this.data.map((e) => {
         let value: string;
         if (this.filters.filterType === 'daily') {
-          value = new Date(e.telemetry_day).toDateString();
+          // value = new Date(e.telemetry_day).toDateString();
+          value = (e.telemetry_day) ? e.telemetry_day.replace('.000Z', '') : e.telemetry_day;
         } else {
           // value = new Date(e.telemetry_hour).toString();
-          value = moment(e.telemetry_hour).format('YYYY-MM-DD HH:mm:ss');
+          // value = moment(e.telemetry_hour).format('YYYY-MM-DD HH:mm:ss');
+          value = (e.telemetry_hour) ? e.telemetry_hour.replace('.000Z', '') : e.telemetry_hour;
         }
         return value;
       });
@@ -111,27 +133,57 @@ export class AnalyticsComboChartComponent implements OnInit, AfterViewInit {
       console.log('categories', categories);
       this.chartOptions.series = [];
       if (this.filters.bar === 'availability') {
+        const selectedOption = this.barChartOptions.filter((e) => e.value == this.filters.bar)[0];
         const availabilitySeries: any = [
           {
             type: 'column',
             name: 'Running',
             data: this.data.map((e) => e.runningpercent),
-            color: CHART.ANALYSIS_PIE.RUNNING.color
+            color: CHART.AVAILABILITY_STATUS.RUNNING.color,
+            yAxis: selectedOption.yAxis ? selectedOption.yAxis : 0
           },
           {
             type: 'column',
             name: 'Idle',
             data: this.data.map((e) => e.idlepercent),
-            color: CHART.ANALYSIS_PIE.IDLE.color
+            color: CHART.AVAILABILITY_STATUS.IDLE.color,
+            yAxis: selectedOption.yAxis ? selectedOption.yAxis : 0
           },
           {
             type: 'column',
             name: 'Stopped',
             data: this.data.map((e) => e.stoppedpercent),
-            color: CHART.ANALYSIS_PIE.STOPPED.color
+            color: CHART.AVAILABILITY_STATUS.STOPPED.color,
+            yAxis: selectedOption.yAxis ? selectedOption.yAxis : 0
           }
         ];
         this.chartOptions.series.push(...availabilitySeries);
+      } else if (this.filters.bar === 'machine_status') {
+        const selectedOption = this.barChartOptions.filter((e) => e.value == this.filters.bar)[0];
+        const machineStatusSeries: any = [
+          {
+            type: 'column',
+            name: 'Critical',
+            data: this.data.map((e) => e.criticalpercent),
+            color: CHART.HEALTH_STATUS.CRITICAL.color,
+            yAxis: selectedOption.yAxis ? selectedOption.yAxis : 0
+          },
+          {
+            type: 'column',
+            name: 'Warning',
+            data: this.data.map((e) => e.warningpercent),
+            color: CHART.HEALTH_STATUS.WARNING.color,
+            yAxis: selectedOption.yAxis ? selectedOption.yAxis : 0
+          },
+          {
+            type: 'column',
+            name: 'Normal',
+            data: this.data.map((e) => e.normalpercent),
+            color: CHART.HEALTH_STATUS.NORMAL.color,
+            yAxis: selectedOption.yAxis ? selectedOption.yAxis : 0
+          }
+        ];
+        this.chartOptions.series.push(...machineStatusSeries);
       } else {
         const barChartSeries: any = {
           type: 'column',
@@ -140,15 +192,16 @@ export class AnalyticsComboChartComponent implements OnInit, AfterViewInit {
         }
         this.chartOptions.series.push(barChartSeries);
       }
-      const lineChartSeries: any = {
-        type: 'spline',
-        name: this.lineChartOptions.filter((e) => e.value == this.filters.line)[0].viewValue,
-        data: this.data.map((e) => e[this.filters.line]),
-        // color: this.lineChartOptions.filter((e) => e.value == this.filters.line)[0].viewValue
-      }
-      this.chartOptions.series.push(lineChartSeries);
-      console.log('chart series', this.chartOptions.series);
-      this.data.forEach((entry) => {
+      this.filters.line.forEach((entry) => {
+        const selectedOption = this.lineChartOptions.filter((e) => e.value == entry)[0];
+        const lineChartSeries: any = {
+          type: 'spline',
+          name: selectedOption.viewValue,
+          data: this.data.map((e) => e[entry]),
+          yAxis: selectedOption.yAxis ? selectedOption.yAxis : 0
+          // color: this.lineChartOptions.filter((e) => e.value == this.filters.line)[0].viewValue
+        }
+        this.chartOptions.series.push(lineChartSeries);
       })
     }
     this.updateChart();

@@ -17,19 +17,18 @@ export class MachineViewComponent implements OnInit, AfterViewInit {
   data: { y: number, label: string, [key: string]: any }[] = [];
   colors: string[] = CHART.MONITOR_PIE.colors;
 
-  @ViewChild('pieChart') pieChart: PieChartComponent;
   public config: { normal: Machine, fromToDate: moment.Moment[] };
 
   public machines: Machine[];
   aggregatedData: any;
   comboChartData: any[];
 
-  showPieChart = true;
+  showAvailabilityChartBlock = true;
   loading = false;
 
-  showChart = false;
+  showAvailabilityChart = false;
   highcharts = Highcharts;
-  chartOptions: Highcharts.Options | any = {
+  availabilityChartOptions: Highcharts.Options | any = {
     title: {
       text: ''
     },
@@ -50,7 +49,48 @@ export class MachineViewComponent implements OnInit, AfterViewInit {
         },
         minSize: '400px',
         showInLegend: false,
-        size: '120%'
+        size: '120%',
+        // startAngle: -90,
+        // endAngle: 90,
+        center: ['50%', '50%'],
+        innerSize: '50%'
+      }
+    },
+    series: [],
+    tooltip: {
+      pointFormat: '{point.name}: <b>{point.y}</b>'
+    }
+  };
+
+
+  showHealthChartBlock = true;
+  showHealthChart = false;
+  healthChartOptions: Highcharts.Options | any = {
+    title: {
+      text: ''
+    },
+    plotOptions: {
+      series: {
+        animation: false
+      },
+      pie: {
+        allowPointSelect: true,
+        cursor: 'pointer',
+        dataLabels: {
+          enabled: true,
+          format: '{point.name}: <b>{point.y}</b>',
+          distance: 10,
+          style: {
+            fontSize: '12px'
+          }
+        },
+        minSize: '400px',
+        showInLegend: false,
+        size: '120%',
+        // startAngle: -90,
+        // endAngle: 90,
+        center: ['50%', '50%'],
+        innerSize: '50%'
       }
     },
     series: [],
@@ -60,6 +100,10 @@ export class MachineViewComponent implements OnInit, AfterViewInit {
   };
 
   afterViewInitCalled = false;
+
+  currentColor = 'black';
+  overloadsColor = CHART.MONITOR_CARDS.OVERLOADS.DEFAULT;
+  riskscoreColor = CHART.RISKSCORE.NORMAL.color;
 
   constructor(private dataService: DataService) {
     this._fetchMachines();
@@ -105,8 +149,25 @@ export class MachineViewComponent implements OnInit, AfterViewInit {
         } else {
           this.aggregatedData = {};
         }
+        if (this.aggregatedData) {
+          if (this.aggregatedData.overloads <= 80) {
+            this.overloadsColor = CHART.MONITOR_CARDS.OVERLOADS.UPTO_80;
+          } else {
+            this.overloadsColor = CHART.MONITOR_CARDS.OVERLOADS.DEFAULT;
+          }
+          if (this.aggregatedData.avg_riskscore >= 70) {
+            this.riskscoreColor = CHART.RISKSCORE.CRITICAL.color;
+          } else if (this.aggregatedData.avg_riskscore >= 50) {
+            this.riskscoreColor = CHART.RISKSCORE.WARNING.color;
+          } else if (this.aggregatedData.avg_riskscore >= 30) {
+            this.riskscoreColor = CHART.RISKSCORE.NORMAL.color;
+          } else {
+            this.riskscoreColor = 'black';
+          }
+        }
         this.loading = false;
-        this.updateChartData2();
+        this.updateAvailabilityChartData();
+        this.updateHealthChartData();
       });
   }
 
@@ -140,51 +201,62 @@ export class MachineViewComponent implements OnInit, AfterViewInit {
     }
   }
 
-  updateChartData(): void {
+  updateAvailabilityChartData(): void {
     if (this.aggregatedData && (this.aggregatedData.running || this.aggregatedData.idle || this.aggregatedData.stopped)) {
-      this.showPieChart = true;
-      this.data = [];
-      this.data.push({ y: this.aggregatedData.running || 0, label: 'Running', color: CHART.ANALYSIS_PIE.RUNNING.color });
-      this.data.push({ y: this.aggregatedData.idle || 0, label: 'Idle', color: CHART.ANALYSIS_PIE.IDLE.color });
-      this.data.push({ y: this.aggregatedData.stopped || 0, label: 'Stopped', color: CHART.ANALYSIS_PIE.STOPPED.color });
-    } else {
-      this.showPieChart = false;
-    }
-    this.refreshChart();
-  }
-
-  refreshChart(): void {
-    if (this.pieChart) {
-      this.pieChart._renderChart();
-    }
-  }
-
-  updateChartData2(): void {
-    if (this.aggregatedData && (this.aggregatedData.running || this.aggregatedData.idle || this.aggregatedData.stopped)) {
-      this.showPieChart = true;
-      this.chartOptions.series = [];
+      this.showAvailabilityChartBlock = true;
+      this.availabilityChartOptions.series = [];
       const data = [];
-      data.push({ y: this.aggregatedData.running || 0, name: 'Running', color: CHART.ANALYSIS_PIE.RUNNING.color });
-      data.push({ y: this.aggregatedData.idle || 0, name: 'Idle', color: CHART.ANALYSIS_PIE.IDLE.color });
-      data.push({ y: this.aggregatedData.stopped || 0, name: 'Stopped', color: CHART.ANALYSIS_PIE.STOPPED.color });
+      data.push({ y: this.aggregatedData.running || 0, name: 'Running', color: CHART.AVAILABILITY_STATUS.RUNNING.color });
+      data.push({ y: this.aggregatedData.idle || 0, name: 'Idle', color: CHART.AVAILABILITY_STATUS.IDLE.color });
+      data.push({ y: this.aggregatedData.stopped || 0, name: 'Stopped', color: CHART.AVAILABILITY_STATUS.STOPPED.color });
       const series = {
         type: 'pie',
-        name: `Pie Chart`,
+        name: `Availability Status`,
         data: data
       }
-      this.chartOptions.series.push(series);
-      this.chartOptions.title = '';
+      this.availabilityChartOptions.series.push(series);
+      this.availabilityChartOptions.title = '';
     } else {
-      this.showPieChart = false;
+      this.showAvailabilityChartBlock = false;
     }
-    this.updateChart();
+    this.updateAvailabilityChart();
   }
 
-  updateChart(): void {
-    this.showChart = false;
+  updateHealthChartData(): void {
+    if (this.aggregatedData && (this.aggregatedData.critical_percentage || this.aggregatedData.warning_percentage || this.aggregatedData.normal_percentage)) {
+      this.showHealthChartBlock = true;
+      this.healthChartOptions.series = [];
+      const data = [];
+      data.push({ y: this.aggregatedData.critical_percentage || 0, name: 'Critical', color: CHART.HEALTH_STATUS.CRITICAL.color });
+      data.push({ y: this.aggregatedData.warning_percentage || 0, name: 'Warning', color: CHART.HEALTH_STATUS.WARNING.color });
+      data.push({ y: this.aggregatedData.normal_percentage || 0, name: 'Normal', color: CHART.HEALTH_STATUS.NORMAL.color });
+      const series = {
+        type: 'pie',
+        name: `Health Status`,
+        data: data
+      }
+      this.healthChartOptions.series.push(series);
+      this.healthChartOptions.title = '';
+    } else {
+      this.showHealthChartBlock = false;
+    }
+    this.updateHealthChart();
+  }
+
+  updateAvailabilityChart(): void {
+    this.showAvailabilityChart = false;
     if (this.afterViewInitCalled) {
       setTimeout(() => {
-        this.showChart = true;
+        this.showAvailabilityChart = true;
+      }, 50);
+    }
+  }
+
+  updateHealthChart(): void {
+    this.showHealthChart = false;
+    if (this.afterViewInitCalled) {
+      setTimeout(() => {
+        this.showHealthChart = true;
       }, 50);
     }
   }

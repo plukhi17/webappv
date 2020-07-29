@@ -26,8 +26,8 @@ export class MonitorTableComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  availabilityColors = CHART.MONITOR_AVAILABILITY_DONUT;
-  healthStatusColors = CHART.MONITOR_HEALTH_DONUT;
+  availabilityColors = CHART.AVAILABILITY_STATUS;
+  healthStatusColors = CHART.HEALTH_STATUS;
   riskscoreColors = CHART.RISKSCORE;
 
   constructor() { }

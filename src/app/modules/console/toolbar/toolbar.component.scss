@@ -11,20 +11,20 @@
 		height: 2rem;
 		// margin: 0.5rem 0;
 		padding: 0 1rem;
-		background: #9F4793;
-		color: white;
-		border-right: 1px solid white;
+		// background: #9F4793;
+		// color: white;
+		// border-right: 1px solid white;
 
-		&:hover,
-		&.active {
+		&:hover {
 			// background-color: rgba(0, 0, 0, 0.1);
 			// background: #793770;
 			// background: #FF4081; secondary
-			background: #753b6d;
+			// background: #753b6d;
 		}
 
 		&.active {
-			font-weight: 500;
+			font-weight: 600;
+			// font-weight: bold;
 		}
 	}
 }

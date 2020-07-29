@@ -23,3 +23,27 @@
         text-align: center;
     }
 }
+
+.analysis-card {
+    color: white;
+    border: 1px solid darkgrey;
+    border: 1px solid lightgrey;
+
+    .card-title {
+        white-space: nowrap;
+        font-size: 14px;
+    }
+
+    .card-value {
+        font-size: 78px;
+        font-weight: bold;
+    }
+
+    .arrow-block {
+        padding-left: 24px;
+
+        .value {
+            font-size: 14px;
+        }
+    }
+}

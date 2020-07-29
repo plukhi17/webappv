@@ -62,12 +62,13 @@ export class MonitorCardsComponent implements OnInit {
 
   getPlantLifeValue(): void {
     this.dataService.getPlantLifeValue().pipe(take(1)).subscribe((data: {
-      present_plant_life_value: number
+      plant_riskscore: number,
+      present_plant_life_value: number,
       previous_plant_life_value: number
     }) => {
       if (data) {
-        if (data.present_plant_life_value !== null && data.present_plant_life_value !== undefined) {
-          this.plantLifeValue.value = data.present_plant_life_value;
+        if (data.plant_riskscore !== null && data.plant_riskscore !== undefined) {
+          this.plantLifeValue.value = data.plant_riskscore;
           this.plantLifeValue.percent = this.calculatePercent(data.previous_plant_life_value, data.present_plant_life_value);
         } else {
           this.plantLifeValue = { value: 0, percent: 0 };

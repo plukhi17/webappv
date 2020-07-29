@@ -90,17 +90,17 @@ export class MonitorMachinesAvailableComponent implements OnInit {
       data.push({
         name: 'Stopped',
         data: this.topMachines.map((m) => m.stopped),
-        color: CHART.MONITOR_TOP_MACHINES.STOPPED.color
+        color: CHART.AVAILABILITY_STATUS.STOPPED.color
       });
       data.push({
         name: 'Idle',
         data: this.topMachines.map((m) => m.idle),
-        color: CHART.MONITOR_TOP_MACHINES.IDLE.color
+        color: CHART.AVAILABILITY_STATUS.IDLE.color
       });
       data.push({
         name: 'Running',
         data: this.topMachines.map((m) => m.running),
-        color: CHART.MONITOR_TOP_MACHINES.RUNNING.color
+        color: CHART.AVAILABILITY_STATUS.RUNNING.color
       });
       this.chartOptions.series = data;
       this.chartOptions.title = '';

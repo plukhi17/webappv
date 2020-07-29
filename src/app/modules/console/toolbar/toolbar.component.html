@@ -6,17 +6,17 @@
 		<div class="md-cntr mr-4" fxLayoutAlign="center center">
 			<img alt="minto.ai" class="logo" src="../../../../assets/img/logo.png">
 		</div>
-		<div class="spacer"></div>
 		<div class='mr-5' fxLayout="row" fxLayoutAlign="start center" *ngIf='!mobileView'>
 			<div *ngFor="let node of navTree" class="nv-cntr">
-				<a [routerLink]="node.path" class="mat-h4 nv-item w-100" [class.active]="activePath === node.path"
-					fxLayoutAlign="start center">
+				<a mat-button [routerLink]="node.path" class="mat-h4 nv-item w-100"
+					[class.active]="activePath === node.path" fxLayoutAlign="start center">
 					<!-- <mat-icon class="mr-16">{{node.icon}}</mat-icon> -->
 					<span>{{node.name}}</span>
 					<span *ngIf="!node.path" class="ml-16 col-pr mat-caption">Coming soon</span>
 				</a>
 			</div>
 		</div>
+		<div class="spacer"></div>
 		<div *ngIf="userName" class="mr-16 mat-h4 col-pr">
 			<span class="d-none d-sm-inline">Welcome, &nbsp;</span>
 			<span><strong>{{userName}}</strong></span>
