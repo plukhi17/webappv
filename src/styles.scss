@@ -146,6 +146,7 @@ a:visited {
 
 .col-pr {
 	color: $col-primary;
+	color: white;
 }
 
 .col-wa {
@@ -234,4 +235,9 @@ app-machine-view {
 	.mat-menu-content {
 		overflow: hidden;
 	}
+}
+
+.mat-toolbar {
+    background: #673ab7;
+    color: white;
 }
