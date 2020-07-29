@@ -41,14 +41,14 @@
     [style.color]='cardColors?.INDICATOR?.color'>
     <div fxLayout="column" fxLayoutAlign="space-between stretch" fxFlexFill>
       <mat-card-header>
-        <mat-card-title class='card-title'>Plant Life Indicator</mat-card-title>
+        <mat-card-title class='card-title'>Plant Riskscore</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px" fxFlexFill>
           <div class='card-value'>{{(plantLifeValue?.value == null) ? 'NA' : plantLifeValue?.value}}</div>
         </div>
       </mat-card-content>
-      <mat-card-footer>
+      <mat-card-footer style='visibility: hidden;'>
         <div class='arrow-block' fxLayout="row" fxLayoutAlign="start center">
           <ng-template [ngIf]='plantLifeValue?.percent < 0' [ngIfElse]='upRef'>
             <div class='value'>{{(plantLifeValue?.percent * (-1)) | number: '.0-2'}}%</div>
