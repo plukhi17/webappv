@@ -16,24 +16,24 @@ const NAV_TREE: NavNode[] = [
     // },
     {
         icon: 'monitor',
-        name: 'Monitor-Realtime',
+        name: 'Monitor',
         path: RouteConstant.MONITOR,
     },
     {
         icon: 'analytics',
-        name: 'Analytics',
+        name: 'Analyse',
         path: RouteConstant.ANALYTICS_MODULE,
     },
+   
     {
+        icon: 'dashboard',
+        name: 'Diagnose',
+        path: RouteConstant.DASHBOARD,
+    },{
         icon: 'tune',
         name: 'Optimize',
         path: RouteConstant.OPTIMIZE,
     },
-    {
-        icon: 'dashboard',
-        name: 'Machine Insights',
-        path: RouteConstant.DASHBOARD,
-    }
 ];
 
 @Component({
