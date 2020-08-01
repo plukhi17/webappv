@@ -60,6 +60,10 @@ export class CHART {
             color: "#A9A9A9"
         }
     }
+    static readonly INSTANT_CURRENT = {
+        DEFAULT: 'black',
+        CONDITIONAL: '#FFD700'
+    }
     static readonly MONITOR_CARDS = {
         AVAILABLE: {
             DEFAULT: '#3EDAD7',

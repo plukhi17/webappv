@@ -10,6 +10,7 @@
 
 .chart {
     height: 10rem;
+    overflow: hidden;
 }
 
 
@@ -25,9 +26,6 @@
 }
 
 .analysis-card {
-    color: white;
-    border: 1px solid darkgrey;
-    border: 1px solid lightgrey;
 
     .card-title {
         white-space: nowrap;

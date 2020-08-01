@@ -8,14 +8,14 @@
       <div class='row' *ngIf='aggregatedData'>
         <div class='col-lg-6 col-md-12 mb-1'>
           <div fxLayout="row" fxLayout.lt-sm='column' fxLayoutAlign="start stretch" fxLayoutGap="16px" fxFlexFill>
-            <mat-card class='analysis-card default-shadow' fxFlex='1 1 33.33%' fxFlex.lt-sm='100%'
-              [style.color]='currentColor'>
+            <mat-card class='analysis-card' fxFlex='1 1 33.33%' fxFlex.lt-sm='100%'>
               <div fxLayout="column" fxLayoutAlign="start stretch" fxFlexFill>
                 <mat-card-header>
                   <mat-card-title class="card-title">Instant Current</mat-card-title>
                 </mat-card-header>
                 <mat-card-content>
-                  <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="16px" fxFlexFill>
+                  <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="16px" fxFlexFill
+                    [style.color]='currentColor'>
                     <div class='card-value'>
                       <span
                         *ngIf='(aggregatedData?.avg_i_rms !== null && aggregatedData?.avg_i_rms !== undefined); else naRef'>{{aggregatedData?.avg_i_rms | number: '.0-4'}}</span>
@@ -30,14 +30,14 @@
                 </mat-card-footer>
               </div>
             </mat-card>
-            <mat-card class='analysis-card default-shadow' fxFlex='1 1 33.33%' fxFlex.lt-sm='1 1 100%'
-              [style.color]='riskscoreColor'>
+            <mat-card class='analysis-card' fxFlex='1 1 33.33%' fxFlex.lt-sm='1 1 100%'>
               <div fxLayout="column" fxLayoutAlign="start stretch" fxFlexFill>
                 <mat-card-header>
                   <mat-card-title class="card-title">Risk Score</mat-card-title>
                 </mat-card-header>
                 <mat-card-content>
-                  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px" fxFlexFill>
+                  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px" fxFlexFill
+                    [style.color]='riskscoreColor'>
                     <div class='card-value'>
                       <span
                         *ngIf='(aggregatedData?.avg_riskscore !== null && aggregatedData?.avg_riskscore !== undefined); else naRef'>{{aggregatedData?.avg_riskscore | number: '.0-4'}}</span>
@@ -46,14 +46,14 @@
                 </mat-card-content>
               </div>
             </mat-card>
-            <mat-card class='analysis-card default-shadow' fxFlex='1 1 33.33%' fxFlex.lt-sm='1 1 100%'
-              [style.color]='overloadsColor'>
+            <mat-card class='analysis-card' fxFlex='1 1 33.33%' fxFlex.lt-sm='1 1 100%'>
               <div fxLayout="column" fxLayoutAlign="start stretch" fxFlexFill>
                 <mat-card-header>
                   <mat-card-title class="card-title">Overloads</mat-card-title>
                 </mat-card-header>
                 <mat-card-content>
-                  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px" fxFlexFill>
+                  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px" fxFlexFill
+                    [style.color]='overloadsColor'>
                     <div class='card-value'>
                       <span
                         *ngIf='(aggregatedData?.overloads !== null && aggregatedData?.overloads !== undefined); else naRef'>{{aggregatedData?.overloads | number: '.0-4'}}</span>
