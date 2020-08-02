@@ -39,10 +39,11 @@ export class MonitorAvailabilityStatusComponent implements OnInit {
         cursor: 'pointer',
         dataLabels: {
           enabled: true,
-          format: '{point.name}: <b>{point.y}</b>',
-          distance: 10,
+          format: '{point.name}: <br/> <b>{point.y}</b>',
+          distance: 5,
           style: {
-            fontSize: '12px'
+            fontSize: '12px',
+            textOverflow: 'none'
           }
         },
         // minSize: '400px',
@@ -52,7 +53,7 @@ export class MonitorAvailabilityStatusComponent implements OnInit {
         // center: ['50%', '90%'],
         // size: '180%'
         center: ['50%', '50%'],
-        size: '120%',
+        size: '100%',
         innerSize: '50%'
       }
     },

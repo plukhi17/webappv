@@ -41,15 +41,16 @@ export class MachineViewComponent implements OnInit, AfterViewInit {
         cursor: 'pointer',
         dataLabels: {
           enabled: true,
-          format: '{point.name}: <b>{point.y}</b>',
-          distance: 10,
+          format: '{point.name}: <br/> <b>{point.y}</b>',
+          distance: 5,
           style: {
-            fontSize: '12px'
+            fontSize: '12px',
+            textOverflow: 'none'
           }
         },
         minSize: '400px',
         showInLegend: false,
-        size: '120%',
+        size: '100%',
         // startAngle: -90,
         // endAngle: 90,
         center: ['50%', '50%'],
@@ -78,15 +79,16 @@ export class MachineViewComponent implements OnInit, AfterViewInit {
         cursor: 'pointer',
         dataLabels: {
           enabled: true,
-          format: '{point.name}: <b>{point.y}</b>',
-          distance: 10,
+          format: '{point.name}: <br/> <b>{point.y}</b>',
+          distance: 5,
           style: {
-            fontSize: '12px'
+            fontSize: '12px',
+            textOverflow: 'none'
           }
         },
         minSize: '400px',
         showInLegend: false,
-        size: '120%',
+        size: '100%',
         // startAngle: -90,
         // endAngle: 90,
         center: ['50%', '50%'],
@@ -101,7 +103,7 @@ export class MachineViewComponent implements OnInit, AfterViewInit {
 
   afterViewInitCalled = false;
 
-  currentColor = 'black';
+  currentColor = CHART.INSTANT_CURRENT.DEFAULT;
   overloadsColor = CHART.MONITOR_CARDS.OVERLOADS.DEFAULT;
   riskscoreColor = CHART.RISKSCORE.NORMAL.color;
 
@@ -150,19 +152,23 @@ export class MachineViewComponent implements OnInit, AfterViewInit {
           this.aggregatedData = {};
         }
         if (this.aggregatedData) {
-          if (this.aggregatedData.overloads <= 80) {
+          const machinesCount = (this.machines && this.machines.length) ? this.machines.length * 2 : 80;
+          if (this.aggregatedData.overloads <= machinesCount) {
             this.overloadsColor = CHART.MONITOR_CARDS.OVERLOADS.UPTO_80;
           } else {
             this.overloadsColor = CHART.MONITOR_CARDS.OVERLOADS.DEFAULT;
           }
-          if (this.aggregatedData.avg_riskscore >= 70) {
-            this.riskscoreColor = CHART.RISKSCORE.CRITICAL.color;
-          } else if (this.aggregatedData.avg_riskscore >= 50) {
-            this.riskscoreColor = CHART.RISKSCORE.WARNING.color;
-          } else if (this.aggregatedData.avg_riskscore >= 30) {
+          if (this.aggregatedData.avg_riskscore >= 0 && this.aggregatedData.avg_riskscore < 30) {
             this.riskscoreColor = CHART.RISKSCORE.NORMAL.color;
+          } else if (this.aggregatedData.avg_riskscore >= 30 && this.aggregatedData.avg_riskscore < 50) {
+            this.riskscoreColor = CHART.RISKSCORE.WARNING.color;
           } else {
-            this.riskscoreColor = 'black';
+            this.riskscoreColor = CHART.RISKSCORE.CRITICAL.color;
+          }
+          if (this.aggregatedData.rated_current && (this.aggregatedData.avg_i_rms / this.aggregatedData.rated_current) >= 1.1) {
+            this.currentColor = CHART.INSTANT_CURRENT.CONDITIONAL;
+          } else {
+            this.currentColor = CHART.INSTANT_CURRENT.DEFAULT;
           }
         }
         this.loading = false;

@@ -29,6 +29,7 @@ export class MonitorTableComponent implements OnInit, AfterViewInit {
   availabilityColors = CHART.AVAILABILITY_STATUS;
   healthStatusColors = CHART.HEALTH_STATUS;
   riskscoreColors = CHART.RISKSCORE;
+  instantCurrentColors = CHART.INSTANT_CURRENT;
 
   constructor() { }
 

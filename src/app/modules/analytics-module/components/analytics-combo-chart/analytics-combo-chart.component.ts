@@ -45,6 +45,9 @@ export class AnalyticsComboChartComponent implements OnInit, AfterViewInit {
 
   barChartOptions: { value: string, viewValue: string, color: any, yAxis?: number }[] = [
     {
+      value: null, viewValue: '', color: ''
+    },
+    {
       value: 'availability', viewValue: 'Availability', color: '', yAxis: 1
     },
     {
@@ -76,7 +79,7 @@ export class AnalyticsComboChartComponent implements OnInit, AfterViewInit {
   highcharts = Highcharts;
   chartOptions: Highcharts.Options | any = {
     title: {
-      text: 'Reliability Analysis'
+      text: ''
     },
     xAxis: {
       categories: []

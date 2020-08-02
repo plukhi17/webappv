@@ -1,6 +1,9 @@
 <mat-expansion-panel>
   <mat-expansion-panel-header>
-    <mat-panel-title class='card-title'>Plant Status</mat-panel-title>
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+      <mat-panel-title class='card-title'>Plant Status</mat-panel-title>
+      <mat-spinner [diameter]='24' *ngIf='loading'></mat-spinner>
+    </div>
   </mat-expansion-panel-header>
   <div claass="monitor-pie h-100">
     <mat-card class='h-100 mat-elevation-z0'>
@@ -37,7 +40,8 @@
                 <mat-option value='hourly'>Hourly</mat-option>
               </mat-select>
             </mat-form-field>
-            <button mat-flat-button color='primary' style='margin-top: 24px;' (click)="filterData()">Search</button>
+            <button mat-flat-button color='primary' style='margin-top: 24px;' (click)="filterData()"
+              [disabled]='loading'>Search</button>
           </div>
 
         </div>

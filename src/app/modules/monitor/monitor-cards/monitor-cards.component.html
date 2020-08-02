@@ -1,12 +1,12 @@
 <div fxLayout="row" fxLayout.lt-sm='column' fxLayoutAlign="start stretch" fxLayoutGap="16px" fxFlexFill>
-  <mat-card class='monitor-card default-shadow' fxFlex='1 1 33.33%' fxFlex.lt-sm='100%'
-    [style.color]='MACHINES_AVAILABLE_COLOR'>
+  <mat-card class='monitor-card' fxFlex='1 1 33.33%' fxFlex.lt-sm='100%'>
     <div fxLayout="column" fxLayoutAlign="space-between stretch" fxFlexFill>
       <mat-card-header>
         <mat-card-title class='card-title'>Machines Available</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px" fxFlexFill>
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px" fxFlexFill
+          [style.color]='MACHINES_AVAILABLE_COLOR'>
           <div class='card-value'>{{availableMachines}}</div>
         </div>
       </mat-card-content>
@@ -18,14 +18,13 @@
       </mat-card-footer>
     </div>
   </mat-card>
-  <mat-card class='monitor-card default-shadow' fxFlex='1 1 33.33%' fxFlex.lt-sm='1 1 100%'
-    [style.color]='OVERLOADS_COLOR'>
+  <mat-card class='monitor-card' fxFlex='1 1 33.33%' fxFlex.lt-sm='1 1 100%'>
     <div fxLayout="column" fxLayoutAlign="space-between stretch" fxFlexFill>
       <mat-card-header>
         <mat-card-title class='card-title'>Number of Overloads</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px" fxFlexFill>
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px" fxFlexFill [style.color]='OVERLOADS_COLOR'>
           <div class='card-value'>{{overloadedMachines}}</div>
         </div>
       </mat-card-content>
@@ -37,14 +36,14 @@
       </mat-card-footer>
     </div>
   </mat-card>
-  <mat-card class='monitor-card default-shadow' fxFlex='1 1 33.33%' fxFlex.lt-sm='1 1 100%'
-    [style.color]='cardColors?.INDICATOR?.color'>
+  <mat-card class='monitor-card' fxFlex='1 1 33.33%' fxFlex.lt-sm='1 1 100%'>
     <div fxLayout="column" fxLayoutAlign="space-between stretch" fxFlexFill>
       <mat-card-header>
         <mat-card-title class='card-title'>Plant Riskscore</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px" fxFlexFill>
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px" fxFlexFill
+          [style.color]='cardColors?.INDICATOR?.color'>
           <div class='card-value'>{{(plantLifeValue?.value == null) ? 'NA' : plantLifeValue?.value}}</div>
         </div>
       </mat-card-content>

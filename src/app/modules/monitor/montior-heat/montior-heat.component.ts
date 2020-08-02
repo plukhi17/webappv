@@ -26,7 +26,7 @@ export class MontiorHeatComponent implements OnInit {
   filterType: 'daywise' | 'hourly' = 'daywise';
 
   chartBlockHeight = 500;
-  singleBlockHeight = 50;
+  singleBlockHeight = 15;
 
   chartBlockWidth = 500;
   singleBlockWidth = 25;
@@ -34,6 +34,8 @@ export class MontiorHeatComponent implements OnInit {
   xAxisCategories = [];
   yAxisCategories = [];
   chartSeries: any[] = [];
+
+  loading = false;
 
   constructor(
     private dataService: DataService
@@ -60,8 +62,10 @@ export class MontiorHeatComponent implements OnInit {
   }
 
   getDaywiseAggregatedData(): void {
+    this.loading = true;
     this.dataService.getAllMachinesDaywiseAggregatedData(moment(this.filters.from).format('YYYY-MM-DD HH:mm:ss'), moment(this.filters.to).format('YYYY-MM-DD HH:mm:ss')).pipe(take(1)).subscribe((data: AllMachinesData[]) => {
       console.log('getDaywiseAggregatedData', data);
+      this.loading = false;
       this.data = [];
       if (data && data.length) {
         this.prepareChartData(data);
@@ -80,8 +84,10 @@ export class MontiorHeatComponent implements OnInit {
   }
 
   getHourlyAggregatedData(): void {
+    this.loading = true;
     this.dataService.getAllMachinesHourlyAggregatedData(moment(this.filters.from).format('YYYY-MM-DD HH:mm:ss'), moment(this.filters.to).format('YYYY-MM-DD HH:mm:ss')).pipe(take(1)).subscribe((data: AllMachinesData[]) => {
       console.log('getDaywiseAggregatedData', data);
+      this.loading = false;
       this.data = [];
       if (data && data.length) {
         this.prepareChartData(data);
@@ -108,7 +114,19 @@ export class MontiorHeatComponent implements OnInit {
       if (this.xAxisCategories.indexOf(entry.telemetry_time) > cols) {
         cols = this.xAxisCategories.indexOf(entry.telemetry_time);
       }
-      this.chartSeries.push([this.xAxisCategories.indexOf(entry.telemetry_time), this.yAxisCategories.indexOf(entry.name), entry[this.viewMode]]);
+      let data: any = [this.xAxisCategories.indexOf(entry.telemetry_time), this.yAxisCategories.indexOf(entry.name), entry[this.viewMode]];
+      let color: string;
+      if (this.viewMode === 'avg_riskscore') {
+        if (entry[this.viewMode] >= 0 && entry[this.viewMode] < 30) {
+          color = CHART.RISKSCORE.NORMAL.color;
+        } else if (entry[this.viewMode] >= 30 && entry[this.viewMode] <= 50) {
+          color = CHART.RISKSCORE.WARNING.color;
+        } else {
+          color = CHART.RISKSCORE.CRITICAL.color;
+        }
+      }
+      data = { x: this.xAxisCategories.indexOf(entry.telemetry_time), y: this.yAxisCategories.indexOf(entry.name), value: entry[this.viewMode], color };
+      this.chartSeries.push(data);
     });
     this.chartBlockHeight = ((rows + 1) * this.singleBlockHeight) + 200;
     this.chartBlockWidth = ((cols + 1) * this.singleBlockWidth) + 300;
@@ -139,9 +157,9 @@ export class MontiorHeatComponent implements OnInit {
     this.heatMapChart.chartOptions.series[0].dataLabels.enabled = false;
     this.heatMapChart.chartOptions.colorAxis = {
       min: 0,
-      minColor: (this.viewMode === 'avg_riskscore') ? CHART.MONITOR_HEAT.RISKSCORE.minColor : CHART.MONITOR_HEAT.AVAILABILITY.minColor,
+      minColor: (this.viewMode === 'avg_riskscore') ? CHART.RISKSCORE.NORMAL.color : CHART.MONITOR_HEAT.AVAILABILITY.minColor,
       max: 100,
-      maxColor: (this.viewMode === 'avg_riskscore') ? CHART.MONITOR_HEAT.RISKSCORE.maxColor : CHART.MONITOR_HEAT.AVAILABILITY.maxColor
+      maxColor: (this.viewMode === 'avg_riskscore') ? CHART.RISKSCORE.CRITICAL.color : CHART.MONITOR_HEAT.AVAILABILITY.maxColor
     }
 
     // this.heatMapChart.chartHeight = 2000;

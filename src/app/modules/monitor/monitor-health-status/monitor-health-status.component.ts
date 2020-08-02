@@ -40,9 +40,10 @@ export class MonitorHealthStatusComponent implements OnInit {
         dataLabels: {
           enabled: true,
           format: '{point.name}: <b>{point.y}</b>',
-          distance: 10,
+          distance: 5,
           style: {
-            fontSize: '12px'
+            fontSize: '12px',
+            textOverflow: 'none'
           }
         },
         // minSize: '300px',
@@ -52,7 +53,7 @@ export class MonitorHealthStatusComponent implements OnInit {
         // center: ['50%', '90%'],
         // size: '180%'
         center: ['50%', '50%'],
-        size: '120%',
+        size: '100%',
         innerSize: '50%'
       }
     },

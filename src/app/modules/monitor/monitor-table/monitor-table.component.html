@@ -56,7 +56,12 @@
 
           <ng-container matColumnDef="i_rms">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Instant Current </th>
-            <td mat-cell *matCellDef="let element"> {{element.i_rms}} </td>
+            <td mat-cell *matCellDef="let element">
+              <span
+                [style.color]="(element.rated_current && (element.i_rms/element.rated_current) >= 1.1) ? instantCurrentColors.CONDITIONAL : instantCurrentColors.DEFAULT">
+                {{element.i_rms}}
+              </span>
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="instant_power">
@@ -87,9 +92,9 @@
           <ng-container matColumnDef="riskscore">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Instant Riskscore </th>
             <td mat-cell *matCellDef="let element">
-              <span [style.color]='(element?.riskscore >= 70) ? riskscoreColors.CRITICAL.color : 
-                ((element?.riskscore >= 50) ? riskscoreColors.WARNING.color :
-                (element?.riskscore >= 30) ? riskscoreColors.NORMAL.color : "black")'>
+              <span
+                [style.color]='(element?.riskscore >= 0 && element?.riskscore < 30) ? riskscoreColors.NORMAL.color : 
+                ((element?.riskscore >= 30 && element?.riskscore <= 50) ? riskscoreColors.WARNING.color : riskscoreColors.CRITICAL.color)'>
                 {{element.riskscore}}
               </span>
             </td>
