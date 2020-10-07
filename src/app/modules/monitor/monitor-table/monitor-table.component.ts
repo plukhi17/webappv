@@ -19,7 +19,7 @@ export class MonitorTableComponent implements OnInit, AfterViewInit {
     this.setTableData();
   }
 
-  displayedColumns: string[] = ['name', 'description', 'equipment_type', 'telemetry_time', 'availabilty_status', 'idle_time_in_hrs', 'rated_current', 'i_rms', 'instant_power', 'health_status', 'warning_count', 'riskscore', 'fault', 'device_status'];
+  displayedColumns: string[] = ['name', 'description', 'equipment_type', 'telemetry_time', 'availabilty_status','running_in_hrs' ,'idle_time_in_hrs', 'rated_current', 'i_rms', 'instant_power', 'health_status', 'warning_count', 'riskscore', 'avg_riskscore' ,'fault', 'device_status'];
 
   dataSource = new MatTableDataSource<any>([]);
 

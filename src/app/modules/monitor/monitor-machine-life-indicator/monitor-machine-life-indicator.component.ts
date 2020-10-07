@@ -94,11 +94,12 @@ export class MonitorMachineLifeIndicatorComponent implements OnInit {
       this.noData = false;
       this.chartOptions.series = [];
       const time = this.plantLifeValues.map((data) => data.telemetry_hour.replace('.000Z', '')); // moment(data.telemetry_hour).format('YYYY-MM-DD HH:mm:ss')
+      //const time = this.plantLifeValues.map((data) => (new Date(data.telemetry_hour)).toISOString() ); // moment(data.telemetry_hour).format('YYYY-MM-DD HH:mm:ss')
       const data = this.plantLifeValues.map((data) => data.plant_life_value);
 
       this.chartOptions.xAxis.categories = time;
       const series = {
-        name: `Plant Life Value`,
+        name: `R/A ratio`,
         data: data,
         color: CHART.MONITOR_CARDS.INDICATOR.color
       }
@@ -119,7 +120,7 @@ export class MonitorMachineLifeIndicatorComponent implements OnInit {
 
       this.chartOptions.xAxis.categories = time;
       const series = {
-        name: `${this.selectedMachine.name} Life Value`,
+        name: `${this.selectedMachine.name} R/A ratio`,
         data: data,
         color: CHART.MONITOR_CARDS.INDICATOR.color
       }

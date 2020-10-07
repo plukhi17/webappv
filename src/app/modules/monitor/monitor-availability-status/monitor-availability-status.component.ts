@@ -67,6 +67,7 @@ export class MonitorAvailabilityStatusComponent implements OnInit {
   runningMachines: number = 0;
   idleMachines: number = 0;
   stoppedMachines: number = 0;
+  unknownMachines: number = 0;
 
   constructor() { }
 
@@ -86,6 +87,7 @@ export class MonitorAvailabilityStatusComponent implements OnInit {
         this.runningMachines = 0;
         this.idleMachines = 0;
         this.stoppedMachines = 0;
+        this.unknownMachines = 0;
         this.realTimeData.forEach((data) => {
           if (data.availabilty_status === 'Running') {
             this.runningMachines++;
@@ -96,6 +98,9 @@ export class MonitorAvailabilityStatusComponent implements OnInit {
           if (data.availabilty_status === 'Stopped') {
             this.stoppedMachines++;
           }
+          if (data.availabilty_status === 'Unknown') {
+            this.unknownMachines++;
+          }
         })
       }
       this.chartOptions.series = [];
@@ -103,6 +108,7 @@ export class MonitorAvailabilityStatusComponent implements OnInit {
       data.push({ name: 'Running', y: this.runningMachines, color: CHART.AVAILABILITY_STATUS.RUNNING.color });
       data.push({ name: 'Idle', y: this.idleMachines, color: CHART.AVAILABILITY_STATUS.IDLE.color });
       data.push({ name: 'Stopped', y: this.stoppedMachines, color: CHART.AVAILABILITY_STATUS.STOPPED.color });
+      // data.push({ name: 'Unknown', y: this.unknownMachines, color: CHART.AVAILABILITY_STATUS.UNKNOWN.color });
       const series = {
         type: 'pie',
         name: `Monitor Status`,

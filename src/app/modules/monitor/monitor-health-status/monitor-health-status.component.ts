@@ -80,15 +80,16 @@ export class MonitorHealthStatusComponent implements OnInit {
   updateChartData(): void {
     if (this.realTimeData && this.realTimeData.length) {
       this.chartOptions.series = [];
-      const faults = Array.from(new Set(this.realTimeData.map((data) => data.health_status)));
+      const faults = Array.from(new Set(this.realTimeData.map((data) => data.avg_health_status)));
       faults.sort();
       const data = [];
       // faults.forEach((status, index) => {
-      //   data.push({ name: status, y: this.realTimeData.filter((data) => data.health_status === status).length, color: this.colors[index] })
+      //   data.push({ name: status, y: this.realTimeData.filter((data) => data.avg_health_status === status).length, color: this.colors[index] })
       // });
-      data.push({ name: 'Normal', y: this.realTimeData.filter((data) => data.health_status === 'Normal').length, color: CHART.HEALTH_STATUS.NORMAL.color });
-      data.push({ name: 'Warning', y: this.realTimeData.filter((data) => data.health_status === 'Warning').length, color: CHART.HEALTH_STATUS.WARNING.color });
-      data.push({ name: 'Critical', y: this.realTimeData.filter((data) => data.health_status === 'Critical').length, color: CHART.HEALTH_STATUS.CRITICAL.color });
+      data.push({ name: 'Normal', y: this.realTimeData.filter((data) => data.avg_health_status === 'Normal').length, color: CHART.HEALTH_STATUS.NORMAL.color });
+      data.push({ name: 'Warning', y: this.realTimeData.filter((data) => data.avg_health_status === 'Warning').length, color: CHART.HEALTH_STATUS.WARNING.color });
+      data.push({ name: 'Critical', y: this.realTimeData.filter((data) => data.avg_health_status === 'Critical').length, color: CHART.HEALTH_STATUS.CRITICAL.color });
+      // data.push({ name: 'Unknown', y: this.realTimeData.filter((data) => data.avg_health_status === 'Unknown').length, color: CHART.HEALTH_STATUS.UNKNOWN.color });
       const series = {
         type: 'pie',
         name: `Monitor Status`,

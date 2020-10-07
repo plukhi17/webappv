@@ -80,7 +80,7 @@ export class ApiService {
         }
       }
     } catch (error) {
-      console.log('error', error);
+      console.log('error:1', error);
     }
   }
 
@@ -90,6 +90,7 @@ export class ApiService {
       // console.log('cognito User', cognitoUser);
       cognitoUser.getSession((error: AWSError, session: CognitoUserSession) => {
         if (error) {
+          console.log('error:2',error);
           reject(error);
         } else {
           // console.log('session validity: ' + session.isValid());
@@ -113,6 +114,7 @@ export class ApiService {
     return new Promise((resolve, reject) => {
       this.cognitoIdentity.getId(getIdParams, (error: AWSError, data: CognitoIdentity.GetIdResponse) => {
         if (error) {
+          console.log('error:3',error);
           reject(error);
         } else {
           resolve(data);
@@ -129,7 +131,9 @@ export class ApiService {
     return new Promise((resolve, reject) => {
       this.cognitoIdentity.getOpenIdToken(data, (error: AWSError, data: CognitoIdentity.GetOpenIdTokenResponse) => {
         if (error) {
+          console.log('error:4', error);
           reject(error);
+          
         } else {
           resolve(data.Token);
         }

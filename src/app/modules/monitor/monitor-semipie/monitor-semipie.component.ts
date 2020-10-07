@@ -28,6 +28,7 @@ export class MonitorSemipieComponent implements OnInit {
   idleMachines: number = 0;
   stoppedMachines: number = 0;
 
+
   runningCountChart = {
     data: [],
     subtitles: []
@@ -93,11 +94,13 @@ export class MonitorSemipieComponent implements OnInit {
   runningChartOptions: Highcharts.Options | any;
   idleChartOptions: Highcharts.Options | any;
   stoppedChartOptions: Highcharts.Options | any;
+  unknownChartOptions: Highcharts.Options | any;
 
   constructor() {
     this.runningChartOptions = JSON.parse(JSON.stringify(this.generalChartOptions));
     this.idleChartOptions = JSON.parse(JSON.stringify(this.generalChartOptions));
     this.stoppedChartOptions = JSON.parse(JSON.stringify(this.generalChartOptions));
+    this.unknownChartOptions = JSON.parse(JSON.stringify(this.generalChartOptions));
   }
 
   ngOnInit() {
@@ -112,6 +115,7 @@ export class MonitorSemipieComponent implements OnInit {
       this.runningMachines = 0;
       this.idleMachines = 0;
       this.stoppedMachines = 0;
+      
       this.realTimeData.forEach((data) => {
         if (data.availabilty_status === 'Running') {
           this.runningMachines++;
@@ -122,6 +126,10 @@ export class MonitorSemipieComponent implements OnInit {
         if (data.availabilty_status === 'Stopped') {
           this.stoppedMachines++;
         }
+       
+
+
+
       })
     }
     // this.runningCountChart.data = [{ y: this.runningMachines, color: CHART.MONITOR_SEMIPIE.RUNNING.color }]; // "#C0504E"
@@ -138,6 +146,8 @@ export class MonitorSemipieComponent implements OnInit {
     // this.stoppedCountChart.subtitles = [{ text: this.stoppedMachines, verticalAlign: "center", dockInsidePlotArea: true, maxWidth: 30, fontSize: 14 }];
 
     this.updateChartData2([{ name: 'Stopped', y: this.stoppedMachines, color: CHART.MONITOR_SEMIPIE.STOPPED.color }], 'No. of Stopped Machines', this.stoppedChartOptions);
+
+
 
     // setTimeout(() => {
     //   this.refreshChart();

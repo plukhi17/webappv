@@ -1,4 +1,5 @@
 node_modules
+<<<<<<< Updated upstream
 dist/minto-app/analytics-analytics-module.js
 dist/minto-app/analytics-analytics-module.js.map
 dist/minto-app/common.js
@@ -19,3 +20,13 @@ dist/minto-app/polyfills.js.map
 dist/minto-app/runtime.js
 dist/minto-app/styles.js
 dist/minto-app/styles.js.map
+=======
+
+src/app/modules/dashboard/dfft-card/dfft-card.component.ts
+
+src/app/modules/dashboard/select-machine/select-machine.component.ts
+
+src/app/utils/graph.util.ts
+
+src/app/widgets/dfft-chart/dfft-chart.component.ts
+>>>>>>> Stashed changes

@@ -54,7 +54,7 @@
         <mat-card-actions align="end">
             <button (click)="loadData()"
                 [disabled]="!(formGroup?.value?.machine && formGroup?.value?.fromToDate?.length > 1)" cdkTrapFocus
-                color="primary" mat-raised-button>
+                class="btn" mat-raised-button>
                 Load Data
             </button>
             <button mat-button (click)="resetForm()">Reset</button>

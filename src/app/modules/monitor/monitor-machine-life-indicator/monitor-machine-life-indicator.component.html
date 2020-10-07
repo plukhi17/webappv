@@ -4,13 +4,13 @@
     <mat-card-header>
       <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px" fxFlexFill>
         <div fxLayout='row' fxLayoutAlign="start center" fxLayoutGap="16px">
-          <mat-card-title>Plant/Machine Life Value</mat-card-title>
+          <mat-card-title>R/A ratio (Risk score/Availability per hour)</mat-card-title>
           <mat-spinner [diameter]='24' *ngIf='loading'></mat-spinner>
         </div>
         <mat-form-field>
           <mat-select placeholder="Select Machine" #selectMachine name='selectMachine' [(ngModel)]="selectedMachine"
             (ngModelChange)='getData();'>
-            <mat-option value='pl'>Plant Life Value</mat-option>
+            <mat-option value='pl'>Plant</mat-option>
             <!-- <mat-option> -->
             <!-- <ngx-mat-select-search [formControl]="searchMachine"
                       placeholderLabel="Find Machine..."

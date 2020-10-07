@@ -49,7 +49,7 @@
                 <div class='col-lg-3 col-md-5 col-sm-12 col-xs-12  d-flex justify-content-end'>
                   <button (click)="loadData()"
                     [disabled]="!(formGroup?.value?.normalMachine && formGroup?.value?.fromToDate?.length > 1)"
-                    cdkTrapFocus color="primary" mat-raised-button class='mx-3'>Load
+                    cdkTrapFocus  mat-raised-button class='mx-3 btn'>Load
                     Data
                   </button>
                   <button mat-button (click)="resetForm()">Reset</button>

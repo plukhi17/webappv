@@ -8,6 +8,8 @@ import { Router, NavigationEnd } from '@angular/router';
 import { Subject } from 'rxjs';
 import { Plant } from 'src/app/interfaces/plant.interface';
 
+const CUSTOM_DESIGNATION = 'custom:Designation';
+
 const NAV_TREE: NavNode[] = [
     // {
     //     icon: 'bubble_chart',
@@ -50,6 +52,12 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     @Output() plantChange: EventEmitter<Plant> = new EventEmitter();
 
     public userName: string;
+    public picture: string;
+    public phone: string;
+    public email: string;
+    public designation: string;
+    
+    
     public activePath: string;
     public navTree: NavNode[] = NAV_TREE;
     private unsubscribe: Subject<void> = new Subject();
@@ -75,7 +83,15 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
     private _fetchPrincipal(): void {
         this.authService.getUserPayload().pipe(
-            tap((payload: any) => this.userName = payload.name),
+            tap((payload: any)=>{
+                this.userName = payload.name.replace("_", " ");
+                this.picture = payload.picture;
+                this.designation = payload[CUSTOM_DESIGNATION].replace("_", " ");
+                this.email = payload.email;
+                this.phone = payload.phone_number;
+                
+                
+            }),
             take(1)
         ).subscribe();
     }

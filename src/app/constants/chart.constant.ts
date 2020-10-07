@@ -14,6 +14,9 @@ export class CHART {
         },
         STOPPED: {
             color: "#BF4E85"
+        },
+        UNKNOWN: {
+            color: 'grey'
         }
     }
     static readonly ANALYSIS_PIE = {
@@ -36,6 +39,9 @@ export class CHART {
         },
         CRITICAL: {
             color: "#FF4500"
+        },
+        UNKNOWN: {
+            color: '#CDCDCD'
         }
     }
     static readonly RISKSCORE = {
@@ -58,6 +64,9 @@ export class CHART {
         },
         STOPPED: {
             color: "#A9A9A9"
+        },
+        UNKNOWN: {
+            color: '#CDCDCD'
         }
     }
     static readonly INSTANT_CURRENT = {

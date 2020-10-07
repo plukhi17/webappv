@@ -19,4 +19,7 @@ export interface RealTimeData {
     stopped: number;
     telemetry_time: string;
     warning_count: number;
+    avg_riskscore:number;
+    avg_health_status:string;
+    running_in_hrs:number;
 }

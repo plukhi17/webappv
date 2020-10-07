@@ -4,7 +4,7 @@
 			<mat-icon>menu</mat-icon>
 		</button>
 		<div class="md-cntr mr-4" fxLayoutAlign="center center">
-			<img alt="minto.ai" class="logo" src="../../../../assets/img/logo.png">
+			<a href="https://www.minto.ai"><img alt="minto.ai"  class="logo" src="../../../../assets/img/logo.png"></a>
 		</div>
 		<div class='mr-5' fxLayout="row" fxLayoutAlign="start center" *ngIf='!mobileView'>
 			<div *ngFor="let node of navTree" class="nv-cntr">
@@ -18,15 +18,25 @@
 		</div>
 		<div class="spacer"></div>
 		<div *ngIf="userName" class="mr-16 mat-h4 col-pr">
-			<span class="d-none d-sm-inline">Welcome, &nbsp;</span>
+			<span class="d-none d-sm-inline"><img class="notification-icon"  src='../../../../assets/img/icons8-notification.png'>&nbsp;&nbsp;&nbsp;</span>
 			<span><strong>{{userName}}</strong></span>
 		</div>
 		<!-- <button (click)="logout()" mat-raised-button color='accent'>Logout</button> -->
-		<img class='person-avatar' src='../../../../assets/img/person-avatar.png' [matMenuTriggerFor]='profileMenu'>
+		<img class='person-avatar' src="{{picture}}"     [matMenuTriggerFor]='profileMenu'>
 	</mat-toolbar>
 </div>
 
 <mat-menu class='profile-menu' #profileMenu='matMenu'>
+	<div class='row px-3'>
+		<div class='col-12 mb-16 mt-2 profile-block'>
+			<div class='profile-picture'><img class='profile-person-avatar' src="{{picture}}"></div>
+			<div class='profile-name'>{{userName}}</div>
+			<div class='profile-designation'>{{designation}}</div>
+			<div class='profile-email'>{{email}}</div>
+			<div class='profile-phone'>{{phone}}</div>
+		</div>
+		<mat-divider class='col-12 mt-2'></mat-divider>		
+	</div>
 	<div class='row px-3'>
 		<div class='col-12 mb-16 mt-2 title'>Plants</div>
 		<ng-template [ngIf]='plants'>
@@ -34,6 +44,10 @@
 				<div class='col-12 plant-block' [class.last]='last' [class.selected]='plant?.id === selectedPlant?.id'>
 					<div class='plant-name' (click)="onPlantChange(plant)">{{plant.name}}</div>
 					<div class='plant-description'>{{plant.description}}</div>
+				</div>
+				<div class='col-12 plant-block'>
+					<div class='plant-name' (click)="onPlantChange(plant)">Patil Rail Infrastructure Pvt. Ltd, Bobbilli,Vijayanagaram.</div>
+					<div class='plant-description'>HTS wire plant</div>
 				</div>
 			</ng-template>
 		</ng-template>

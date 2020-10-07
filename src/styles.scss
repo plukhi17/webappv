@@ -238,7 +238,25 @@ app-machine-view {
 }
 
 .mat-toolbar {
-	//background: #673ab7;
-	background: #666766;
-    color: white;
+	background: #435666;
+	color: white;
+    position: fixed;
+    position: -webkit-sticky;
+    z-index: 5;
+}
+
+
+.btn {
+	background : #435666;	
+	color : white !important;
+}
+
+
+
+
+//visual title 
+mat-card-title {
+	color:#999999 ;
+	font-size: 12px !important;
+
 }

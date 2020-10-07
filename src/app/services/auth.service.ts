@@ -2,14 +2,21 @@ import {Injectable} from '@angular/core';
 import {AuthenticationDetails, CognitoUser, CognitoUserPool, CognitoUserSession} from 'amazon-cognito-identity-js';
 import {Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
+import { NavService } from '../services/nav.service';
+import { RouteConstant, StorageConstant } from '../constants';
+import {StorageService} from '../services/storage.service';
+
 
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
 
     private userPool: CognitoUserPool;
+   
 
-    constructor() {
+    constructor(
+        private navService: NavService
+    ) {
         this._initialise();
     }
 
@@ -18,10 +25,20 @@ export class AuthService {
      */
     getUserPayload(): Observable<any> {
         const cu = this.userPool.getCurrentUser();
+        /**Killing session after the global signout */
+        if(cu==null){
+            StorageService.removeAll();
+            this.navService.navigate(RouteConstant.LOGIN);  
+            return;
+           
+        }
         return Observable.create(observer => {
             this.userPool.getCurrentUser().getSession((err, result: CognitoUserSession) => {
                 if (err) {
+                   
                     observer.error(err);
+                    
+
                 } else {
                     observer.next(result.getIdToken().payload);
                     observer.complete();

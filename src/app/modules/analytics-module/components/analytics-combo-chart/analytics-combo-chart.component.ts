@@ -33,7 +33,7 @@ export class AnalyticsComboChartComponent implements OnInit, AfterViewInit {
       value: 'starts', viewValue: 'No. of Starts', color: ''
     },
     {
-      value: 'machine_life_value', viewValue: 'Machine Life Indicator', color: ''
+      value: 'machine_life_value', viewValue: 'Reliability Factor', color: ''
     },
     {
       value: 'avg_i_rms', viewValue: 'Current', color: ''
